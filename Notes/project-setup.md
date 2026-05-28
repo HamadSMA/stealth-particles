@@ -1,4 +1,4 @@
-# Project Setup
+## Project Setup
 
 The concepts introduced while standing up the project: how large binaries are
 versioned, how work flows through branches, the naming and folder conventions
@@ -6,7 +6,7 @@ that keep the project navigable, and how Claude edits the Unity project through
 MCP.
 
 ---
-## Git LFS
+### Git LFS
 
 Git stores a full copy of every version of every file. For text that's fine —
 diffs are tiny — but a Unity project is full of binaries (textures, audio,
@@ -15,40 +15,47 @@ bloats fast and clones get slow.
 
 **Git Large File Storage** replaces those binaries in the repo with small text
 *pointer* files; the real bytes live in a separate LFS store and are downloaded
-on checkout. Which paths are tracked is declared in `.gitattributes`:
+on checkout. Which paths are tracked is declared in `.gitattributes`.
+
+**In code (`.gitattributes`):**
 
 ```gitattributes
-*.png filter=lfs diff=lfs merge=lfs -text   # texture bytes go to LFS, not git history
+*.png filter=lfs diff=lfs merge=lfs -text
 *.psd filter=lfs diff=lfs merge=lfs -text
-*.wav filter=lfs diff=lfs merge=lfs -text   # audio
-*.fbx filter=lfs diff=lfs merge=lfs -text   # models
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.fbx filter=lfs diff=lfs merge=lfs -text
 ```
 
-Git then versions the lightweight pointers, keeping the repo small while the
-heavy assets stay retrievable.
+- Each line matches a binary file type and routes its contents to the LFS store instead of git history.
+- `filter=lfs diff=lfs merge=lfs` swaps git's normal handling for the LFS driver; `-text` tells git not to treat the file as text (no line-ending conversion or line-based diffing).
+- Git then versions only the lightweight pointer files, so the repo stays small while the heavy assets are still fetched on checkout.
 
 ---
-## Feature-Branch Workflow
+### Feature-Branch Workflow
 
 A branch is an independent line of commits. Doing each feature on its own branch
 keeps half-finished work off `main`, so `main` always builds and is always safe
 to branch from. The feature merges back only once it works.
 
+**In code (terminal):**
+
 ```bash
 git checkout main
-git pull                              # start from the latest main
-git checkout -b feature/guard-patrol  # branch named feature/<thing>
-# ...work, commit in small steps...
+git pull
+git checkout -b feature/guard-patrol
 git checkout main
-git merge feature/guard-patrol        # fold the finished feature back in
+git merge feature/guard-patrol
 ```
 
----
-## Naming Conventions
+- `git pull` on `main` first, so the new branch starts from the latest shared history.
+- `git checkout -b feature/guard-patrol` creates and switches to the feature branch in one step; the `feature/<thing>` prefix keeps branches self-describing.
+- After committing the work in small steps, switching back to `main` and running `git merge` folds the finished feature in.
 
-Consistent names make a file's kind and role obvious from the name alone, and
-keep Unity's asset references (stored by GUID, not path) readable in the
-Inspector.
+---
+### Naming Conventions
+
+Consistent names make a file's kind and role obvious from the name alone, and keep
+Unity's asset references (stored by GUID, not path) readable in the Inspector.
 
 **Asset rules:**
 
@@ -72,19 +79,21 @@ are camelCase, with private fields prefixed `_`:
 | Enums (type and members) | PascalCase | `GuardState.Patrolling` |
 | Events | PascalCase, `On`-prefixed | `OnPlayerSpotted` |
 
+**In code (`GuardController.cs`):**
+
 ```csharp
 public class GuardController : MonoBehaviour
 {
-    public const int MaxHealth = 100;                 // PascalCase constant
-    public event System.Action OnPlayerSpotted;       // On-prefixed event
-    public int Health { get; private set; }           // PascalCase property
+    public const int MaxHealth = 100;
+    public event System.Action OnPlayerSpotted;
+    public int Health { get; private set; }
 
-    [SerializeField] private float _patrolSpeed;      // _camelCase private field
+    [SerializeField] private float _patrolSpeed;
     private GuardState _state;
 
-    public void TakeDamage(int amount)                // PascalCase method
+    public void TakeDamage(int amount)
     {
-        int clamped = Mathf.Min(amount, Health);      // camelCase local
+        int clamped = Mathf.Min(amount, Health);
         Health -= clamped;
     }
 }
@@ -97,49 +106,58 @@ public interface IDamageable
 }
 ```
 
+- The public surface — `MaxHealth`, `OnPlayerSpotted`, `Health`, `TakeDamage` — is PascalCase, with the event `On`-prefixed.
+- `_patrolSpeed` and `_state` are private fields, so they take the `_camelCase` prefix; `clamped` is a local and stays plain camelCase.
+- The enum (type and members) and the `I`-prefixed interface follow PascalCase.
+
 ---
-## Project Structure
+### Project Structure
 
-Assets can be grouped two ways on disk:
+Assets can be grouped two ways on disk, and the choice shapes how it feels to work
+on a single feature:
 
-| Structure | Groups by | Trait |
-| --- | --- | --- |
-| **Type-based** | asset kind (all scripts together, all prefabs together) | matches Unity's defaults; a single feature ends up scattered |
-| **Feature-based** | gameplay concern (everything for Guards lives together) | a feature is self-contained; shared asset kinds don't map to one feature |
+| Structure | Groups by | Pros | Cons |
+| --- | --- | --- | --- |
+| **Type-based** | asset kind (all scripts together, all prefabs together) | matches Unity's default folders; familiar | one feature scatters across many folders |
+| **Feature-based** | gameplay concern (everything for Guards together) | a feature is self-contained and easy to find | shared asset kinds don't belong to any one feature |
 
-This project is **feature-based**. Code under `Scripts/` is split by concern, and
-shared asset kinds get their own top-level folders. The `_` prefix sorts
-`_Project/` above imported packages in the Project window:
+This project is **feature-based**, because the day-to-day work is "build one
+mechanic at a time" and keeping a mechanic's pieces together beats matching Unity's
+defaults. Code under `Scripts/` is split by concern; the few genuinely shared asset
+kinds get their own top-level folders instead.
+
+**In code (folder layout):**
 
 ```text
 Assets/
-└── _Project/                 # _ sorts this above imported packages
-    ├── Scenes/                # Level_##_Name.unity
-    ├── ScriptableObjects/     # SO_*.asset data assets
+└── _Project/
+    ├── Scenes/
+    ├── ScriptableObjects/
     └── Scripts/
-        ├── Core/              # GameManager, GameEvents, GameState, EventLogger
-        ├── Config/            # ScoringConfig, LevelConfig, Rank
-        ├── Player/            # (per-concern gameplay folders)
+        ├── Core/
+        ├── Config/
+        ├── Player/
         ├── Guards/
         ├── Hazards/
         ├── Powerups/
         └── UI/
 ```
 
-Shared kinds like `Prefabs`, `Materials`, `Audio`, and `VFX` sit as their own
-folders under `_Project/` alongside `Scripts/`.
+- `_Project/` holds everything authored for this game; the leading `_` sorts it above imported packages in the Project window.
+- `Scripts/` is split by gameplay concern (`Core`, `Config`, `Player`, `Guards`, …) so one feature lives in one folder rather than spread across separate script/prefab/material folders.
+- Shared asset kinds like `Prefabs`, `Materials`, `Audio`, and `VFX` sit as their own folders under `_Project/` alongside `Scripts/`.
 
 ---
-## MCP (Model Context Protocol)
+### MCP (Model Context Protocol)
 
 MCP is a protocol that exposes a set of tools an AI assistant can call. The
 **UnityMCP** server connects Claude to the running Unity Editor, so scene and
 asset operations run *inside* the Editor rather than by editing files on disk.
 
-That boundary matters: Unity owns serialization and GUID generation.
+That boundary is the whole point: Unity owns serialization and GUID generation.
 Hand-editing a `.unity`, `.meta`, or `.asset` file — or forging a GUID — risks
-corrupting the scene and breaking references. Letting the Editor make the change
-keeps everything consistent.
+corrupting the scene and breaking the references Unity tracks by GUID. Routing the
+change through the Editor keeps everything consistent.
 
 | Do through MCP | Don't hand-edit |
 | --- | --- |
