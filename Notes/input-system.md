@@ -33,29 +33,33 @@ throw here; everything must use the device API below.
 In the new system you don't ask a global "was the mouse clicked?" — you ask a
 specific device. `Mouse.current` and `Touchscreen.current` are the current
 devices (or `null` if none is connected, which is why each needs a null check
-before use). Each exposes controls you read two ways:
+before use). Each exposes controls you read three ways:
 
 - **`wasPressedThisFrame`** — an edge trigger, true only on the frame a button or
-  touch went down. This is the equivalent of the old `GetMouseButtonDown`.
+  touch went down. This is the equivalent of the old `GetMouseButtonDown`, and
+  what you'd use for a one-shot "tap to act".
+- **`isPressed`** — a level read, true on *every* frame the button or touch is
+  held down. This is what a hold-to-steer control needs: it lets `Update` react
+  continuously for as long as the finger is down, not just on the first frame.
 - **`ReadValue()`** — the current analog value of a control, e.g. the pointer's
   screen position as a `Vector2`.
 
 Handling mouse and touch together is just checking both devices: mouse for the
-editor and desktop builds, touchscreen for the phone. The first one with a press
-this frame wins.
+editor and desktop builds, touchscreen for the phone. The first one currently
+held down wins.
 
 **In code (`PlayerMovement.cs`):**
 
 ```csharp
-private static bool TryGetPointerPress(out Vector2 position)
+private static bool TryGetPointerHold(out Vector2 position)
 {
-    if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+    if (Mouse.current != null && Mouse.current.leftButton.isPressed)
     {
         position = Mouse.current.position.ReadValue();
         return true;
     }
 
-    if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+    if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
     {
         position = Touchscreen.current.primaryTouch.position.ReadValue();
         return true;
@@ -67,11 +71,11 @@ private static bool TryGetPointerPress(out Vector2 position)
 ```
 
 - Each device is null-checked first, so the code is safe on a phone with no mouse or a desktop with no touchscreen.
-- `leftButton.wasPressedThisFrame` / `primaryTouch.press.wasPressedThisFrame` are edge triggers — true once per press, so a held button doesn't re-fire every frame.
-- `position.ReadValue()` returns the pointer's screen-space `Vector2`, which is exactly what a camera ray needs as its starting point (see [[raycasting-and-layermasks]]).
-- Returning a `bool` with the position as an `out` lets the caller bail in one line when there was no press this frame.
+- `leftButton.isPressed` / `primaryTouch.press.isPressed` are level reads — true every frame the input is held, so `Update` keeps steering the character toward the pointer for as long as it's down, and stops the frame it's released.
+- `position.ReadValue()` returns the pointer's *current* screen-space `Vector2` each frame, so a finger dragged across the screen feeds a moving target to the camera ray (see [[raycasting-and-layermasks]]).
+- Returning a `bool` with the position as an `out` lets the caller bail in one line on the frames nothing is held.
 
 This reads devices directly rather than going through the Input System's Action
 asset layer. Actions are worth it once you need rebindable controls or multiple
-control schemes; for a single "tap to move" a direct device read is less
+control schemes; for a single hold-to-move control a direct device read is less
 ceremony.
