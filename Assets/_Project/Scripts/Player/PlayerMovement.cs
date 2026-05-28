@@ -42,11 +42,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (!TryGetPointerPress(out Vector2 pointerPosition))
-        {
-            return;
-        }
-
         if (_camera == null)
         {
             _camera = Camera.main;
@@ -56,6 +51,18 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        if (TryGetPointerHold(out Vector2 pointerPosition))
+        {
+            SteerToward(pointerPosition);
+        }
+        else if (_agent.hasPath)
+        {
+            _agent.ResetPath();
+        }
+    }
+
+    private void SteerToward(Vector2 pointerPosition)
+    {
         Ray ray = _camera.ScreenPointToRay(pointerPosition);
         if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
         {
@@ -73,9 +80,9 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private static bool TryGetPointerPress(out Vector2 position)
+    private static bool TryGetPointerHold(out Vector2 position)
     {
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             position = Mouse.current.position.ReadValue();
             return true;
@@ -83,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (
             Touchscreen.current != null
-            && Touchscreen.current.primaryTouch.press.wasPressedThisFrame
+            && Touchscreen.current.primaryTouch.press.isPressed
         )
         {
             position = Touchscreen.current.primaryTouch.position.ReadValue();
