@@ -1,4 +1,4 @@
-# Stealth Particles — Learning Notes
+# Stealth Particles — Documentation
 
 
 ### Project Foundations
