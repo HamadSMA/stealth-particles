@@ -74,16 +74,4 @@ public class GuardController : MonoBehaviour
             TransitionTo(new PatrolState(this));
         }
     }
-
-    [ContextMenu("TEST: Freeze")]
-    private void TestFreeze()
-    {
-        TransitionTo(new FrozenState(this));
-    }
-
-    [ContextMenu("TEST: Resume Patrol")]
-    private void TestResumePatrol()
-    {
-        TransitionTo(new PatrolState(this));
-    }
 }
