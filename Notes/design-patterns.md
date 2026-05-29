@@ -268,6 +268,15 @@ public void Exit()
 - The waypoint index, ping-pong direction, and pause timer are *fields of the state object* — exactly the per-state data that has no clean home in an enum machine.
 - `Enter`/`Exit` bracket the moving behavior, so swapping to `FrozenState` (which just stops the agent and no-ops its `Tick`) is a clean handoff with no shared flags to reset.
 
+Not every state is symmetric. `DeadState` is a **terminal** state: its `Enter` does all
+the work — stops the agent, disables the vision sensor, plays a burst, and schedules the
+GameObject's destruction — while `Tick` and `Exit` stay empty. Nothing ticks because the
+object is on its way out, and nothing runs in `Exit` because the machine never leaves
+this state. Where `PatrolState`/`FrozenState` lean on `Exit` for teardown, a terminal
+state's teardown *is* the object being destroyed. The same three-method contract covers
+both shapes; a state simply implements the methods it needs and no-ops the rest (the
+holdup takedown that drives this transition is in [[holdup-mechanic]]).
+
 Both flavors still coexist inside the guard system: the *behavior* states use the
 pattern, but choosing the next waypoint is a small, data-light decision over a fixed
 set — so `PatrolPattern.GetNextIndex` stays an enum + `switch` on `PatrolPatternType`

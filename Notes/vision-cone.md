@@ -144,7 +144,13 @@ private void CheckDetection()
 - `out _` discards the `blockedByWall` flag — the guard only needs the yes/no here.
 - `RaisePlayerDetected()` is fire-and-forget through the event hub; `GameManager` is subscribed and transitions to `Fail`, which is how detection ends the run (see the observer + state machine sections in [[design-patterns]]).
 
-While there's no real UI yet, a temporary hook in `EventLogger` makes detection
-obvious: on `Fail` it logs `BUSTED` and sets `Time.timeScale = 0f` to freeze the
-frame so the catch can be seen. That's debug scaffolding to be replaced by a proper
-Fail screen later.
+The vision cone is one of two routes into that single event. The other is *physical
+contact* — touching a guard's body raises the same `RaisePlayerDetected()`, so both
+"seen" and "bumped into" funnel through one `Fail` transition and `GameManager` needs
+no special case for either. Decoupling the *signal* (detected) from the *cause* (cone
+vs. contact) is the payoff of routing through the event hub rather than calling
+`GameManager` directly.
+
+`Fail` itself is just a state for now: `EventLogger` logs the transition and nothing
+more. A dedicated Fail screen is the intended front-end; until it exists, the state
+change is the whole effect.
