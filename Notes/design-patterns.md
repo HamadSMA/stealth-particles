@@ -161,3 +161,117 @@ The two patterns compose: the state machine decides *what* changed, then the eve
 hub broadcasts it. `GameManager` also drives its own transitions off events — it
 subscribes to `OnGoalReached` (→ `Success`) and `OnPlayerDetected` (→ `Fail`), so
 gameplay code signals what happened and never calls the manager directly.
+
+---
+### Enum + switch vs. the State pattern
+
+The `enum`-and-`switch` form above is one of two ways to build a state machine, and
+the project now uses both. The distinction is *where the per-state behavior lives*.
+With an enum, a state is just a label; the behavior for each label is spelled out in
+`switch` statements wherever the machine acts. With the **State pattern**, each state
+is its own class implementing a shared interface, and behavior lives inside the
+class — the machine just holds a reference to "the current state" and calls through
+it. Same idea (one mode at a time, controlled transitions), opposite layout.
+
+The game-flow machine fits the enum: four fixed states, no per-state data, and the
+whole transition rulebook reads better in one `IsValidTransition`. Guard AI doesn't
+fit as well — a patrolling guard carries state of its own (which waypoint, a pause
+timer, ping-pong direction) and needs setup/teardown when it starts and stops
+moving. Cramming that into a `switch` means every action grows a case per mode and
+the patrol's data has nowhere natural to sit. So the guard uses the State pattern.
+
+| Approach | Pros | Cons |
+| --- | --- | --- |
+| Enum + switch | Every state visible in one file; adding a case is trivial; cheap; serializes and shows in the Inspector | One state's behavior is smeared across every `switch`; per-state data has no home; blows up as states × actions grow |
+| State pattern (interface + classes) | Each state's behavior *and* data are self-contained; `Enter`/`Exit` give clean setup/teardown; add a state without touching the others | More files and ceremony; the full set of states is spread across classes; a live state object isn't Inspector-serializable |
+
+The contract is a three-method interface — the lifecycle every state shares.
+
+**In code (`IGuardState.cs`):**
+
+```csharp
+public interface IGuardState
+{
+    void Enter();
+    void Tick();
+    void Exit();
+}
+```
+
+- `Enter` runs once when the state becomes current (configure the agent, pick a destination); `Exit` runs once as it's leaving (stop the agent); `Tick` runs every frame in between.
+
+`GuardController` is the machine. It never asks *what* state it's in — it just exits
+the old one, swaps the reference, and enters the new one, then forwards each frame's
+`Tick`. There is no `switch` anywhere; polymorphism replaces it.
+
+**In code (`GuardController.cs`):**
+
+```csharp
+public void TransitionTo(IGuardState newState)
+{
+    if (newState == null)
+    {
+        Debug.LogWarning("GuardController.TransitionTo called with null state.");
+        return;
+    }
+
+    if (currentState != null)
+    {
+        currentState.Exit();
+    }
+
+    currentState = newState;
+    newState.Enter();
+}
+
+private void Update()
+{
+    if (currentState != null)
+    {
+        currentState.Tick();
+    }
+}
+```
+
+- `TransitionTo` is the one path that changes state: it null-guards, calls `Exit()` on the outgoing state so it can clean up (the patrol state zeroes the agent's velocity here), then stores and `Enter()`s the new one.
+- `Update` blindly ticks whoever is current — when `currentState` is `null` (before the game reaches `Playing`) the guard simply does nothing, which is how it sits idle until kickoff.
+
+The behavior that would have been `switch` cases now lives in the state classes.
+`PatrolState.Enter` configures the agent from the `GuardConfig` and heads for the
+first waypoint; `PatrolState.Exit` halts it so it doesn't coast into the next state.
+
+**In code (`PatrolState.cs`):**
+
+```csharp
+public void Enter()
+{
+    NavMeshAgent agent = guard.Agent;
+    agent.isStopped = false;
+    agent.speed = guard.Config.patrolSpeed;
+    agent.angularSpeed = guard.Config.patrolAngularSpeed;
+
+    currentIndex = 0;
+    direction = 1;
+    pauseTimer = 0f;
+
+    guard.SetDestination(guard.SpawnPosition + guard.PatrolPattern.GetWaypoint(currentIndex));
+}
+
+public void Exit()
+{
+    NavMeshAgent agent = guard.Agent;
+    agent.isStopped = true;
+    agent.velocity = Vector3.zero;
+}
+```
+
+- The waypoint index, ping-pong direction, and pause timer are *fields of the state object* — exactly the per-state data that has no clean home in an enum machine.
+- `Enter`/`Exit` bracket the moving behavior, so swapping to `FrozenState` (which just stops the agent and no-ops its `Tick`) is a clean handoff with no shared flags to reset.
+
+Both flavors still coexist inside the guard system: the *behavior* states use the
+pattern, but choosing the next waypoint is a small, data-light decision over a fixed
+set — so `PatrolPattern.GetNextIndex` stays an enum + `switch` on `PatrolPatternType`
+(`Loop`/`Cycle` wrap to 0, `PingPong` flips direction at the ends). That's the rule
+of thumb: reach for the enum when a state is just a label over a closed set, and the
+State pattern when a state owns behavior and data of its own. See the FSM driver in
+`GuardController` and the game-flow machine in [[unity-classes-and-interfaces]].
