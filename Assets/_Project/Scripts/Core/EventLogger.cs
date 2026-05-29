@@ -21,6 +21,12 @@ public class EventLogger : MonoBehaviour
     private void HandleGameStateChanged(GameState state)
     {
         Debug.Log($"[EventLogger] OnGameStateChanged: {state}");
+
+        if (state == GameState.Fail)
+        {
+            Debug.Log("========== BUSTED ==========");
+            Time.timeScale = 0f;
+        }
     }
 
     private void HandlePlayerDetected()

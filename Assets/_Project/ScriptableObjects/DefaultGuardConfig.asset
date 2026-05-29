@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GuardConfig
   patrolSpeed: 2.5
   patrolAngularSpeed: 360
-  visionRange: 8
-  visionAngle: 60
+  visionRange: 6
+  visionAngle: 50
   holdupRange: 2
   holdupAngle: 120
   fadeDuration: 0.5
