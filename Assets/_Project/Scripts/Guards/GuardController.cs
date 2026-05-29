@@ -8,17 +8,20 @@ public class GuardController : MonoBehaviour
     [SerializeField] private PatrolPattern patrolPattern;
     [SerializeField] private VisionCone visionCone;
     [SerializeField] private Transform playerTransform;
+    [SerializeField] private ParticleSystem holdupBurstPrefab;
 
     private NavMeshAgent agent;
     private Vector3 spawnPosition;
     private IGuardState currentState;
     private bool isPlaying;
     private bool alreadyDetected;
+    private bool isHeldUp;
 
     public GuardConfig Config => config;
     public PatrolPattern PatrolPattern => patrolPattern;
     public NavMeshAgent Agent => agent;
     public Vector3 SpawnPosition => spawnPosition;
+    public VisionCone Vision => visionCone;
 
     private void Awake()
     {
@@ -104,6 +107,42 @@ public class GuardController : MonoBehaviour
     public void SetDestination(Vector3 worldPos)
     {
         agent.SetDestination(worldPos);
+    }
+
+    public void PlayHoldupVFX()
+    {
+        if (holdupBurstPrefab != null)
+        {
+            Instantiate(holdupBurstPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
+    public bool TryHoldup(Vector3 fromPosition)
+    {
+        if (isHeldUp)
+        {
+            return false;
+        }
+
+        Vector3 toSource = fromPosition - transform.position;
+        toSource.y = 0f;
+
+        if (toSource.sqrMagnitude > config.holdupRange * config.holdupRange)
+        {
+            return false;
+        }
+
+        Vector3 forward = transform.forward;
+        forward.y = 0f;
+
+        if (Vector3.Angle(forward, toSource) < 180f - config.holdupAngle * 0.5f)
+        {
+            return false;
+        }
+
+        isHeldUp = true;
+        TransitionTo(new DeadState(this));
+        return true;
     }
 
     public bool HasReachedDestination()

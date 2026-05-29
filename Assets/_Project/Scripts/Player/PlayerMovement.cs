@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask walkableMask;
 
+    [SerializeField]
+    private LayerMask guardMask;
+
     private NavMeshAgent _agent;
     private Camera _camera;
 
@@ -51,6 +54,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        if (TryGetPointerPress(out Vector2 pressPosition) && TryHoldupAt(pressPosition))
+        {
+            return;
+        }
+
         if (TryGetPointerHold(out Vector2 pointerPosition))
         {
             SteerToward(pointerPosition);
@@ -61,15 +69,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool TryHoldupAt(Vector2 pointerPosition)
+    {
+        Ray ray = _camera.ScreenPointToRay(pointerPosition);
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, guardMask.value))
+        {
+            return false;
+        }
+
+        GuardController guard = hit.collider.GetComponent<GuardController>();
+        if (guard != null)
+        {
+            guard.TryHoldup(transform.position);
+        }
+
+        return true;
+    }
+
     private void SteerToward(Vector2 pointerPosition)
     {
         Ray ray = _camera.ScreenPointToRay(pointerPosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity))
-        {
-            return;
-        }
-
-        if ((walkableMask.value & (1 << hit.collider.gameObject.layer)) == 0)
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, walkableMask.value))
         {
             return;
         }
@@ -78,6 +98,27 @@ public class PlayerMovement : MonoBehaviour
         {
             _agent.SetDestination(navHit.position);
         }
+    }
+
+    private static bool TryGetPointerPress(out Vector2 position)
+    {
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            position = Mouse.current.position.ReadValue();
+            return true;
+        }
+
+        if (
+            Touchscreen.current != null
+            && Touchscreen.current.primaryTouch.press.wasPressedThisFrame
+        )
+        {
+            position = Touchscreen.current.primaryTouch.position.ReadValue();
+            return true;
+        }
+
+        position = default;
+        return false;
     }
 
     private static bool TryGetPointerHold(out Vector2 position)

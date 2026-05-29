@@ -16,5 +16,5 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 4, y: 0, z: 0}
   patternType: 1
-  waypointReachedDistance: 1
+  waypointReachedDistance: 0
   pauseAtWaypoint: 2
