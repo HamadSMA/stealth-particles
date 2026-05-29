@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: TestPatrol_Square
   m_EditorClassIdentifier: Assembly-CSharp::PatrolPattern
   waypoints:
-  - {x: 3, y: 0, z: 3}
+  - {x: 0, y: 0, z: 0}
+  - {x: 3, y: 0, z: 0}
   - {x: 3, y: 0, z: -3}
-  - {x: -3, y: 0, z: -3}
-  - {x: -3, y: 0, z: 3}
+  - {x: 0, y: 0, z: -3}
   patternType: 0
-  waypointReachedDistance: 0.5
-  pauseAtWaypoint: 1
+  waypointReachedDistance: 1
+  pauseAtWaypoint: 2

@@ -6,10 +6,14 @@ public class GuardController : MonoBehaviour
 {
     [SerializeField] private GuardConfig config;
     [SerializeField] private PatrolPattern patrolPattern;
+    [SerializeField] private VisionCone visionCone;
+    [SerializeField] private Transform playerTransform;
 
     private NavMeshAgent agent;
     private Vector3 spawnPosition;
     private IGuardState currentState;
+    private bool isPlaying;
+    private bool alreadyDetected;
 
     public GuardConfig Config => config;
     public PatrolPattern PatrolPattern => patrolPattern;
@@ -20,6 +24,25 @@ public class GuardController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         spawnPosition = transform.position;
+
+        if (visionCone == null)
+        {
+            visionCone = GetComponent<VisionCone>();
+        }
+
+        if (playerTransform == null)
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null)
+            {
+                playerTransform = player.transform;
+            }
+        }
+
+        if (playerTransform == null)
+        {
+            Debug.LogWarning("GuardController on '" + name + "' has no playerTransform and found no GameObject tagged 'Player'.", this);
+        }
     }
 
     private void OnEnable()
@@ -37,6 +60,27 @@ public class GuardController : MonoBehaviour
         if (currentState != null)
         {
             currentState.Tick();
+        }
+
+        CheckDetection();
+    }
+
+    private void CheckDetection()
+    {
+        if (!isPlaying || alreadyDetected)
+        {
+            return;
+        }
+
+        if (visionCone == null || playerTransform == null)
+        {
+            return;
+        }
+
+        if (visionCone.ContainsPoint(playerTransform.position, out _))
+        {
+            alreadyDetected = true;
+            GameEvents.RaisePlayerDetected();
         }
     }
 
@@ -69,6 +113,8 @@ public class GuardController : MonoBehaviour
 
     private void HandleGameStateChanged(GameState state)
     {
+        isPlaying = state == GameState.Playing;
+
         if (state == GameState.Playing && currentState == null)
         {
             TransitionTo(new PatrolState(this));
