@@ -17,6 +17,14 @@ public class PatrolState : IGuardState
     public void Enter()
     {
         NavMeshAgent agent = guard.Agent;
+        PatrolPattern pattern = guard.PatrolPattern;
+
+        if (pattern == null || pattern.waypoints == null || pattern.waypoints.Length == 0)
+        {
+            Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; cannot patrol.");
+            return;
+        }
+
         agent.isStopped = false;
         agent.speed = guard.Config.patrolSpeed;
         agent.angularSpeed = guard.Config.patrolAngularSpeed;
@@ -25,13 +33,19 @@ public class PatrolState : IGuardState
         direction = 1;
         pauseTimer = 0f;
 
-        guard.SetDestination(guard.SpawnPosition + guard.PatrolPattern.GetWaypoint(currentIndex));
+        guard.SetDestination(guard.SpawnPosition + pattern.GetWaypoint(currentIndex));
     }
 
     public void Tick()
     {
         NavMeshAgent agent = guard.Agent;
         PatrolPattern pattern = guard.PatrolPattern;
+
+        if (pattern == null || pattern.waypoints == null || pattern.waypoints.Length == 0)
+        {
+            Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; skipping patrol.");
+            return;
+        }
 
         if (agent.pathPending)
         {
@@ -49,10 +63,12 @@ public class PatrolState : IGuardState
 
         if (pauseTimer > 0f)
         {
+            agent.isStopped = true;
             pauseTimer -= Time.deltaTime;
             return;
         }
 
+        agent.isStopped = false;
         pauseTimer = pattern.pauseAtWaypoint;
         currentIndex = pattern.GetNextIndex(currentIndex, ref direction);
         guard.SetDestination(guard.SpawnPosition + pattern.GetWaypoint(currentIndex));
