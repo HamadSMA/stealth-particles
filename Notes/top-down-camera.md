@@ -1,5 +1,7 @@
 ## Top-Down Follow Camera
 
+> **Change (2026-05-29):** the camera no longer follows the player — levels are now single-screen with a fixed camera, and the `TopDownCamera` follow component has been removed from the scene. The follow setup documented below is kept for reference.
+
 A top-down action game needs a camera that hangs over the player, tracks it as it
 walks, and never tilts or spins with the character. Parenting the camera to the
 player would do the tracking for free, but it also drags the player's Y-rotation

@@ -1,5 +1,7 @@
 ## Unity Input System (new)
 
+> **Change (2026-05-29):** player control is now **hold-to-move** — `TryGetPointerHold` reading `isPressed`, which steers the agent toward the pointer every frame it's held and clears the path on release. The tap-to-move variant described below (`TryGetPointerPress` / `wasPressedThisFrame`) is an earlier iteration, kept for reference.
+
 Unity ships two input stacks. The **old** Input Manager (`Input.GetMouseButtonDown`,
 `Input.touchCount`) reads global static state polled each frame. The **new** Input
 System package (`com.unity.inputsystem`) replaces it with device objects you query
