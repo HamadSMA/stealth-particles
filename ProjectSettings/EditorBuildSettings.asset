@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/Level1.unity
+    path: Assets/_Project/Scenes/Level1_CyberSpace.unity
     guid: 1c2c59c10d969473aaa2ec9ee7eb1720
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
