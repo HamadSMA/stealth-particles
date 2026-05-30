@@ -19,4 +19,5 @@
 
 ### Game Design
 
+- [Level Flow — Objective, Win/Lose, Results](Notes/level-flow.md): objective chain (loot → all-loot event → hidden goal reveals/unlocks → goal reached → Success), one Fail funnel for vision/contact/timeout, score+rank computed at the win from a ScoringConfig, ordering a shared event with DefaultExecutionOrder (ScoreCalculator before ResultsScreen)
 - [Guard Holdup & Death](Notes/holdup-mechanic.md): tap-vs-hold input paths (fresh press for holdup, hold for movement), Guard layer + guardMask tap targeting, range + rear-arc takedown rule, DeadState terminal state, one-shot HoldupBurstFX particle (Play On Awake + Stop Action Destroy)
