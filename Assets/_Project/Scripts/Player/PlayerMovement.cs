@@ -11,6 +11,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask guardMask;
 
+    [SerializeField]
+    private LayerMask panelMask;
+
     private NavMeshAgent _agent;
     private Camera _camera;
 
@@ -54,9 +57,17 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (TryGetPointerPress(out Vector2 pressPosition) && TryHoldupAt(pressPosition))
+        if (TryGetPointerPress(out Vector2 pressPosition))
         {
-            return;
+            if (TryHoldupAt(pressPosition))
+            {
+                return;
+            }
+
+            if (TryDisablePanelAt(pressPosition))
+            {
+                return;
+            }
         }
 
         if (TryGetPointerHold(out Vector2 pointerPosition))
@@ -81,6 +92,23 @@ public class PlayerMovement : MonoBehaviour
         if (guard != null)
         {
             guard.TryHoldup(transform.position);
+        }
+
+        return true;
+    }
+
+    private bool TryDisablePanelAt(Vector2 pointerPosition)
+    {
+        Ray ray = _camera.ScreenPointToRay(pointerPosition);
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, panelMask.value))
+        {
+            return false;
+        }
+
+        Panel panel = hit.collider.GetComponent<Panel>();
+        if (panel != null)
+        {
+            panel.TryDisable(transform.position);
         }
 
         return true;
