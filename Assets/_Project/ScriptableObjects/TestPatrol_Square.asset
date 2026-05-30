@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PatrolPattern
   waypoints:
   - {x: 0, y: 0, z: 0}
-  - {x: 3, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 3}
   patternType: 1
   waypointReachedDistance: 0.5
-  pauseAtWaypoint: 0
+  pauseAtWaypoint: 3

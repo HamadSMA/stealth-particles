@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64e5f28ceff747e5a1610bb7fcf1ae9, type: 3}
   m_Name: TestPatrol_PingPong
   m_EditorClassIdentifier: Assembly-CSharp::PatrolPattern
-  waypoints: []
+  waypoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   patternType: 0
   waypointReachedDistance: 0.5
   pauseAtWaypoint: 0
