@@ -129,10 +129,7 @@ public class PlayerMovement : MonoBehaviour
             return true;
         }
 
-        if (
-            Touchscreen.current != null
-            && Touchscreen.current.primaryTouch.press.isPressed
-        )
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
         {
             position = Touchscreen.current.primaryTouch.position.ReadValue();
             return true;

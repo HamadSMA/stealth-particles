@@ -3,9 +3,14 @@ using UnityEngine;
 
 public class LootManager : MonoBehaviour
 {
+    [SerializeField]
+    private LevelConfig levelConfig;
+
     private readonly List<Loot> tracked = new List<Loot>();
     private int collectedCount;
     private int totalCount;
+    private int requiredCount;
+    private bool requirementMet;
 
     private void OnEnable()
     {
@@ -33,6 +38,13 @@ public class LootManager : MonoBehaviour
         Loot[] found = FindObjectsByType<Loot>(FindObjectsSortMode.None);
         totalCount = found.Length;
         collectedCount = 0;
+        requirementMet = false;
+
+        requiredCount = totalCount;
+        if (levelConfig != null && levelConfig.lootRequired > 0)
+        {
+            requiredCount = Mathf.Min(levelConfig.lootRequired, totalCount);
+        }
 
         foreach (Loot loot in found)
         {
@@ -40,8 +52,9 @@ public class LootManager : MonoBehaviour
             tracked.Add(loot);
         }
 
-        if (totalCount == 0)
+        if (requiredCount <= 0)
         {
+            requirementMet = true;
             GameEvents.RaiseAllLootCollected();
         }
     }
@@ -51,8 +64,9 @@ public class LootManager : MonoBehaviour
         collectedCount++;
         GameEvents.RaiseLootCollected(collectedCount, totalCount);
 
-        if (collectedCount >= totalCount)
+        if (!requirementMet && collectedCount >= requiredCount)
         {
+            requirementMet = true;
             GameEvents.RaiseAllLootCollected();
         }
     }
