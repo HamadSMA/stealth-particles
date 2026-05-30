@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: SynthwaveSkybox
+  m_Shader: {fileID: 4800000, guid: c3fa3608a94f34b8e8e709d7f543516f, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Ints: []
+    m_Floats:
+    - _BandCount: 16
+    - _BandMaxGap: 0.95
+    - _GlowIntensity: 1
+    - _GlowWidth: 0.05
+    - _HaloIntensity: 0.7
+    - _HorizonFalloff: 3.5
+    - _StarAmount: 0.9
+    - _StarBrightness: 1.4
+    - _StarDensity: 95
+    - _SunEdge: 0.02
+    - _SunElevation: -0.68
+    - _SunSize: 0.14
+    m_Colors:
+    - _GroundColor: {r: 0.03, g: 0.01, b: 0.07, a: 1}
+    - _HorizonColor: {r: 1.4, g: 0.2, b: 0.9, a: 1}
+    - _SunBottomColor: {r: 1.6, g: 0.12, b: 0.6, a: 1}
+    - _SunTopColor: {r: 1.7, g: 1, b: 0.3, a: 1}
+    - _TopColor: {r: 0.03, g: 0.02, b: 0.1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
