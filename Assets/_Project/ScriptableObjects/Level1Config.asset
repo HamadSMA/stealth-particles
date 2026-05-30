@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
   m_Name: Level1Config
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelName: 
+  levelName: CyberSpace
   objectiveText: 
-  timeBudget: 0
+  timeBudget: 30
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
   musicTrack: {fileID: 0}
