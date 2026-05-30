@@ -4,11 +4,20 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class GuardController : MonoBehaviour
 {
-    [SerializeField] private GuardConfig config;
-    [SerializeField] private PatrolPattern patrolPattern;
-    [SerializeField] private VisionCone visionCone;
-    [SerializeField] private Transform playerTransform;
-    [SerializeField] private ParticleSystem holdupBurstPrefab;
+    [SerializeField]
+    private GuardConfig config;
+
+    [SerializeField]
+    private PatrolPattern patrolPattern;
+
+    [SerializeField]
+    private VisionCone visionCone;
+
+    [SerializeField]
+    private Transform playerTransform;
+
+    [SerializeField]
+    private ParticleSystem holdupBurstPrefab;
 
     private NavMeshAgent agent;
     private Vector3 spawnPosition;
@@ -44,7 +53,12 @@ public class GuardController : MonoBehaviour
 
         if (playerTransform == null)
         {
-            Debug.LogWarning("GuardController on '" + name + "' has no playerTransform and found no GameObject tagged 'Player'.", this);
+            Debug.LogWarning(
+                "GuardController on '"
+                    + name
+                    + "' has no playerTransform and found no GameObject tagged 'Player'.",
+                this
+            );
         }
     }
 

@@ -14,6 +14,8 @@
 - [Raycasting & LayerMasks](Notes/raycasting-and-layermasks.md): ScreenPointToRay, Physics.Raycast, layers, LayerMask bitmask test, masked-raycast tunneling bug & fix
 - [Top-Down Follow Camera](Notes/top-down-camera.md): LateUpdate timing, Vector3.SmoothDamp smoothing & stored velocity, fixed cameraAngle rotation, perspective vs orthographic, ApplyLevelConfig per-level hook
 - [Vision Cone & Detection](Notes/vision-cone.md): range/angle/occlusion line-of-sight test, per-frame cone mesh clipped by walls, Wall layer mask, detection wired into the FSM (OnPlayerDetected → Fail), two fail routes (cone + physical contact) through one event
+- [Procedural Synthwave Skybox](Notes/synthwave-skybox.md): shading by view direction, height gradient + horizon glow, sun as a perspective projection (disk/gradient/bands/halo), hashed star field, single-pass region masking to keep stars off the sun
+- [Prefabs & Reusable Level Pieces](Notes/prefabs.md): when to prefab (reuse × setup cost), instances + overrides, scene references not serializing into prefab assets (runtime tag lookup), keeping per-instance detail out of child geometry via a scale-independent world-space border shader (WallNeon)
 
 ### Game Design
 
