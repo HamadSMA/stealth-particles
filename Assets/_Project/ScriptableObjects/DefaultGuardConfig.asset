@@ -16,6 +16,6 @@ MonoBehaviour:
   patrolAngularSpeed: 360
   visionRange: 8
   visionAngle: 60
-  holdupRange: 2
+  holdupRange: 5
   holdupAngle: 120
   fadeDuration: 0.5

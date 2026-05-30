@@ -10,6 +10,9 @@ public class LevelConfig : ScriptableObject
 
     public float timeBudget;
 
+    [Tooltip("Loot the player must collect before the goal appears. 0 or less = all placed loot.")]
+    public int lootRequired;
+
     public float cameraHeight;
 
     public Vector3 cameraOffset;

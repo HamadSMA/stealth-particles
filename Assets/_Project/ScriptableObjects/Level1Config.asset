@@ -15,6 +15,7 @@ MonoBehaviour:
   levelName: CyberSpace
   objectiveText: 
   timeBudget: 30
+  lootRequired: 2
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
   musicTrack: {fileID: 0}
