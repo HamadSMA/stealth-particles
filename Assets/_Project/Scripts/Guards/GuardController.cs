@@ -20,6 +20,7 @@ public class GuardController : MonoBehaviour
     private ParticleSystem holdupBurstPrefab;
 
     private NavMeshAgent agent;
+    private PowerupSystem playerPowerups;
     private Vector3 spawnPosition;
     private IGuardState currentState;
     private bool isPlaying;
@@ -60,6 +61,11 @@ public class GuardController : MonoBehaviour
                 this
             );
         }
+
+        if (playerTransform != null)
+        {
+            playerPowerups = playerTransform.GetComponentInParent<PowerupSystem>();
+        }
     }
 
     private void OnEnable()
@@ -90,6 +96,11 @@ public class GuardController : MonoBehaviour
         }
 
         if (visionCone == null || playerTransform == null)
+        {
+            return;
+        }
+
+        if (playerPowerups != null && playerPowerups.IsCloaked)
         {
             return;
         }
@@ -157,6 +168,17 @@ public class GuardController : MonoBehaviour
         isHeldUp = true;
         TransitionTo(new DeadState(this));
         return true;
+    }
+
+    public void Eliminate()
+    {
+        if (isHeldUp)
+        {
+            return;
+        }
+
+        isHeldUp = true;
+        TransitionTo(new DeadState(this));
     }
 
     public bool HasReachedDestination()

@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     private NavMeshAgent _agent;
     private Camera _camera;
+    private PowerupSystem _powerups;
 
     private static bool _isPlaying;
 
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _camera = Camera.main;
+        _powerups = GetComponent<PowerupSystem>();
     }
 
     private void OnEnable()
@@ -91,7 +93,15 @@ public class PlayerMovement : MonoBehaviour
         GuardController guard = hit.collider.GetComponent<GuardController>();
         if (guard != null)
         {
-            guard.TryHoldup(transform.position);
+            if (_powerups != null && _powerups.Has(PowerupType.Eliminate))
+            {
+                guard.Eliminate();
+                _powerups.TryConsume(PowerupType.Eliminate);
+            }
+            else
+            {
+                guard.TryHoldup(transform.position);
+            }
         }
 
         return true;
