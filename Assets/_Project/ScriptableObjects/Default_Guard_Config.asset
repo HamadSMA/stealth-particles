@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b6004745747e4a3992bd3e85511c397, type: 3}
-  m_Name: DefaultGuardConfig
+  m_Name: Default_Guard_Config
   m_EditorClassIdentifier: Assembly-CSharp::GuardConfig
   patrolSpeed: 2.5
   patrolAngularSpeed: 360

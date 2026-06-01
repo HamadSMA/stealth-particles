@@ -216,6 +216,8 @@ public class UIController : MonoBehaviour
                 rankText.color = RankColor(rank);
             }
 
+            GameEvents.RaiseRankRevealed(rank);
+
             if (successScoreText != null)
             {
                 successScoreText.text = "SCORE   " + scoreCalculator.LastScore;

@@ -17,6 +17,9 @@ public class Panel : MonoBehaviour
     [SerializeField]
     private float activationRange = 3.5f;
 
+    [SerializeField]
+    private ParticleSystem disablePuffPrefab;
+
     private bool isPlaying;
     private bool isUsed;
 
@@ -68,6 +71,13 @@ public class Panel : MonoBehaviour
         {
             panelRenderer.sharedMaterial = usedMaterial;
         }
+
+        if (disablePuffPrefab != null)
+        {
+            Instantiate(disablePuffPrefab, transform.position, Quaternion.identity);
+        }
+
+        GameEvents.RaisePanelDisabled();
 
         return true;
     }

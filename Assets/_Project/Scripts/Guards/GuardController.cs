@@ -167,6 +167,7 @@ public class GuardController : MonoBehaviour
 
         isHeldUp = true;
         TransitionTo(new DeadState(this));
+        GameEvents.RaiseGuardNeutralized();
         return true;
     }
 
@@ -179,6 +180,7 @@ public class GuardController : MonoBehaviour
 
         isHeldUp = true;
         TransitionTo(new DeadState(this));
+        GameEvents.RaiseGuardNeutralized();
     }
 
     public bool HasReachedDestination()

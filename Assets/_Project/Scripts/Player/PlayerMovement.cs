@@ -128,6 +128,7 @@ public class PlayerMovement : MonoBehaviour
         if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, 1f, NavMesh.AllAreas))
         {
             _agent.SetDestination(navHit.position);
+            GameEvents.RaiseTapMove();
         }
     }
 

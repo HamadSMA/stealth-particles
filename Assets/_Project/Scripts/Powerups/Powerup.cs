@@ -35,6 +35,7 @@ public abstract class Powerup : MonoBehaviour
 
         isCollected = true;
         OnPickup(other.gameObject);
+        GameEvents.RaisePowerupCollected();
         gameObject.SetActive(false);
     }
 

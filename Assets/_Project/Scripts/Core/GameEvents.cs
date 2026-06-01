@@ -8,6 +8,11 @@ public static class GameEvents
     public static event Action OnAllLootCollected;
     public static event Action<int, int> OnLootCollected;
     public static event Action<float> OnTimerUpdated;
+    public static event Action OnTapMove;
+    public static event Action OnGuardNeutralized;
+    public static event Action OnPanelDisabled;
+    public static event Action OnPowerupCollected;
+    public static event Action<Rank> OnRankRevealed;
 
     public static void RaiseGameStateChanged(GameState state)
     {
@@ -37,5 +42,30 @@ public static class GameEvents
     public static void RaiseTimerUpdated(float elapsed)
     {
         OnTimerUpdated?.Invoke(elapsed);
+    }
+
+    public static void RaiseTapMove()
+    {
+        OnTapMove?.Invoke();
+    }
+
+    public static void RaiseGuardNeutralized()
+    {
+        OnGuardNeutralized?.Invoke();
+    }
+
+    public static void RaisePanelDisabled()
+    {
+        OnPanelDisabled?.Invoke();
+    }
+
+    public static void RaisePowerupCollected()
+    {
+        OnPowerupCollected?.Invoke();
+    }
+
+    public static void RaiseRankRevealed(Rank rank)
+    {
+        OnRankRevealed?.Invoke(rank);
     }
 }

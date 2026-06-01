@@ -5,6 +5,9 @@ public class Goal : MonoBehaviour
 {
     public bool requiresAllLoot = true;
 
+    [SerializeField]
+    private ParticleSystem goalBurstPrefab;
+
     private bool isPlaying;
     private bool allLootCollected;
     private bool hasReached;
@@ -71,6 +74,12 @@ public class Goal : MonoBehaviour
         }
 
         hasReached = true;
+
+        if (goalBurstPrefab != null)
+        {
+            Instantiate(goalBurstPrefab, transform.position, Quaternion.identity);
+        }
+
         GameEvents.RaiseGoalReached();
     }
 

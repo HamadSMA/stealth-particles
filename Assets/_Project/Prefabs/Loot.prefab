@@ -125,3 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a5c7b9bfaef497bbdbceec577126af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Loot
+  collectPopPrefab: {fileID: 3082339843173659843, guid: 02a6ad70250be4eb98c89a63047aec3d, type: 3}

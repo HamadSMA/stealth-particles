@@ -522,3 +522,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Goal
   requiresAllLoot: 1
+  goalBurstPrefab: {fileID: 3082339843173659843, guid: 5fcfd0fb685ba48009b3ae19bc99a73d, type: 3}

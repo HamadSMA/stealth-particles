@@ -6,6 +6,9 @@ public class Loot : MonoBehaviour
 {
     public event Action<Loot> Collected;
 
+    [SerializeField]
+    private ParticleSystem collectPopPrefab;
+
     private bool isPlaying;
     private bool isCollected;
 
@@ -37,6 +40,12 @@ public class Loot : MonoBehaviour
         }
 
         isCollected = true;
+
+        if (collectPopPrefab != null)
+        {
+            Instantiate(collectPopPrefab, transform.position, Quaternion.identity);
+        }
+
         Collected?.Invoke(this);
         gameObject.SetActive(false);
     }
