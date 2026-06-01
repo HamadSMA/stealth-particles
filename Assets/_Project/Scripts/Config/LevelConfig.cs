@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SO_Level_New", menuName = "Stealth Particles/Level Config")]
 public class LevelConfig : ScriptableObject
 {
+    public int levelNumber = 1;
+
     public string levelName;
 
     [TextArea]

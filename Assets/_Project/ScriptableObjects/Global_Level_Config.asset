@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
-  m_Name: Level3Config
+  m_Name: Global_Level_Config
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelNumber: 3
-  levelName: Atomic Telepathy
-  objectiveText: Grab the powerup to destroy the enemy from afar.
-  timeBudget: 180
-  lootRequired: 3
+  levelName: 
+  objectiveText: 
+  timeBudget: 0
+  lootRequired: 0
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
   musicTrack: {fileID: 0}

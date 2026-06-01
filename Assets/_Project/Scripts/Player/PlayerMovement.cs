@@ -70,15 +70,8 @@ public class PlayerMovement : MonoBehaviour
             {
                 return;
             }
-        }
 
-        if (TryGetPointerHold(out Vector2 pointerPosition))
-        {
-            SteerToward(pointerPosition);
-        }
-        else if (_agent.hasPath)
-        {
-            _agent.ResetPath();
+            SteerToward(pressPosition);
         }
     }
 
@@ -150,24 +143,6 @@ public class PlayerMovement : MonoBehaviour
             Touchscreen.current != null
             && Touchscreen.current.primaryTouch.press.wasPressedThisFrame
         )
-        {
-            position = Touchscreen.current.primaryTouch.position.ReadValue();
-            return true;
-        }
-
-        position = default;
-        return false;
-    }
-
-    private static bool TryGetPointerHold(out Vector2 position)
-    {
-        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
-        {
-            position = Mouse.current.position.ReadValue();
-            return true;
-        }
-
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
         {
             position = Touchscreen.current.primaryTouch.position.ReadValue();
             return true;

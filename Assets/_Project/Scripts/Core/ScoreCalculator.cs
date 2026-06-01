@@ -62,6 +62,9 @@ public class ScoreCalculator : MonoBehaviour
             LastRank = Rank.None;
         }
 
+        int level = levelConfig != null ? levelConfig.levelNumber : 0;
+        ProgressionManager.RecordSuccess(level, LastScore, LastRank);
+
         Debug.Log(
             "[ScoreCalculator] Success - time "
                 + LastTime.ToString("F2")

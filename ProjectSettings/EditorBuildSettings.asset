@@ -6,13 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Project/Scenes/Intro.unity
+    guid: cfde468b0b00943d2b1b3bf2af22a9cf
+  - enabled: 1
+    path: Assets/_Project/Scenes/MainMenu.unity
+    guid: e2239ea57ec1a4ca68ff579abadfed0a
+  - enabled: 1
     path: Assets/_Project/Scenes/Level1_CyberSpace.unity
     guid: 1c2c59c10d969473aaa2ec9ee7eb1720
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 00000000000000000000000000000000
+    path: Assets/_Project/Scenes/Level2_LaserInjection.unity
+    guid: 2932376aa6de6475eae26d4fcfddd136
   - enabled: 1
-    path: Assets/_Project/Scenes/Level3_ForceQuit.unity
+    path: Assets/_Project/Scenes/Level3_AtomicTelepathy.unity
     guid: db656a1fd5b9d4edd988efca1b3ce04d
   - enabled: 1
     path: Assets/_Project/Scenes/Level4_QuantumStealth.unity

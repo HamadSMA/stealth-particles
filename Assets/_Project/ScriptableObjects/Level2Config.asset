@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
   m_Name: Level2Config
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelName: LaserInjection
-  objectiveText: Reach the injection point.
+  levelNumber: 2
+  levelName: Laser Injection
+  objectiveText: Use the panel to disable the laser.
   timeBudget: 180
   lootRequired: 3
   cameraHeight: 0
