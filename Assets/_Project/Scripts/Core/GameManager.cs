@@ -26,12 +26,6 @@ public class GameManager : MonoBehaviour
         TransitionTo(GameState.Playing);
     }
 
-    [ContextMenu("TEST: Start Level")]
-    private void TestStartLevel()
-    {
-        StartLevel();
-    }
-
     private void HandleGoalReached()
     {
         TransitionTo(GameState.Success);

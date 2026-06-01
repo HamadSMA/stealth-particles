@@ -1914,7 +1914,7 @@ PrefabInstance:
     - target: {fileID: 3617492454625967067, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: config
       value: 
-      objectReference: {fileID: 11400000, guid: 2efcf7c8b99ac482db6b413bb33117b6, type: 2}
+      objectReference: {fileID: 11400000, guid: 8c45abe2b807a478dbb6615b448e3a60, type: 2}
     - target: {fileID: 3617492454625967067, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: patrolPattern
       value: 
@@ -1922,7 +1922,7 @@ PrefabInstance:
     - target: {fileID: 6409076631885901184, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: config
       value: 
-      objectReference: {fileID: 11400000, guid: 2efcf7c8b99ac482db6b413bb33117b6, type: 2}
+      objectReference: {fileID: 11400000, guid: 8c45abe2b807a478dbb6615b448e3a60, type: 2}
     - target: {fileID: 8730041272714988271, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

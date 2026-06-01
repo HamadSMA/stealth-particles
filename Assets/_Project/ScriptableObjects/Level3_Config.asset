@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Level3_Config
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelNumber: 3
-  levelName: Atomic Telepathy
+  levelName: Atomic Telekinesis
   objectiveText: Grab the powerup to destroy the enemy from afar.
   timeBudget: 180
   lootRequired: 3

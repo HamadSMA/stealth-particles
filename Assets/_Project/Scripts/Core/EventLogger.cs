@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class EventLogger : MonoBehaviour
 {
+    [SerializeField]
+    private bool verbose = false;
+
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
@@ -20,21 +23,29 @@ public class EventLogger : MonoBehaviour
 
     private void HandleGameStateChanged(GameState state)
     {
-        Debug.Log($"[EventLogger] OnGameStateChanged: {state}");
+        Log($"[EventLogger] OnGameStateChanged: {state}");
     }
 
     private void HandlePlayerDetected()
     {
-        Debug.Log("[EventLogger] OnPlayerDetected");
+        Log("[EventLogger] OnPlayerDetected");
     }
 
     private void HandleGoalReached()
     {
-        Debug.Log("[EventLogger] OnGoalReached");
+        Log("[EventLogger] OnGoalReached");
     }
 
     private void HandleTimerUpdated(float elapsed)
     {
-        Debug.Log($"[EventLogger] OnTimerUpdated: {elapsed}");
+        Log($"[EventLogger] OnTimerUpdated: {elapsed}");
+    }
+
+    private void Log(string message)
+    {
+        if (verbose)
+        {
+            Debug.Log(message);
+        }
     }
 }

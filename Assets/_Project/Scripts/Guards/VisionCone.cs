@@ -10,6 +10,8 @@ public class VisionCone : MonoBehaviour
     [SerializeField] private MeshFilter coneMeshFilter;
 
     private Mesh coneMesh;
+    private Vector3[] _vertices;
+    private int[] _triangles;
 
     private void Awake()
     {
@@ -35,7 +37,20 @@ public class VisionCone : MonoBehaviour
         }
 
         coneMesh = new Mesh { name = "VisionCone" };
+        coneMesh.MarkDynamic();
         coneMeshFilter.mesh = coneMesh;
+
+        _vertices = new Vector3[meshResolution + 2];
+        _triangles = new int[meshResolution * 3];
+        for (int i = 0; i < meshResolution; i++)
+        {
+            _triangles[i * 3] = 0;
+            _triangles[i * 3 + 1] = i + 1;
+            _triangles[i * 3 + 2] = i + 2;
+        }
+
+        coneMesh.vertices = _vertices;
+        coneMesh.triangles = _triangles;
     }
 
     public bool ContainsPoint(Vector3 worldPoint, out bool blockedByWall)
@@ -84,12 +99,9 @@ public class VisionCone : MonoBehaviour
         Transform coneTransform = coneMeshFilter.transform;
         float halfAngle = config.visionAngle * 0.5f;
 
-        Vector3[] vertices = new Vector3[meshResolution + 2];
-        int[] triangles = new int[meshResolution * 3];
-
         Vector3 apexLocal = coneTransform.InverseTransformPoint(origin);
         apexLocal.y = 0f;
-        vertices[0] = apexLocal;
+        _vertices[0] = apexLocal;
 
         for (int i = 0; i <= meshResolution; i++)
         {
@@ -108,20 +120,10 @@ public class VisionCone : MonoBehaviour
 
             Vector3 local = coneTransform.InverseTransformPoint(endpoint);
             local.y = 0f;
-            vertices[i + 1] = local;
+            _vertices[i + 1] = local;
         }
 
-        for (int i = 0; i < meshResolution; i++)
-        {
-            triangles[i * 3] = 0;
-            triangles[i * 3 + 1] = i + 1;
-            triangles[i * 3 + 2] = i + 2;
-        }
-
-        coneMesh.Clear();
-        coneMesh.vertices = vertices;
-        coneMesh.triangles = triangles;
-        coneMesh.RecalculateNormals();
+        coneMesh.vertices = _vertices;
         coneMesh.RecalculateBounds();
     }
 }

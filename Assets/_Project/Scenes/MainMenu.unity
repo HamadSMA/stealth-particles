@@ -4480,7 +4480,7 @@ MonoBehaviour:
     lockedText: {fileID: 1291717643}
     tapToPlayText: {fileID: 757882043}
   - config: {fileID: 11400000, guid: 49e4a5200df6c467992cd5f3a4e03203, type: 2}
-    sceneName: Level3_AtomicTelepathy
+    sceneName: Level3_AtomicTelekinesis
     button: {fileID: 1261917884}
     nameText: {fileID: 1120169716}
     rankText: {fileID: 1769649068}

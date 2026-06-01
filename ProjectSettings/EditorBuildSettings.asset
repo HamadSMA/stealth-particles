@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Level2_LaserInjection.unity
     guid: 2932376aa6de6475eae26d4fcfddd136
   - enabled: 1
-    path: Assets/_Project/Scenes/Level3_AtomicTelepathy.unity
+    path: Assets/_Project/Scenes/Level3_AtomicTelekinesis.unity
     guid: db656a1fd5b9d4edd988efca1b3ce04d
   - enabled: 1
     path: Assets/_Project/Scenes/Level4_QuantumStealth.unity

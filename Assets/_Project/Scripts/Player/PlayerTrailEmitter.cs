@@ -11,12 +11,10 @@ public class PlayerTrailEmitter : MonoBehaviour
     private float speedThreshold = 0.2f;
 
     private ParticleSystem _system;
-    private ParticleSystem.EmissionModule _emission;
 
     private void Awake()
     {
         _system = GetComponent<ParticleSystem>();
-        _emission = _system.emission;
 
         if (agent == null)
         {
@@ -26,7 +24,13 @@ public class PlayerTrailEmitter : MonoBehaviour
 
     private void Update()
     {
+        if (_system == null)
+        {
+            return;
+        }
+
         bool moving = agent != null && agent.velocity.magnitude > speedThreshold;
-        _emission.enabled = moving;
+        ParticleSystem.EmissionModule emission = _system.emission;
+        emission.enabled = moving;
     }
 }
