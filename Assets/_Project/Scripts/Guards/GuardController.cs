@@ -102,6 +102,11 @@ public class GuardController : MonoBehaviour
 
         if (playerPowerups != null && playerPowerups.IsCloaked)
         {
+            if (visionCone.ContainsPoint(playerTransform.position, out _))
+            {
+                playerPowerups.ReportCloakedSighting();
+            }
+
             return;
         }
 

@@ -10,13 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a64e5f28ceff747e5a1610bb7fcf1ae9, type: 3}
-  m_Name: Level2_GuardPattern
+  m_Name: Level2_Guard1_Pattern
   m_EditorClassIdentifier: Assembly-CSharp::PatrolPattern
   waypoints:
   - {x: 0, y: 0, z: 0}
-  - {x: -7, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 7}
-  patternType: 0
-  waypointReachedDistance: 0.5
+  - {x: 0, y: 0, z: 8.5}
+  patternType: 1
+  waypointReachedDistance: 0.1
   pauseAtWaypoint: 3

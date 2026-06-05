@@ -6,6 +6,8 @@ Shader "StealthParticles/WallNeon"
         [HDR] _BorderColor ("Border Color", Color) = (5.657, 0.0, 4.437, 1)
         _BorderWidth ("Border Width (world units)", Float) = 0.04
         _BorderSoftness ("Border Softness", Range(0.05, 1.0)) = 0.5
+        _ShadowStrength ("Bottom Shadow Strength", Range(0.0, 1.0)) = 0.75
+        _ShadowHeight ("Bottom Shadow Height", Range(0.01, 1.0)) = 0.6
     }
     SubShader
     {
@@ -35,6 +37,8 @@ Shader "StealthParticles/WallNeon"
                 float4 _BorderColor;
                 float _BorderWidth;
                 float _BorderSoftness;
+                float _ShadowStrength;
+                float _ShadowHeight;
             CBUFFER_END
 
             Varyings vert (Attributes IN)
@@ -58,7 +62,11 @@ Shader "StealthParticles/WallNeon"
                 float mid = dist.x + dist.y + dist.z - mn - mx;
                 float inner = _BorderWidth * (1.0 - _BorderSoftness);
                 float border = 1.0 - smoothstep(inner, _BorderWidth, mid);
-                float3 col = lerp(_FillColor.rgb, _BorderColor.rgb, border);
+                float keepBottom = (op.y >= 0.0 || dist.y >= mx) ? 1.0 : 0.0;
+                border *= keepBottom;
+                float t = saturate((op.y + 0.5) / _ShadowHeight);
+                float shade = lerp(1.0 - _ShadowStrength, 1.0, t);
+                float3 col = lerp(_FillColor.rgb * shade, _BorderColor.rgb, border);
                 return half4(col, 1.0);
             }
             ENDHLSL

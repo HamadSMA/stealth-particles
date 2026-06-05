@@ -19,5 +19,5 @@ MonoBehaviour:
   lootRequired: 2
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
-  musicTrack: {fileID: 8300000, guid: c3f8d4d2c1a5442d5b59150e895a3b98, type: 3}
+  musicTrack: {fileID: 8300000, guid: c526b6659af8542d78df6096682197e5, type: 3}
   scoringOverride: {fileID: 0}

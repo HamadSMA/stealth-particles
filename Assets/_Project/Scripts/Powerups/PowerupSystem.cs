@@ -14,6 +14,8 @@ public class PowerupSystem : MonoBehaviour
     private bool isCloaked;
     private bool cloakColorStored;
     private Color cloakOriginalColor;
+    private bool seenWhileCloakedThisFrame;
+    private bool hasEnteredConeWhileCloaked;
 
     public bool IsCloaked => isCloaked;
 
@@ -78,7 +80,33 @@ public class PowerupSystem : MonoBehaviour
         }
 
         isCloaked = true;
+        hasEnteredConeWhileCloaked = false;
+        seenWhileCloakedThisFrame = false;
         ApplyCloakCue();
+    }
+
+    public void ReportCloakedSighting()
+    {
+        seenWhileCloakedThisFrame = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (!isCloaked)
+        {
+            return;
+        }
+
+        if (seenWhileCloakedThisFrame)
+        {
+            hasEnteredConeWhileCloaked = true;
+        }
+        else if (hasEnteredConeWhileCloaked)
+        {
+            ClearCloak();
+        }
+
+        seenWhileCloakedThisFrame = false;
     }
 
     public void ClearCloak()

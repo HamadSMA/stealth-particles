@@ -121,3 +121,6 @@ CLAUDE.md
 # Local screenshot captures (verification only, not committed)
 /[Aa]ssets/[Ss]creenshots/
 /[Aa]ssets/[Ss]creenshots.meta
+
+# Local research / audit notes (not committed)
+/docs/research/
