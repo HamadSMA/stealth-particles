@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelNumber: 4
   levelName: Quantum Stealth
-  objectiveText: Grab the power to become invisible (does not apply to direct contact
-    with guards or lasers).
-  timeBudget: 180
+  objectiveText: 'Grab the powerup to become invisible.
+
+    Collect all shinig spheres
+    then head for the goal.'
+  timeBudget: 120
   lootRequired: 3
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}

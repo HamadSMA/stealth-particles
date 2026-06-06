@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelNumber: 2
   levelName: Laser Injection
-  objectiveText: Use the panel to disable the laser.
-  timeBudget: 180
+  objectiveText: 'Tap on the pink panel to disable the laser.
+
+    Collect all shinig
+    spheres then head for the goal.'
+  timeBudget: 120
   lootRequired: 3
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}

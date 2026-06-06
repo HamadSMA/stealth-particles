@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelNumber: 1
   levelName: Cyber Space
-  objectiveText: Reach the exit undetected.
-  timeBudget: 180
-  lootRequired: 2
+  objectiveText: Collect all shining spheres and then for the goal.
+  timeBudget: 120
+  lootRequired: 3
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
   musicTrack: {fileID: 8300000, guid: c526b6659af8542d78df6096682197e5, type: 3}

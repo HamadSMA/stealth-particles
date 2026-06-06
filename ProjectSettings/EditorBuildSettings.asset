@@ -12,16 +12,16 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/MainMenu.unity
     guid: e2239ea57ec1a4ca68ff579abadfed0a
   - enabled: 1
-    path: Assets/_Project/Scenes/Level1_CyberSpace.unity
+    path: Assets/_Project/Scenes/Level1_CyberSpace/Level1_CyberSpace.unity
     guid: 1c2c59c10d969473aaa2ec9ee7eb1720
   - enabled: 1
-    path: Assets/_Project/Scenes/Level2_LaserInjection.unity
+    path: Assets/_Project/Scenes/Level2_LaserInjection/Level2_LaserInjection.unity
     guid: 2932376aa6de6475eae26d4fcfddd136
   - enabled: 1
-    path: Assets/_Project/Scenes/Level3_AtomicTelekinesis.unity
+    path: Assets/_Project/Scenes/Level3_AtomicTelekinesis/Level3_AtomicTelekinesis.unity
     guid: db656a1fd5b9d4edd988efca1b3ce04d
   - enabled: 1
-    path: Assets/_Project/Scenes/Level4_QuantumStealth.unity
+    path: Assets/_Project/Scenes/Level4_QuantumStealth/Level4_QuantumStealth.unity
     guid: 8dc388dfd92914cea8013286ddf9e9bd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
   levelNumber: 3
   levelName: Atomic Telekinesis
-  objectiveText: Grab the powerup to destroy the enemy from afar.
-  timeBudget: 180
+  objectiveText: 'Grab the powerup to destroy one enemy from afar.
+
+    Collect all
+    shinig spheres then head for the goal.'
+  timeBudget: 120
   lootRequired: 3
   cameraHeight: 0
   cameraOffset: {x: 0, y: 0, z: 0}
