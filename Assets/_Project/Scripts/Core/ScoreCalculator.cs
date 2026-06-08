@@ -1,22 +1,33 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [DefaultExecutionOrder(-100)]
 public class ScoreCalculator : MonoBehaviour
 {
     [SerializeField]
-    private ScoringConfig scoringConfig;
+    [FormerlySerializedAs("levelTimer")]
+    private LevelTimer _levelTimer;
 
-    [SerializeField]
-    private LevelConfig levelConfig;
-
-    [SerializeField]
-    private LevelTimer levelTimer;
+    private LevelConfig _levelConfig;
 
     public int LastScore { get; private set; }
 
     public Rank LastRank { get; private set; }
 
     public float LastTime { get; private set; }
+
+    private void Awake()
+    {
+        GameManager gameManager = FindAnyObjectByType<GameManager>();
+        if (gameManager != null)
+        {
+            _levelConfig = gameManager.LevelConfig;
+        }
+        else
+        {
+            Debug.LogWarning("[ScoreCalculator] No GameManager found; level config unavailable.");
+        }
+    }
 
     private void OnEnable()
     {
@@ -47,15 +58,12 @@ public class ScoreCalculator : MonoBehaviour
 
     private void HandleSuccess()
     {
-        float budget = levelConfig != null ? levelConfig.timeBudget : 0f;
-        ScoringConfig config = ResolveScoringConfig();
+        LastTime = _levelTimer != null ? _levelTimer.Elapsed : 0f;
 
-        LastTime = levelTimer != null ? levelTimer.Elapsed : 0f;
-
-        if (config != null)
+        if (_levelConfig != null)
         {
-            LastScore = config.CalculateScore(LastTime, budget);
-            LastRank = config.GetRank(LastTime, budget);
+            LastScore = _levelConfig.CalculateScore(LastTime);
+            LastRank = _levelConfig.GetRank(LastTime);
         }
         else
         {
@@ -63,13 +71,13 @@ public class ScoreCalculator : MonoBehaviour
             LastRank = Rank.None;
         }
 
-        int level = levelConfig != null ? levelConfig.levelNumber : 0;
+        int level = _levelConfig != null ? _levelConfig.LevelNumber : 0;
         ProgressionManager.RecordSuccess(level, LastScore, LastRank);
     }
 
     private void HandleFail()
     {
-        LastTime = levelTimer != null ? levelTimer.Elapsed : 0f;
+        LastTime = _levelTimer != null ? _levelTimer.Elapsed : 0f;
         LastScore = 0;
         LastRank = Rank.None;
     }
@@ -79,15 +87,5 @@ public class ScoreCalculator : MonoBehaviour
         LastScore = 0;
         LastRank = Rank.None;
         LastTime = 0f;
-    }
-
-    private ScoringConfig ResolveScoringConfig()
-    {
-        if (levelConfig != null && levelConfig.scoringOverride != null)
-        {
-            return levelConfig.scoringOverride;
-        }
-
-        return scoringConfig;
     }
 }

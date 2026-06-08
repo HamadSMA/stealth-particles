@@ -59,54 +59,54 @@ public class SfxPlayer : MonoBehaviour
 
     private void HandleTapMove()
     {
-        Play(_bank != null ? _bank.tapMove : null);
+        Play(_bank != null ? _bank.TapMove : null);
     }
 
     private void HandleGuardNeutralized()
     {
-        Play(_bank != null ? _bank.guardHoldup : null);
+        Play(_bank != null ? _bank.GuardHoldup : null);
     }
 
     private void HandlePowerupCollected()
     {
-        Play(_bank != null ? _bank.powerupPickup : null);
+        Play(_bank != null ? _bank.PowerupPickup : null);
     }
 
     private void HandlePanelDisabled()
     {
-        Play(_bank != null ? _bank.panelDisable : null);
+        Play(_bank != null ? _bank.PanelDisable : null);
     }
 
     private void HandleLootCollected(int collected, int total)
     {
-        Play(_bank != null ? _bank.lootPickup : null);
+        Play(_bank != null ? _bank.LootPickup : null);
     }
 
     private void HandlePlayerDetected()
     {
-        Play(_bank != null ? _bank.detection : null);
+        Play(_bank != null ? _bank.Detection : null);
     }
 
     private void HandleGameStateChanged(GameState state)
     {
         if (state == GameState.Success)
         {
-            Play(_bank != null ? _bank.successJingle : null);
+            Play(_bank != null ? _bank.SuccessJingle : null);
         }
     }
 
     private void HandleRankRevealed(Rank rank)
     {
-        Play(_bank != null ? _bank.rankSlam : null);
+        Play(_bank != null ? _bank.RankSlam : null);
     }
 
     private void Play(SfxBank.Sfx sfx)
     {
-        if (sfx == null || sfx.clip == null || AudioManager.Instance == null)
+        if (sfx == null || sfx.Clip == null || AudioManager.Instance == null)
         {
             return;
         }
 
-        AudioManager.Instance.PlaySfx(sfx.clip, sfx.volume);
+        AudioManager.Instance.PlaySfx(sfx.Clip, sfx.Volume);
     }
 }

@@ -1,25 +1,88 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "SO_Level_New", menuName = "Stealth Particles/Level Config")]
 public class LevelConfig : ScriptableObject
 {
-    public int levelNumber = 1;
+    [FormerlySerializedAs("levelNumber")]
+    public int LevelNumber = 1;
 
-    public string levelName;
+    [FormerlySerializedAs("levelName")]
+    public string LevelName;
 
     [TextArea]
-    public string objectiveText;
+    [FormerlySerializedAs("objectiveText")]
+    public string ObjectiveText;
 
-    public float timeBudget;
+    [FormerlySerializedAs("timeBudget")]
+    public float TimeBudget;
 
     [Tooltip("Loot the player must collect before the goal appears. 0 or less = all placed loot.")]
-    public int lootRequired;
+    [FormerlySerializedAs("lootRequired")]
+    public int LootRequired;
 
-    public float cameraHeight;
+    [FormerlySerializedAs("cameraHeight")]
+    public float CameraHeight;
 
-    public Vector3 cameraOffset;
+    [FormerlySerializedAs("cameraOffset")]
+    public Vector3 CameraOffset;
 
-    public AudioClip musicTrack;
+    [FormerlySerializedAs("musicTrack")]
+    public AudioClip MusicTrack;
 
-    public ScoringConfig scoringOverride;
+    [FormerlySerializedAs("maxScore")]
+    public int MaxScore = 2000;
+
+    [FormerlySerializedAs("sRankThreshold")]
+    public float SRankThreshold = 0.20f;
+
+    [FormerlySerializedAs("aRankThreshold")]
+    public float ARankThreshold = 0.35f;
+
+    [FormerlySerializedAs("bRankThreshold")]
+    public float BRankThreshold = 0.65f;
+
+    [FormerlySerializedAs("cRankThreshold")]
+    public float CRankThreshold = 1.0f;
+
+    public int CalculateScore(float elapsed)
+    {
+        if (TimeBudget <= 0f)
+        {
+            return 0;
+        }
+
+        float remaining = Mathf.Max(0f, 1f - (elapsed / TimeBudget));
+        int score = Mathf.FloorToInt(MaxScore * (remaining * remaining));
+        return Mathf.Max(0, score);
+    }
+
+    public Rank GetRank(float elapsed)
+    {
+        if (TimeBudget <= 0f)
+        {
+            return Rank.None;
+        }
+
+        float fraction = elapsed / TimeBudget;
+
+        if (fraction <= SRankThreshold)
+        {
+            return Rank.S;
+        }
+        if (fraction <= ARankThreshold)
+        {
+            return Rank.A;
+        }
+        if (fraction <= BRankThreshold)
+        {
+            return Rank.B;
+        }
+        if (fraction <= CRankThreshold)
+        {
+            return Rank.C;
+        }
+
+        return Rank.None;
+    }
 }

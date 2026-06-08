@@ -1,12 +1,18 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerContactDetector : MonoBehaviour
 {
-    [SerializeField] private LayerMask guardMask;
-    [SerializeField] private float contactRadius = 0.6f;
+    [SerializeField]
+    [FormerlySerializedAs("guardMask")]
+    private LayerMask _guardMask;
 
-    private bool isPlaying;
-    private readonly Collider[] hits = new Collider[4];
+    [SerializeField]
+    [FormerlySerializedAs("contactRadius")]
+    private float _contactRadius = 0.6f;
+
+    private bool _isPlaying;
+    private readonly Collider[] _hits = new Collider[4];
 
     private void OnEnable()
     {
@@ -20,15 +26,15 @@ public class PlayerContactDetector : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!isPlaying)
+        if (!_isPlaying)
         {
             return;
         }
 
-        int count = Physics.OverlapSphereNonAlloc(transform.position, contactRadius, hits, guardMask, QueryTriggerInteraction.Collide);
+        int count = Physics.OverlapSphereNonAlloc(transform.position, _contactRadius, _hits, _guardMask, QueryTriggerInteraction.Collide);
         for (int i = 0; i < count; i++)
         {
-            if (hits[i].GetComponentInParent<GuardController>() != null)
+            if (_hits[i].GetComponentInParent<GuardController>() != null)
             {
                 GameEvents.RaisePlayerDetected();
                 return;
@@ -38,6 +44,6 @@ public class PlayerContactDetector : MonoBehaviour
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
     }
 }

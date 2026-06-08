@@ -1,29 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PowerupSystem : MonoBehaviour
 {
     [SerializeField]
-    private Renderer cloakRenderer;
+    [FormerlySerializedAs("cloakRenderer")]
+    private Renderer _cloakRenderer;
 
     [SerializeField]
-    private float cloakDimFactor = 0.35f;
+    [FormerlySerializedAs("cloakDimFactor")]
+    private float _cloakDimFactor = 0.35f;
 
-    private readonly Dictionary<PowerupType, int> charges = new Dictionary<PowerupType, int>();
+    private readonly Dictionary<PowerupType, int> _charges = new Dictionary<PowerupType, int>();
 
-    private bool isCloaked;
-    private bool cloakColorStored;
-    private Color cloakOriginalColor;
-    private bool seenWhileCloakedThisFrame;
-    private bool hasEnteredConeWhileCloaked;
+    private bool _isCloaked;
+    private bool _cloakColorStored;
+    private Color _cloakOriginalColor;
+    private bool _seenWhileCloakedThisFrame;
+    private bool _hasEnteredConeWhileCloaked;
 
-    public bool IsCloaked => isCloaked;
+    public bool IsCloaked => _isCloaked;
 
     private void Awake()
     {
-        if (cloakRenderer == null)
+        if (_cloakRenderer == null)
         {
-            cloakRenderer = GetComponentInChildren<Renderer>();
+            _cloakRenderer = GetComponentInChildren<Renderer>();
         }
     }
 
@@ -45,13 +48,13 @@ public class PowerupSystem : MonoBehaviour
             return;
         }
 
-        charges.TryGetValue(type, out int current);
-        charges[type] = current + amount;
+        _charges.TryGetValue(type, out int current);
+        _charges[type] = current + amount;
     }
 
     public int GetCharges(PowerupType type)
     {
-        charges.TryGetValue(type, out int current);
+        _charges.TryGetValue(type, out int current);
         return current;
     }
 
@@ -62,91 +65,91 @@ public class PowerupSystem : MonoBehaviour
 
     public bool TryConsume(PowerupType type)
     {
-        charges.TryGetValue(type, out int current);
+        _charges.TryGetValue(type, out int current);
         if (current <= 0)
         {
             return false;
         }
 
-        charges[type] = current - 1;
+        _charges[type] = current - 1;
         return true;
     }
 
     public void ActivateCloak()
     {
-        if (isCloaked)
+        if (_isCloaked)
         {
             return;
         }
 
-        isCloaked = true;
-        hasEnteredConeWhileCloaked = false;
-        seenWhileCloakedThisFrame = false;
+        _isCloaked = true;
+        _hasEnteredConeWhileCloaked = false;
+        _seenWhileCloakedThisFrame = false;
         ApplyCloakCue();
     }
 
     public void ReportCloakedSighting()
     {
-        seenWhileCloakedThisFrame = true;
+        _seenWhileCloakedThisFrame = true;
     }
 
     private void LateUpdate()
     {
-        if (!isCloaked)
+        if (!_isCloaked)
         {
             return;
         }
 
-        if (seenWhileCloakedThisFrame)
+        if (_seenWhileCloakedThisFrame)
         {
-            hasEnteredConeWhileCloaked = true;
+            _hasEnteredConeWhileCloaked = true;
         }
-        else if (hasEnteredConeWhileCloaked)
+        else if (_hasEnteredConeWhileCloaked)
         {
             ClearCloak();
         }
 
-        seenWhileCloakedThisFrame = false;
+        _seenWhileCloakedThisFrame = false;
     }
 
     public void ClearCloak()
     {
-        if (!isCloaked)
+        if (!_isCloaked)
         {
             return;
         }
 
-        isCloaked = false;
+        _isCloaked = false;
         RestoreCloakCue();
     }
 
     private void ApplyCloakCue()
     {
-        if (cloakRenderer == null)
+        if (_cloakRenderer == null)
         {
             return;
         }
 
-        Material material = cloakRenderer.material;
-        if (!cloakColorStored)
+        Material material = _cloakRenderer.material;
+        if (!_cloakColorStored)
         {
-            cloakOriginalColor = material.color;
-            cloakColorStored = true;
+            _cloakOriginalColor = material.color;
+            _cloakColorStored = true;
         }
 
-        Color dimmed = cloakOriginalColor * cloakDimFactor;
-        dimmed.a = cloakOriginalColor.a;
+        Color dimmed = _cloakOriginalColor * _cloakDimFactor;
+        dimmed.a = _cloakOriginalColor.a;
         material.color = dimmed;
     }
 
     private void RestoreCloakCue()
     {
-        if (cloakRenderer == null || !cloakColorStored)
+        if (_cloakRenderer == null || !_cloakColorStored)
         {
             return;
         }
 
-        cloakRenderer.material.color = cloakOriginalColor;
+        _cloakRenderer.material.color = _cloakOriginalColor;
     }
 
     private void HandleGameStateChanged(GameState state)

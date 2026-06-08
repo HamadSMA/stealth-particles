@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EventLogger : MonoBehaviour
 {
     [SerializeField]
-    private bool verbose = false;
+    [FormerlySerializedAs("verbose")]
+    private bool _verbose = false;
 
     private void OnEnable()
     {
@@ -43,7 +45,7 @@ public class EventLogger : MonoBehaviour
 
     private void Log(string message)
     {
-        if (verbose)
+        if (_verbose)
         {
             Debug.Log(message);
         }

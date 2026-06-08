@@ -1,29 +1,36 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Panel : MonoBehaviour
 {
     [SerializeField]
-    private Laser linkedLaser;
+    [FormerlySerializedAs("linkedLaser")]
+    private Laser _linkedLaser;
 
     [SerializeField]
-    private Renderer panelRenderer;
+    [FormerlySerializedAs("panelRenderer")]
+    private Renderer _panelRenderer;
 
     [SerializeField]
-    private Material armedMaterial;
+    [FormerlySerializedAs("armedMaterial")]
+    private Material _armedMaterial;
 
     [SerializeField]
-    private Material usedMaterial;
+    [FormerlySerializedAs("usedMaterial")]
+    private Material _usedMaterial;
 
     [SerializeField]
-    private float activationRange = 3.5f;
+    [FormerlySerializedAs("activationRange")]
+    private float _activationRange = 3.5f;
 
     [SerializeField]
-    private ParticleSystem disablePuffPrefab;
+    [FormerlySerializedAs("disablePuffPrefab")]
+    private ParticleSystem _disablePuffPrefab;
 
-    private bool isPlaying;
-    private bool isUsed;
+    private bool _isPlaying;
+    private bool _isUsed;
 
-    public bool IsUsed => isUsed;
+    public bool IsUsed => _isUsed;
 
     private void OnEnable()
     {
@@ -37,44 +44,44 @@ public class Panel : MonoBehaviour
 
     private void Start()
     {
-        if (!isUsed && panelRenderer != null && armedMaterial != null)
+        if (!_isUsed && _panelRenderer != null && _armedMaterial != null)
         {
-            panelRenderer.sharedMaterial = armedMaterial;
+            _panelRenderer.sharedMaterial = _armedMaterial;
         }
     }
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
     }
 
     public bool TryDisable(Vector3 playerWorldPos)
     {
-        if (!isPlaying || isUsed)
+        if (!_isPlaying || _isUsed)
         {
             return false;
         }
 
-        if (Vector3.Distance(playerWorldPos, transform.position) > activationRange)
+        if (Vector3.Distance(playerWorldPos, transform.position) > _activationRange)
         {
             return false;
         }
 
-        if (linkedLaser != null)
+        if (_linkedLaser != null)
         {
-            linkedLaser.SetActive(false);
+            _linkedLaser.SetActive(false);
         }
 
-        isUsed = true;
+        _isUsed = true;
 
-        if (panelRenderer != null && usedMaterial != null)
+        if (_panelRenderer != null && _usedMaterial != null)
         {
-            panelRenderer.sharedMaterial = usedMaterial;
+            _panelRenderer.sharedMaterial = _usedMaterial;
         }
 
-        if (disablePuffPrefab != null)
+        if (_disablePuffPrefab != null)
         {
-            Instantiate(disablePuffPrefab, transform.position, Quaternion.identity);
+            Instantiate(_disablePuffPrefab, transform.position, Quaternion.identity);
         }
 
         GameEvents.RaisePanelDisabled();

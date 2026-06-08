@@ -2,20 +2,25 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class DetectionVignetteFlash : MonoBehaviour
 {
     [SerializeField]
-    private Volume volume;
+    [FormerlySerializedAs("volume")]
+    private Volume _volume;
 
     [SerializeField]
-    private Color flashColor = new Color(1f, 0.1f, 0.35f, 1f);
+    [FormerlySerializedAs("flashColor")]
+    private Color _flashColor = new Color(1f, 0.1f, 0.35f, 1f);
 
     [SerializeField]
-    private float flashIntensity = 0.55f;
+    [FormerlySerializedAs("flashIntensity")]
+    private float _flashIntensity = 0.55f;
 
     [SerializeField]
-    private float duration = 0.4f;
+    [FormerlySerializedAs("duration")]
+    private float _duration = 0.4f;
 
     private Vignette _vignette;
     private Color _originalColor;
@@ -25,17 +30,17 @@ public class DetectionVignetteFlash : MonoBehaviour
 
     private void Awake()
     {
-        if (volume == null)
+        if (_volume == null)
         {
-            volume = GetComponent<Volume>();
+            _volume = GetComponent<Volume>();
         }
 
-        if (volume == null)
+        if (_volume == null)
         {
-            volume = FindFirstObjectByType<Volume>();
+            _volume = FindFirstObjectByType<Volume>();
         }
 
-        if (volume != null && volume.profile != null && volume.profile.TryGet(out _vignette))
+        if (_volume != null && _volume.profile != null && _volume.profile.TryGet(out _vignette))
         {
             _hasVignette = true;
             _originalColor = _vignette.color.value;
@@ -71,14 +76,14 @@ public class DetectionVignetteFlash : MonoBehaviour
 
     private IEnumerator FlashRoutine()
     {
-        float peakIntensity = Mathf.Max(_originalIntensity, flashIntensity);
+        float peakIntensity = Mathf.Max(_originalIntensity, _flashIntensity);
         float elapsed = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < _duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            float k = Mathf.Clamp01(1f - elapsed / duration);
-            _vignette.color.value = Color.Lerp(_originalColor, flashColor, k);
+            float k = Mathf.Clamp01(1f - elapsed / _duration);
+            _vignette.color.value = Color.Lerp(_originalColor, _flashColor, k);
             _vignette.intensity.value = Mathf.Lerp(_originalIntensity, peakIntensity, k);
             yield return null;
         }

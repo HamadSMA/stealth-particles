@@ -1,23 +1,41 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "SfxBank", menuName = "Stealth Particles/SFX Bank")]
+[CreateAssetMenu(fileName = "SO_Sfx_Bank", menuName = "Stealth Particles/SFX Bank")]
 public class SfxBank : ScriptableObject
 {
     [System.Serializable]
     public class Sfx
     {
-        public AudioClip clip;
+        [FormerlySerializedAs("clip")]
+        public AudioClip Clip;
 
         [Range(0f, 1f)]
-        public float volume = 1f;
+        [FormerlySerializedAs("volume")]
+        public float Volume = 1f;
     }
 
-    public Sfx tapMove;
-    public Sfx guardHoldup;
-    public Sfx powerupPickup;
-    public Sfx panelDisable;
-    public Sfx lootPickup;
-    public Sfx detection;
-    public Sfx successJingle;
-    public Sfx rankSlam;
+    [FormerlySerializedAs("tapMove")]
+    public Sfx TapMove;
+
+    [FormerlySerializedAs("guardHoldup")]
+    public Sfx GuardHoldup;
+
+    [FormerlySerializedAs("powerupPickup")]
+    public Sfx PowerupPickup;
+
+    [FormerlySerializedAs("panelDisable")]
+    public Sfx PanelDisable;
+
+    [FormerlySerializedAs("lootPickup")]
+    public Sfx LootPickup;
+
+    [FormerlySerializedAs("detection")]
+    public Sfx Detection;
+
+    [FormerlySerializedAs("successJingle")]
+    public Sfx SuccessJingle;
+
+    [FormerlySerializedAs("rankSlam")]
+    public Sfx RankSlam;
 }

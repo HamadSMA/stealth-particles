@@ -1,19 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class VisionCone : MonoBehaviour
 {
-    [SerializeField] private GuardConfig config;
-    [SerializeField] private LayerMask wallMask;
-    [SerializeField] private LayerMask playerMask;
-    [SerializeField] private LayerMask floorMask;
-    [SerializeField] private Transform eyeOrigin;
-    [SerializeField] private int meshResolution = 30;
-    [SerializeField] private MeshFilter coneMeshFilter;
-    [SerializeField] private int edgeResolveIterations = 6;
-    [SerializeField] private float edgeDistanceThreshold = 0.5f;
+    [SerializeField]
+    [FormerlySerializedAs("config")]
+    private GuardConfig _config;
 
-    private Mesh coneMesh;
+    [SerializeField]
+    [FormerlySerializedAs("wallMask")]
+    private LayerMask _wallMask;
+
+    [SerializeField]
+    [FormerlySerializedAs("playerMask")]
+    private LayerMask _playerMask;
+
+    [SerializeField]
+    [FormerlySerializedAs("floorMask")]
+    private LayerMask _floorMask;
+
+    [SerializeField]
+    [FormerlySerializedAs("eyeOrigin")]
+    private Transform _eyeOrigin;
+
+    [SerializeField]
+    [FormerlySerializedAs("meshResolution")]
+    private int _meshResolution = 30;
+
+    [SerializeField]
+    [FormerlySerializedAs("coneMeshFilter")]
+    private MeshFilter _coneMeshFilter;
+
+    [SerializeField]
+    [FormerlySerializedAs("edgeResolveIterations")]
+    private int _edgeResolveIterations = 6;
+
+    [SerializeField]
+    [FormerlySerializedAs("edgeDistanceThreshold")]
+    private float _edgeDistanceThreshold = 0.5f;
+
+    private Mesh _coneMesh;
     private bool _hasBounds;
     private float _minX;
     private float _maxX;
@@ -25,30 +52,30 @@ public class VisionCone : MonoBehaviour
 
     private void Awake()
     {
-        if (config == null)
+        if (_config == null)
         {
             GuardController controller = GetComponent<GuardController>();
             if (controller != null)
             {
-                config = controller.Config;
+                _config = controller.Config;
             }
         }
 
-        if (eyeOrigin == null)
+        if (_eyeOrigin == null)
         {
-            eyeOrigin = transform;
+            _eyeOrigin = transform;
         }
 
-        if (config == null || eyeOrigin == null || coneMeshFilter == null)
+        if (_config == null || _eyeOrigin == null || _coneMeshFilter == null)
         {
-            Debug.LogWarning("VisionCone on '" + name + "' is missing config, eyeOrigin, or coneMeshFilter; disabling.", this);
+            Debug.LogWarning("VisionCone on '" + name + "' is missing config, eye origin, or cone mesh filter; disabling.", this);
             enabled = false;
             return;
         }
 
-        coneMesh = new Mesh { name = "VisionCone" };
-        coneMesh.MarkDynamic();
-        coneMeshFilter.mesh = coneMesh;
+        _coneMesh = new Mesh { name = "VisionCone" };
+        _coneMesh.MarkDynamic();
+        _coneMeshFilter.mesh = _coneMesh;
 
         CacheFloorBounds();
     }
@@ -57,13 +84,13 @@ public class VisionCone : MonoBehaviour
     {
         _hasBounds = false;
 
-        LayerMask mask = floorMask.value != 0 ? floorMask : LayerMask.GetMask("Walkable");
+        LayerMask mask = _floorMask.value != 0 ? _floorMask : LayerMask.GetMask("Walkable");
         if (mask.value == 0)
         {
             return;
         }
 
-        if (Physics.Raycast(eyeOrigin.position + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 50f, mask))
+        if (Physics.Raycast(_eyeOrigin.position + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 50f, mask))
         {
             Bounds bounds = hit.collider.bounds;
             _minX = bounds.min.x;
@@ -103,25 +130,25 @@ public class VisionCone : MonoBehaviour
     {
         blockedByWall = false;
 
-        Vector3 origin = eyeOrigin.position;
+        Vector3 origin = _eyeOrigin.position;
         Vector3 toPoint = worldPoint - origin;
         toPoint.y = 0f;
         float distance = toPoint.magnitude;
 
-        if (distance > config.visionRange)
+        if (distance > _config.VisionRange)
         {
             return false;
         }
 
-        Vector3 forward = eyeOrigin.forward;
+        Vector3 forward = _eyeOrigin.forward;
         forward.y = 0f;
 
-        if (Vector3.Angle(forward, toPoint) > config.visionAngle * 0.5f)
+        if (Vector3.Angle(forward, toPoint) > _config.VisionAngle * 0.5f)
         {
             return false;
         }
 
-        if (Physics.Raycast(origin, toPoint.normalized, distance, wallMask))
+        if (Physics.Raycast(origin, toPoint.normalized, distance, _wallMask))
         {
             blockedByWall = true;
             return false;
@@ -137,34 +164,34 @@ public class VisionCone : MonoBehaviour
 
     private struct ViewCast
     {
-        public bool hit;
-        public Vector3 point;
-        public float distance;
-        public float angle;
+        public bool Hit;
+        public Vector3 Point;
+        public float Distance;
+        public float Angle;
     }
 
     private ViewCast Cast(Vector3 origin, Vector3 forward, float angle, float range)
     {
         Vector3 dir = Quaternion.AngleAxis(angle, Vector3.up) * forward;
         ViewCast result;
-        result.angle = angle;
+        result.Angle = angle;
 
         if (_hasBounds)
         {
             range = DistanceToFloorEdge(origin, dir, range);
         }
 
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, range, wallMask))
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, range, _wallMask))
         {
-            result.hit = true;
-            result.point = hit.point;
-            result.distance = hit.distance;
+            result.Hit = true;
+            result.Point = hit.point;
+            result.Distance = hit.distance;
         }
         else
         {
-            result.hit = false;
-            result.point = origin + dir * range;
-            result.distance = range;
+            result.Hit = false;
+            result.Point = origin + dir * range;
+            result.Distance = range;
         }
 
         return result;
@@ -172,53 +199,53 @@ public class VisionCone : MonoBehaviour
 
     private void ResolveEdge(Vector3 origin, Vector3 forward, float range, ViewCast reference, ViewCast other, out Vector3 referencePoint, out Vector3 otherPoint)
     {
-        float referenceAngle = reference.angle;
-        float otherAngle = other.angle;
-        referencePoint = reference.point;
-        otherPoint = other.point;
+        float referenceAngle = reference.Angle;
+        float otherAngle = other.Angle;
+        referencePoint = reference.Point;
+        otherPoint = other.Point;
 
-        for (int i = 0; i < edgeResolveIterations; i++)
+        for (int i = 0; i < _edgeResolveIterations; i++)
         {
             float midAngle = (referenceAngle + otherAngle) * 0.5f;
             ViewCast mid = Cast(origin, forward, midAngle, range);
-            bool distanceJump = Mathf.Abs(reference.distance - mid.distance) > edgeDistanceThreshold;
+            bool distanceJump = Mathf.Abs(reference.Distance - mid.Distance) > _edgeDistanceThreshold;
 
-            if (mid.hit == reference.hit && !distanceJump)
+            if (mid.Hit == reference.Hit && !distanceJump)
             {
                 referenceAngle = midAngle;
-                referencePoint = mid.point;
+                referencePoint = mid.Point;
             }
             else
             {
                 otherAngle = midAngle;
-                otherPoint = mid.point;
+                otherPoint = mid.Point;
             }
         }
     }
 
     private void GenerateConeMesh()
     {
-        Vector3 origin = eyeOrigin.position;
-        Vector3 forward = eyeOrigin.forward;
+        Vector3 origin = _eyeOrigin.position;
+        Vector3 forward = _eyeOrigin.forward;
         forward.y = 0f;
         forward.Normalize();
 
-        float halfAngle = config.visionAngle * 0.5f;
-        float range = config.visionRange;
+        float halfAngle = _config.VisionAngle * 0.5f;
+        float range = _config.VisionRange;
 
         _viewPoints.Clear();
         ViewCast previous = default;
         bool hasPrevious = false;
 
-        for (int i = 0; i <= meshResolution; i++)
+        for (int i = 0; i <= _meshResolution; i++)
         {
-            float angle = -halfAngle + config.visionAngle * (i / (float)meshResolution);
+            float angle = -halfAngle + _config.VisionAngle * (i / (float)_meshResolution);
             ViewCast current = Cast(origin, forward, angle, range);
 
             if (hasPrevious)
             {
-                bool distanceJump = Mathf.Abs(previous.distance - current.distance) > edgeDistanceThreshold;
-                if (previous.hit != current.hit || (previous.hit && current.hit && distanceJump))
+                bool distanceJump = Mathf.Abs(previous.Distance - current.Distance) > _edgeDistanceThreshold;
+                if (previous.Hit != current.Hit || (previous.Hit && current.Hit && distanceJump))
                 {
                     ResolveEdge(origin, forward, range, previous, current, out Vector3 previousSide, out Vector3 currentSide);
                     _viewPoints.Add(previousSide);
@@ -226,12 +253,12 @@ public class VisionCone : MonoBehaviour
                 }
             }
 
-            _viewPoints.Add(current.point);
+            _viewPoints.Add(current.Point);
             previous = current;
             hasPrevious = true;
         }
 
-        Transform coneTransform = coneMeshFilter.transform;
+        Transform coneTransform = _coneMeshFilter.transform;
         _vertices.Clear();
         _triangles.Clear();
 
@@ -253,9 +280,9 @@ public class VisionCone : MonoBehaviour
             }
         }
 
-        coneMesh.Clear();
-        coneMesh.SetVertices(_vertices);
-        coneMesh.SetTriangles(_triangles, 0);
-        coneMesh.RecalculateBounds();
+        _coneMesh.Clear();
+        _coneMesh.SetVertices(_vertices);
+        _coneMesh.SetTriangles(_triangles, 0);
+        _coneMesh.RecalculateBounds();
     }
 }

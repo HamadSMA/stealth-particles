@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class PlayerTrailEmitter : MonoBehaviour
 {
     [SerializeField]
-    private NavMeshAgent agent;
+    [FormerlySerializedAs("agent")]
+    private NavMeshAgent _agent;
 
     [SerializeField]
-    private float speedThreshold = 0.2f;
+    [FormerlySerializedAs("speedThreshold")]
+    private float _speedThreshold = 0.2f;
 
     private ParticleSystem _system;
 
@@ -16,9 +19,9 @@ public class PlayerTrailEmitter : MonoBehaviour
     {
         _system = GetComponent<ParticleSystem>();
 
-        if (agent == null)
+        if (_agent == null)
         {
-            agent = GetComponentInParent<NavMeshAgent>();
+            _agent = GetComponentInParent<NavMeshAgent>();
         }
     }
 
@@ -29,7 +32,7 @@ public class PlayerTrailEmitter : MonoBehaviour
             return;
         }
 
-        bool moving = agent != null && agent.velocity.magnitude > speedThreshold;
+        bool moving = _agent != null && _agent.velocity.magnitude > _speedThreshold;
         ParticleSystem.EmissionModule emission = _system.emission;
         emission.enabled = moving;
     }

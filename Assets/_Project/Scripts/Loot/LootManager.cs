@@ -3,14 +3,26 @@ using UnityEngine;
 
 public class LootManager : MonoBehaviour
 {
-    [SerializeField]
-    private LevelConfig levelConfig;
+    private LevelConfig _levelConfig;
 
-    private readonly List<Loot> tracked = new List<Loot>();
-    private int collectedCount;
-    private int totalCount;
-    private int requiredCount;
-    private bool requirementMet;
+    private readonly List<Loot> _tracked = new List<Loot>();
+    private int _collectedCount;
+    private int _totalCount;
+    private int _requiredCount;
+    private bool _requirementMet;
+
+    private void Awake()
+    {
+        GameManager gameManager = FindAnyObjectByType<GameManager>();
+        if (gameManager != null)
+        {
+            _levelConfig = gameManager.LevelConfig;
+        }
+        else
+        {
+            Debug.LogWarning("[LootManager] No GameManager found; level config unavailable.");
+        }
+    }
 
     private void OnEnable()
     {
@@ -36,51 +48,51 @@ public class LootManager : MonoBehaviour
         Unbind();
 
         Loot[] found = FindObjectsByType<Loot>(FindObjectsSortMode.None);
-        totalCount = found.Length;
-        collectedCount = 0;
-        requirementMet = false;
+        _totalCount = found.Length;
+        _collectedCount = 0;
+        _requirementMet = false;
 
-        requiredCount = totalCount;
-        if (levelConfig != null && levelConfig.lootRequired > 0)
+        _requiredCount = _totalCount;
+        if (_levelConfig != null && _levelConfig.LootRequired > 0)
         {
-            requiredCount = Mathf.Min(levelConfig.lootRequired, totalCount);
+            _requiredCount = Mathf.Min(_levelConfig.LootRequired, _totalCount);
         }
 
         foreach (Loot loot in found)
         {
-            loot.Collected += HandleLootCollected;
-            tracked.Add(loot);
+            loot.OnCollected += HandleLootCollected;
+            _tracked.Add(loot);
         }
 
-        if (requiredCount <= 0)
+        if (_requiredCount <= 0)
         {
-            requirementMet = true;
+            _requirementMet = true;
             GameEvents.RaiseAllLootCollected();
         }
     }
 
     private void HandleLootCollected(Loot loot)
     {
-        collectedCount++;
-        GameEvents.RaiseLootCollected(collectedCount, totalCount);
+        _collectedCount++;
+        GameEvents.RaiseLootCollected(_collectedCount, _totalCount);
 
-        if (!requirementMet && collectedCount >= requiredCount)
+        if (!_requirementMet && _collectedCount >= _requiredCount)
         {
-            requirementMet = true;
+            _requirementMet = true;
             GameEvents.RaiseAllLootCollected();
         }
     }
 
     private void Unbind()
     {
-        foreach (Loot loot in tracked)
+        foreach (Loot loot in _tracked)
         {
             if (loot != null)
             {
-                loot.Collected -= HandleLootCollected;
+                loot.OnCollected -= HandleLootCollected;
             }
         }
 
-        tracked.Clear();
+        _tracked.Clear();
     }
 }

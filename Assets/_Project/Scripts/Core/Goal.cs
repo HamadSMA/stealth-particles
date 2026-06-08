@@ -1,22 +1,25 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Collider))]
 public class Goal : MonoBehaviour
 {
-    public bool requiresAllLoot = true;
+    [FormerlySerializedAs("requiresAllLoot")]
+    public bool RequiresAllLoot = true;
 
     [SerializeField]
-    private ParticleSystem goalBurstPrefab;
+    [FormerlySerializedAs("goalBurstPrefab")]
+    private ParticleSystem _goalBurstPrefab;
 
-    private bool isPlaying;
-    private bool allLootCollected;
-    private bool hasReached;
+    private bool _isPlaying;
+    private bool _allLootCollected;
+    private bool _hasReached;
 
-    private Renderer goalRenderer;
+    private Renderer _goalRenderer;
 
     private void Awake()
     {
-        goalRenderer = GetComponent<Renderer>();
+        _goalRenderer = GetComponent<Renderer>();
     }
 
     private void OnEnable()
@@ -33,32 +36,32 @@ public class Goal : MonoBehaviour
 
     private void Start()
     {
-        allLootCollected = !LootSystemPresent();
+        _allLootCollected = !LootSystemPresent();
         UpdateVisibility();
     }
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
     }
 
     private void HandleAllLootCollected()
     {
-        allLootCollected = true;
+        _allLootCollected = true;
         UpdateVisibility();
     }
 
     private void UpdateVisibility()
     {
-        if (goalRenderer != null)
+        if (_goalRenderer != null)
         {
-            goalRenderer.enabled = !requiresAllLoot || allLootCollected;
+            _goalRenderer.enabled = !RequiresAllLoot || _allLootCollected;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (hasReached || !isPlaying)
+        if (_hasReached || !_isPlaying)
         {
             return;
         }
@@ -68,16 +71,16 @@ public class Goal : MonoBehaviour
             return;
         }
 
-        if (requiresAllLoot && !allLootCollected)
+        if (RequiresAllLoot && !_allLootCollected)
         {
             return;
         }
 
-        hasReached = true;
+        _hasReached = true;
 
-        if (goalBurstPrefab != null)
+        if (_goalBurstPrefab != null)
         {
-            Instantiate(goalBurstPrefab, transform.position, Quaternion.identity);
+            Instantiate(_goalBurstPrefab, transform.position, Quaternion.identity);
         }
 
         GameEvents.RaiseGoalReached();

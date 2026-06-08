@@ -1,57 +1,63 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using TMPro;
 
 public class IntroController : MonoBehaviour
 {
     [SerializeField]
-    private TMP_Text scrollText;
+    [FormerlySerializedAs("scrollText")]
+    private TMP_Text _scrollText;
 
     [SerializeField]
-    private RectTransform canvasRect;
+    [FormerlySerializedAs("canvasRect")]
+    private RectTransform _canvasRect;
 
     [SerializeField]
-    private AudioSource musicSource;
+    [FormerlySerializedAs("musicSource")]
+    private AudioSource _musicSource;
 
     [SerializeField]
-    private float scrollSpeed = 220f;
+    [FormerlySerializedAs("scrollSpeed")]
+    private float _scrollSpeed = 220f;
 
     [SerializeField]
-    private string mainMenuSceneName = "MainMenu";
+    [FormerlySerializedAs("mainMenuSceneName")]
+    private string _mainMenuSceneName = "MainMenu";
 
-    private RectTransform textRect;
-    private float endY;
-    private bool loading;
+    private RectTransform _textRect;
+    private float _endY;
+    private bool _loading;
 
     private void Start()
     {
-        if (musicSource != null && musicSource.clip != null)
+        if (_musicSource != null && _musicSource.clip != null)
         {
-            musicSource.loop = true;
-            musicSource.Play();
+            _musicSource.loop = true;
+            _musicSource.Play();
         }
 
-        if (scrollText == null || canvasRect == null)
+        if (_scrollText == null || _canvasRect == null)
         {
             return;
         }
 
-        textRect = scrollText.rectTransform;
-        scrollText.ForceMeshUpdate();
-        float textHeight = scrollText.preferredHeight;
-        textRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textHeight);
+        _textRect = _scrollText.rectTransform;
+        _scrollText.ForceMeshUpdate();
+        float textHeight = _scrollText.preferredHeight;
+        _textRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, textHeight);
 
-        float canvasHeight = canvasRect.rect.height;
+        float canvasHeight = _canvasRect.rect.height;
         float startY = -(canvasHeight * 0.5f + textHeight * 0.5f);
-        endY = canvasHeight * 0.5f + textHeight * 0.5f;
+        _endY = canvasHeight * 0.5f + textHeight * 0.5f;
 
-        Vector2 p = textRect.anchoredPosition;
-        textRect.anchoredPosition = new Vector2(p.x, startY);
+        Vector2 p = _textRect.anchoredPosition;
+        _textRect.anchoredPosition = new Vector2(p.x, startY);
     }
 
     private void Update()
     {
-        if (loading)
+        if (_loading)
         {
             return;
         }
@@ -62,16 +68,16 @@ public class IntroController : MonoBehaviour
             return;
         }
 
-        if (textRect == null)
+        if (_textRect == null)
         {
             return;
         }
 
-        Vector2 p = textRect.anchoredPosition;
-        p.y += scrollSpeed * Time.deltaTime;
-        textRect.anchoredPosition = p;
+        Vector2 p = _textRect.anchoredPosition;
+        p.y += _scrollSpeed * Time.deltaTime;
+        _textRect.anchoredPosition = p;
 
-        if (p.y >= endY)
+        if (p.y >= _endY)
         {
             LoadMainMenu();
         }
@@ -94,18 +100,18 @@ public class IntroController : MonoBehaviour
 
     private void LoadMainMenu()
     {
-        if (loading)
+        if (_loading)
         {
             return;
         }
 
-        loading = true;
+        _loading = true;
 
-        if (musicSource != null && musicSource.isPlaying)
+        if (_musicSource != null && _musicSource.isPlaying)
         {
-            musicSource.Stop();
+            _musicSource.Stop();
         }
 
-        SceneLoader.LoadByName(mainMenuSceneName);
+        SceneLoader.LoadByName(_mainMenuSceneName);
     }
 }
