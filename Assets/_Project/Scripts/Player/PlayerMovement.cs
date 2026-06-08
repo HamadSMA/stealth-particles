@@ -1,18 +1,22 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
-    private LayerMask walkableMask;
+    [FormerlySerializedAs("walkableMask")]
+    private LayerMask _walkableMask;
 
     [SerializeField]
-    private LayerMask guardMask;
+    [FormerlySerializedAs("guardMask")]
+    private LayerMask _guardMask;
 
     [SerializeField]
-    private LayerMask panelMask;
+    [FormerlySerializedAs("panelMask")]
+    private LayerMask _panelMask;
 
     private NavMeshAgent _agent;
     private Camera _camera;
@@ -78,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     private bool TryHoldupAt(Vector2 pointerPosition)
     {
         Ray ray = _camera.ScreenPointToRay(pointerPosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, guardMask.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _guardMask.value))
         {
             return false;
         }
@@ -103,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
     private bool TryDisablePanelAt(Vector2 pointerPosition)
     {
         Ray ray = _camera.ScreenPointToRay(pointerPosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, panelMask.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _panelMask.value))
         {
             return false;
         }
@@ -120,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
     private void SteerToward(Vector2 pointerPosition)
     {
         Ray ray = _camera.ScreenPointToRay(pointerPosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, walkableMask.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _walkableMask.value))
         {
             return;
         }

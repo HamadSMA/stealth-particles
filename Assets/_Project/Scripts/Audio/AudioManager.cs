@@ -1,15 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
     [SerializeField]
-    private float musicVolume = 1f;
+    [FormerlySerializedAs("musicVolume")]
+    private float _musicVolume = 1f;
 
     [SerializeField]
-    private float sfxVolume = 1f;
+    [FormerlySerializedAs("sfxVolume")]
+    private float _sfxVolume = 1f;
 
     private AudioSource _music;
     private AudioSource _sfx;
@@ -78,7 +81,7 @@ public class AudioManager : MonoBehaviour
         GameManager manager = FindFirstObjectByType<GameManager>();
         if (manager != null && manager.LevelConfig != null)
         {
-            return manager.LevelConfig.musicTrack;
+            return manager.LevelConfig.MusicTrack;
         }
 
         return null;
@@ -104,7 +107,7 @@ public class AudioManager : MonoBehaviour
 
         _music.clip = clip;
         _music.loop = true;
-        _music.volume = musicVolume;
+        _music.volume = _musicVolume;
         _music.Play();
     }
 
@@ -115,7 +118,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        _sfx.PlayOneShot(clip, sfxVolume);
+        _sfx.PlayOneShot(clip, _sfxVolume);
     }
 
     public void PlaySfx(AudioClip clip, float volumeScale)
@@ -125,7 +128,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        _sfx.PlayOneShot(clip, sfxVolume * Mathf.Clamp01(volumeScale));
+        _sfx.PlayOneShot(clip, _sfxVolume * Mathf.Clamp01(volumeScale));
     }
 
     public void StopMusic()

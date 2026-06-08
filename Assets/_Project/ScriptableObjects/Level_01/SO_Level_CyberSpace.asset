@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
+  m_Name: SO_Level_CyberSpace
+  m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
+  levelNumber: 1
+  levelName: Cyber Space
+  objectiveText: Collect all shining spheres and then for the goal.
+  timeBudget: 120
+  lootRequired: 3
+  cameraHeight: 0
+  cameraOffset: {x: 0, y: 0, z: 0}
+  musicTrack: {fileID: 0}
+  maxScore: 2000
+  sRankThreshold: 0.2
+  aRankThreshold: 0.35
+  bRankThreshold: 0.65
+  cRankThreshold: 1

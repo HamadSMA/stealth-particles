@@ -2,13 +2,25 @@ using UnityEngine;
 
 public class LevelTimer : MonoBehaviour
 {
-    [SerializeField]
-    private LevelConfig levelConfig;
+    private LevelConfig _levelConfig;
 
-    private float elapsed;
-    private bool isRunning;
+    private float _elapsed;
+    private bool _isRunning;
 
-    public float Elapsed => elapsed;
+    public float Elapsed => _elapsed;
+
+    private void Awake()
+    {
+        GameManager gameManager = FindAnyObjectByType<GameManager>();
+        if (gameManager != null)
+        {
+            _levelConfig = gameManager.LevelConfig;
+        }
+        else
+        {
+            Debug.LogWarning("[LevelTimer] No GameManager found; level config unavailable.");
+        }
+    }
 
     private void OnEnable()
     {
@@ -25,33 +37,33 @@ public class LevelTimer : MonoBehaviour
         switch (state)
         {
             case GameState.Playing:
-                elapsed = 0f;
-                isRunning = true;
+                _elapsed = 0f;
+                _isRunning = true;
                 break;
             case GameState.Briefing:
-                elapsed = 0f;
-                isRunning = false;
+                _elapsed = 0f;
+                _isRunning = false;
                 break;
             case GameState.Success:
             case GameState.Fail:
-                isRunning = false;
+                _isRunning = false;
                 break;
         }
     }
 
     private void Update()
     {
-        if (!isRunning)
+        if (!_isRunning)
         {
             return;
         }
 
-        elapsed += Time.deltaTime;
-        GameEvents.RaiseTimerUpdated(elapsed);
+        _elapsed += Time.deltaTime;
+        GameEvents.RaiseTimerUpdated(_elapsed);
 
-        if (levelConfig != null && elapsed >= levelConfig.timeBudget)
+        if (_levelConfig != null && _elapsed >= _levelConfig.TimeBudget)
         {
-            isRunning = false;
+            _isRunning = false;
             GameEvents.RaisePlayerDetected();
         }
     }

@@ -1,25 +1,30 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Laser : MonoBehaviour
 {
     [SerializeField]
-    private bool isActive = true;
+    [FormerlySerializedAs("isActive")]
+    private bool _isActive = true;
 
     [SerializeField]
-    private Renderer[] beamRenderers;
+    [FormerlySerializedAs("beamRenderers")]
+    private Renderer[] _beamRenderers;
 
     [SerializeField]
-    private Material activeMaterial;
+    [FormerlySerializedAs("activeMaterial")]
+    private Material _activeMaterial;
 
     [SerializeField]
-    private Vector3 detectionHalfExtents = new Vector3(8f, 0.6f, 0.15f);
+    [FormerlySerializedAs("detectionHalfExtents")]
+    private Vector3 _detectionHalfExtents = new Vector3(8f, 0.6f, 0.15f);
 
-    private bool isPlaying;
-    private bool hasDetected;
+    private bool _isPlaying;
+    private bool _hasDetected;
 
-    private readonly Collider[] overlapResults = new Collider[8];
+    private readonly Collider[] _overlapResults = new Collider[8];
 
-    public bool IsActive => isActive;
+    public bool IsActive => _isActive;
 
     private void OnEnable()
     {
@@ -38,63 +43,63 @@ public class Laser : MonoBehaviour
 
     public void SetActive(bool value)
     {
-        isActive = value;
-        hasDetected = false;
+        _isActive = value;
+        _hasDetected = false;
         ApplyVisualState();
     }
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
 
         if (state == GameState.Playing)
         {
-            hasDetected = false;
+            _hasDetected = false;
         }
     }
 
     private void ApplyVisualState()
     {
-        if (beamRenderers == null)
+        if (_beamRenderers == null)
         {
             return;
         }
 
-        for (int i = 0; i < beamRenderers.Length; i++)
+        for (int i = 0; i < _beamRenderers.Length; i++)
         {
-            if (beamRenderers[i] == null)
+            if (_beamRenderers[i] == null)
             {
                 continue;
             }
 
-            beamRenderers[i].enabled = isActive;
+            _beamRenderers[i].enabled = _isActive;
 
-            if (isActive && activeMaterial != null)
+            if (_isActive && _activeMaterial != null)
             {
-                beamRenderers[i].sharedMaterial = activeMaterial;
+                _beamRenderers[i].sharedMaterial = _activeMaterial;
             }
         }
     }
 
     private void FixedUpdate()
     {
-        if (!isActive || !isPlaying || hasDetected)
+        if (!_isActive || !_isPlaying || _hasDetected)
         {
             return;
         }
 
         int count = Physics.OverlapBoxNonAlloc(
             transform.position,
-            detectionHalfExtents,
-            overlapResults,
+            _detectionHalfExtents,
+            _overlapResults,
             transform.rotation
         );
 
         for (int i = 0; i < count; i++)
         {
-            if (overlapResults[i].CompareTag("Player"))
+            if (_overlapResults[i].CompareTag("Player"))
             {
-                hasDetected = true;
+                _hasDetected = true;
                 GameEvents.RaisePlayerDetected();
                 return;
             }
@@ -103,8 +108,8 @@ public class Laser : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = isActive ? new Color(1f, 0.1f, 0.6f, 0.35f) : new Color(0.4f, 0.4f, 0.4f, 0.25f);
+        Gizmos.color = _isActive ? new Color(1f, 0.1f, 0.6f, 0.35f) : new Color(0.4f, 0.4f, 0.4f, 0.25f);
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        Gizmos.DrawCube(Vector3.zero, detectionHalfExtents * 2f);
+        Gizmos.DrawCube(Vector3.zero, _detectionHalfExtents * 2f);
     }
 }

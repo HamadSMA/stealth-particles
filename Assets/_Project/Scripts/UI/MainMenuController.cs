@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
@@ -8,39 +9,56 @@ public class MainMenuController : MonoBehaviour
     [Serializable]
     public class LevelEntry
     {
-        public LevelConfig config;
-        public string sceneName;
-        public Button button;
-        public TMP_Text nameText;
-        public TMP_Text rankText;
-        public TMP_Text scoreText;
-        public TMP_Text lockedText;
-        public TMP_Text tapToPlayText;
+        [FormerlySerializedAs("config")]
+        public LevelConfig Config;
+
+        [FormerlySerializedAs("sceneName")]
+        public string SceneName;
+
+        [FormerlySerializedAs("button")]
+        public Button Button;
+
+        [FormerlySerializedAs("nameText")]
+        public TMP_Text NameText;
+
+        [FormerlySerializedAs("rankText")]
+        public TMP_Text RankText;
+
+        [FormerlySerializedAs("scoreText")]
+        public TMP_Text ScoreText;
+
+        [FormerlySerializedAs("lockedText")]
+        public TMP_Text LockedText;
+
+        [FormerlySerializedAs("tapToPlayText")]
+        public TMP_Text TapToPlayText;
     }
 
     [SerializeField]
-    private Button playButton;
+    [FormerlySerializedAs("playButton")]
+    private Button _playButton;
 
     [SerializeField]
-    private LevelEntry[] levels;
+    [FormerlySerializedAs("levels")]
+    private LevelEntry[] _levels;
 
     private void OnEnable()
     {
-        if (playButton != null)
+        if (_playButton != null)
         {
-            playButton.onClick.AddListener(PlayHighestUnlocked);
+            _playButton.onClick.AddListener(PlayHighestUnlocked);
         }
 
         for (int i = 0; i < LevelCount; i++)
         {
-            LevelEntry entry = levels[i];
-            if (entry == null || entry.button == null)
+            LevelEntry entry = _levels[i];
+            if (entry == null || entry.Button == null)
             {
                 continue;
             }
 
-            string scene = entry.sceneName;
-            entry.button.onClick.AddListener(delegate { LoadLevel(scene); });
+            string scene = entry.SceneName;
+            entry.Button.onClick.AddListener(delegate { LoadLevel(scene); });
         }
 
         Refresh();
@@ -48,30 +66,30 @@ public class MainMenuController : MonoBehaviour
 
     private void OnDisable()
     {
-        if (playButton != null)
+        if (_playButton != null)
         {
-            playButton.onClick.RemoveListener(PlayHighestUnlocked);
+            _playButton.onClick.RemoveListener(PlayHighestUnlocked);
         }
 
         for (int i = 0; i < LevelCount; i++)
         {
-            if (levels[i] != null && levels[i].button != null)
+            if (_levels[i] != null && _levels[i].Button != null)
             {
-                levels[i].button.onClick.RemoveAllListeners();
+                _levels[i].Button.onClick.RemoveAllListeners();
             }
         }
     }
 
     private int LevelCount
     {
-        get { return levels != null ? levels.Length : 0; }
+        get { return _levels != null ? _levels.Length : 0; }
     }
 
     public void Refresh()
     {
         for (int i = 0; i < LevelCount; i++)
         {
-            LevelEntry entry = levels[i];
+            LevelEntry entry = _levels[i];
             if (entry == null)
             {
                 continue;
@@ -82,16 +100,16 @@ public class MainMenuController : MonoBehaviour
             Rank rank = ProgressionManager.GetBestRank(n);
             int score = ProgressionManager.GetBestScore(n);
 
-            if (entry.nameText != null)
+            if (entry.NameText != null)
             {
-                entry.nameText.text = entry.config != null ? entry.config.levelName : "LEVEL " + n;
+                entry.NameText.text = entry.Config != null ? entry.Config.LevelName : "LEVEL " + n;
             }
 
-            if (entry.button != null)
+            if (entry.Button != null)
             {
-                entry.button.interactable = unlocked;
+                entry.Button.interactable = unlocked;
 
-                Image background = entry.button.GetComponent<Image>();
+                Image background = entry.Button.GetComponent<Image>();
                 if (background != null)
                 {
                     background.color = unlocked
@@ -99,7 +117,7 @@ public class MainMenuController : MonoBehaviour
                         : new Color(0.02f, 0.03f, 0.07f, 0.92f);
                 }
 
-                Outline outline = entry.button.GetComponent<Outline>();
+                Outline outline = entry.Button.GetComponent<Outline>();
                 if (outline != null)
                 {
                     outline.effectColor = unlocked
@@ -108,38 +126,38 @@ public class MainMenuController : MonoBehaviour
                 }
             }
 
-            if (entry.lockedText != null)
+            if (entry.LockedText != null)
             {
-                entry.lockedText.gameObject.SetActive(!unlocked);
+                entry.LockedText.gameObject.SetActive(!unlocked);
                 if (!unlocked)
                 {
-                    entry.lockedText.text = "LOCKED";
+                    entry.LockedText.text = "LOCKED";
                 }
             }
 
-            if (entry.rankText != null)
+            if (entry.RankText != null)
             {
-                entry.rankText.gameObject.SetActive(unlocked);
+                entry.RankText.gameObject.SetActive(unlocked);
                 if (unlocked)
                 {
-                    entry.rankText.text = rank == Rank.None ? "-" : rank.ToString();
-                    entry.rankText.color = RankColor(rank);
+                    entry.RankText.text = rank == Rank.None ? "-" : rank.ToString();
+                    entry.RankText.color = RankColor(rank);
                 }
             }
 
-            if (entry.scoreText != null)
+            if (entry.ScoreText != null)
             {
                 bool showScore = unlocked && score > 0;
-                entry.scoreText.gameObject.SetActive(showScore);
+                entry.ScoreText.gameObject.SetActive(showScore);
                 if (showScore)
                 {
-                    entry.scoreText.text = "SCORE  " + score;
+                    entry.ScoreText.text = "SCORE  " + score;
                 }
             }
 
-            if (entry.tapToPlayText != null)
+            if (entry.TapToPlayText != null)
             {
-                entry.tapToPlayText.gameObject.SetActive(unlocked);
+                entry.TapToPlayText.gameObject.SetActive(unlocked);
             }
         }
     }
@@ -155,9 +173,9 @@ public class MainMenuController : MonoBehaviour
             }
         }
 
-        if (highest - 1 < LevelCount && levels[highest - 1] != null)
+        if (highest - 1 < LevelCount && _levels[highest - 1] != null)
         {
-            LoadLevel(levels[highest - 1].sceneName);
+            LoadLevel(_levels[highest - 1].SceneName);
         }
     }
 

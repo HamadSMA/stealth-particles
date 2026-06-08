@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public abstract class Powerup : MonoBehaviour
 {
-    private bool isPlaying;
-    private bool isCollected;
+    private bool _isPlaying;
+    private bool _isCollected;
 
     private void OnEnable()
     {
@@ -18,12 +18,12 @@ public abstract class Powerup : MonoBehaviour
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isCollected || !isPlaying)
+        if (_isCollected || !_isPlaying)
         {
             return;
         }
@@ -33,7 +33,7 @@ public abstract class Powerup : MonoBehaviour
             return;
         }
 
-        isCollected = true;
+        _isCollected = true;
         OnPickup(other.gameObject);
         GameEvents.RaisePowerupCollected();
         gameObject.SetActive(false);

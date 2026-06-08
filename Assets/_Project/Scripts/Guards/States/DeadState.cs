@@ -3,27 +3,27 @@ using UnityEngine.AI;
 
 public class DeadState : IGuardState
 {
-    private readonly GuardController guard;
+    private readonly GuardController _guard;
 
     public DeadState(GuardController guard)
     {
-        this.guard = guard;
+        _guard = guard;
     }
 
     public void Enter()
     {
-        NavMeshAgent agent = guard.Agent;
+        NavMeshAgent agent = _guard.Agent;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
 
-        if (guard.Vision != null)
+        if (_guard.Vision != null)
         {
-            guard.Vision.enabled = false;
+            _guard.Vision.enabled = false;
         }
 
-        guard.PlayHoldupVFX();
+        _guard.PlayHoldupVFX();
 
-        Object.Destroy(guard.gameObject, guard.Config.fadeDuration);
+        Object.Destroy(_guard.gameObject, _guard.Config.FadeDuration);
     }
 
     public void Tick()

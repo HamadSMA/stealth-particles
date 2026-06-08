@@ -5,9 +5,22 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private LevelConfig _levelConfig;
 
+    private ScoreCalculator _scoreCalculator;
+
     public GameState CurrentState { get; private set; } = GameState.Briefing;
 
     public LevelConfig LevelConfig => _levelConfig;
+
+    public int LastScore => _scoreCalculator != null ? _scoreCalculator.LastScore : 0;
+
+    public Rank LastRank => _scoreCalculator != null ? _scoreCalculator.LastRank : Rank.None;
+
+    public float LastTime => _scoreCalculator != null ? _scoreCalculator.LastTime : 0f;
+
+    private void Awake()
+    {
+        _scoreCalculator = FindAnyObjectByType<ScoreCalculator>();
+    }
 
     private void OnEnable()
     {

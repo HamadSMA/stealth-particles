@@ -3,45 +3,45 @@ using UnityEngine.AI;
 
 public class PatrolState : IGuardState
 {
-    private readonly GuardController guard;
+    private readonly GuardController _guard;
 
-    private int currentIndex;
-    private int direction = 1;
-    private float pauseTimer;
+    private int _currentIndex;
+    private int _direction = 1;
+    private float _pauseTimer;
 
     public PatrolState(GuardController guard)
     {
-        this.guard = guard;
+        _guard = guard;
     }
 
     public void Enter()
     {
-        NavMeshAgent agent = guard.Agent;
-        PatrolPattern pattern = guard.PatrolPattern;
+        NavMeshAgent agent = _guard.Agent;
+        PatrolPattern pattern = _guard.PatrolPattern;
 
-        if (pattern == null || pattern.waypoints == null || pattern.waypoints.Length == 0)
+        if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
             Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; cannot patrol.");
             return;
         }
 
         agent.isStopped = false;
-        agent.speed = guard.Config.patrolSpeed;
-        agent.angularSpeed = guard.Config.patrolAngularSpeed;
+        agent.speed = _guard.Config.PatrolSpeed;
+        agent.angularSpeed = _guard.Config.PatrolAngularSpeed;
 
-        currentIndex = 0;
-        direction = 1;
-        pauseTimer = 0f;
+        _currentIndex = 0;
+        _direction = 1;
+        _pauseTimer = 0f;
 
-        guard.SetDestination(guard.SpawnPosition + pattern.GetWaypoint(currentIndex));
+        _guard.SetDestination(_guard.SpawnPosition + pattern.GetWaypoint(_currentIndex));
     }
 
     public void Tick()
     {
-        NavMeshAgent agent = guard.Agent;
-        PatrolPattern pattern = guard.PatrolPattern;
+        NavMeshAgent agent = _guard.Agent;
+        PatrolPattern pattern = _guard.PatrolPattern;
 
-        if (pattern == null || pattern.waypoints == null || pattern.waypoints.Length == 0)
+        if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
             Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; skipping patrol.");
             return;
@@ -52,31 +52,31 @@ public class PatrolState : IGuardState
             return;
         }
 
-        Vector3 target = guard.SpawnPosition + pattern.GetWaypoint(currentIndex);
+        Vector3 target = _guard.SpawnPosition + pattern.GetWaypoint(_currentIndex);
         float distance = Vector3.Distance(agent.transform.position, target);
-        bool hasRemainingPath = agent.hasPath && agent.remainingDistance > pattern.waypointReachedDistance;
+        bool hasRemainingPath = agent.hasPath && agent.remainingDistance > pattern.WaypointReachedDistance;
 
-        if (distance >= pattern.waypointReachedDistance || hasRemainingPath)
+        if (distance >= pattern.WaypointReachedDistance || hasRemainingPath)
         {
             return;
         }
 
-        if (pauseTimer > 0f)
+        if (_pauseTimer > 0f)
         {
             agent.isStopped = true;
-            pauseTimer -= Time.deltaTime;
+            _pauseTimer -= Time.deltaTime;
             return;
         }
 
         agent.isStopped = false;
-        pauseTimer = pattern.pauseAtWaypoint;
-        currentIndex = pattern.GetNextIndex(currentIndex, ref direction);
-        guard.SetDestination(guard.SpawnPosition + pattern.GetWaypoint(currentIndex));
+        _pauseTimer = pattern.PauseAtWaypoint;
+        _currentIndex = pattern.GetNextIndex(_currentIndex, ref _direction);
+        _guard.SetDestination(_guard.SpawnPosition + pattern.GetWaypoint(_currentIndex));
     }
 
     public void Exit()
     {
-        NavMeshAgent agent = guard.Agent;
+        NavMeshAgent agent = _guard.Agent;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
     }

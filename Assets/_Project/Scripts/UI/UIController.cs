@@ -1,81 +1,93 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private GameManager gameManager;
+    [FormerlySerializedAs("gameManager")]
+    private GameManager _gameManager;
 
     [SerializeField]
-    private ScoreCalculator scoreCalculator;
+    [FormerlySerializedAs("briefingPanel")]
+    private GameObject _briefingPanel;
 
     [SerializeField]
-    private GameObject briefingPanel;
+    [FormerlySerializedAs("hudPanel")]
+    private GameObject _hudPanel;
 
     [SerializeField]
-    private GameObject hudPanel;
+    [FormerlySerializedAs("successPanel")]
+    private GameObject _successPanel;
 
     [SerializeField]
-    private GameObject successPanel;
+    [FormerlySerializedAs("failPanel")]
+    private GameObject _failPanel;
 
     [SerializeField]
-    private GameObject failPanel;
+    [FormerlySerializedAs("levelNameText")]
+    private TMP_Text _levelNameText;
 
     [SerializeField]
-    private TMP_Text levelNameText;
+    [FormerlySerializedAs("objectiveText")]
+    private TMP_Text _objectiveText;
 
     [SerializeField]
-    private TMP_Text objectiveText;
+    [FormerlySerializedAs("timeBudgetText")]
+    private TMP_Text _timeBudgetText;
 
     [SerializeField]
-    private TMP_Text timeBudgetText;
+    [FormerlySerializedAs("timerText")]
+    private TMP_Text _timerText;
 
     [SerializeField]
-    private TMP_Text timerText;
+    [FormerlySerializedAs("startButton")]
+    private Button _startButton;
 
     [SerializeField]
-    private Button startButton;
+    [FormerlySerializedAs("rankText")]
+    private TMP_Text _rankText;
 
     [SerializeField]
-    private TMP_Text rankText;
+    [FormerlySerializedAs("successScoreText")]
+    private TMP_Text _successScoreText;
 
     [SerializeField]
-    private TMP_Text successScoreText;
+    [FormerlySerializedAs("successTimeText")]
+    private TMP_Text _successTimeText;
 
     [SerializeField]
-    private TMP_Text successTimeText;
+    [FormerlySerializedAs("replayButton")]
+    private Button _replayButton;
 
     [SerializeField]
-    private Button replayButton;
+    [FormerlySerializedAs("nextButton")]
+    private Button _nextButton;
 
     [SerializeField]
-    private Button nextButton;
+    [FormerlySerializedAs("menuButton")]
+    private Button _menuButton;
 
     [SerializeField]
-    private Button menuButton;
+    [FormerlySerializedAs("failTimeText")]
+    private TMP_Text _failTimeText;
 
     [SerializeField]
-    private TMP_Text failTimeText;
+    [FormerlySerializedAs("retryButton")]
+    private Button _retryButton;
 
     [SerializeField]
-    private Button retryButton;
+    [FormerlySerializedAs("quitButton")]
+    private Button _quitButton;
 
-    [SerializeField]
-    private Button quitButton;
-
-    private float timeBudget;
+    private float _timeBudget;
 
     private void Awake()
     {
-        if (gameManager == null)
+        if (_gameManager == null)
         {
-            gameManager = Object.FindFirstObjectByType<GameManager>();
-        }
-
-        if (scoreCalculator == null)
-        {
-            scoreCalculator = Object.FindFirstObjectByType<ScoreCalculator>();
+            _gameManager = Object.FindFirstObjectByType<GameManager>();
         }
 
         PopulateBriefing();
@@ -87,12 +99,12 @@ public class UIController : MonoBehaviour
         GameEvents.OnGameStateChanged += HandleGameStateChanged;
         GameEvents.OnTimerUpdated += HandleTimerUpdated;
 
-        AddClick(startButton, StartLevel);
-        AddClick(replayButton, ReloadLevel);
-        AddClick(nextButton, NextLevel);
-        AddClick(menuButton, OpenMenu);
-        AddClick(retryButton, ReloadLevel);
-        AddClick(quitButton, Quit);
+        AddClick(_startButton, StartLevel);
+        AddClick(_replayButton, ReloadLevel);
+        AddClick(_nextButton, NextLevel);
+        AddClick(_menuButton, OpenMenu);
+        AddClick(_retryButton, ReloadLevel);
+        AddClick(_quitButton, Quit);
     }
 
     private void OnDisable()
@@ -100,19 +112,19 @@ public class UIController : MonoBehaviour
         GameEvents.OnGameStateChanged -= HandleGameStateChanged;
         GameEvents.OnTimerUpdated -= HandleTimerUpdated;
 
-        RemoveClick(startButton, StartLevel);
-        RemoveClick(replayButton, ReloadLevel);
-        RemoveClick(nextButton, NextLevel);
-        RemoveClick(menuButton, OpenMenu);
-        RemoveClick(retryButton, ReloadLevel);
-        RemoveClick(quitButton, Quit);
+        RemoveClick(_startButton, StartLevel);
+        RemoveClick(_replayButton, ReloadLevel);
+        RemoveClick(_nextButton, NextLevel);
+        RemoveClick(_menuButton, OpenMenu);
+        RemoveClick(_retryButton, ReloadLevel);
+        RemoveClick(_quitButton, Quit);
     }
 
     public void StartLevel()
     {
-        if (gameManager != null)
+        if (_gameManager != null)
         {
-            gameManager.StartLevel();
+            _gameManager.StartLevel();
         }
     }
 
@@ -152,107 +164,107 @@ public class UIController : MonoBehaviour
 
     private void ShowState(GameState state)
     {
-        if (briefingPanel != null)
+        if (_briefingPanel != null)
         {
-            briefingPanel.SetActive(state == GameState.Briefing);
+            _briefingPanel.SetActive(state == GameState.Briefing);
         }
 
-        if (hudPanel != null)
+        if (_hudPanel != null)
         {
-            hudPanel.SetActive(state == GameState.Playing);
+            _hudPanel.SetActive(state == GameState.Playing);
         }
 
-        if (successPanel != null)
+        if (_successPanel != null)
         {
-            successPanel.SetActive(state == GameState.Success);
+            _successPanel.SetActive(state == GameState.Success);
         }
 
-        if (failPanel != null)
+        if (_failPanel != null)
         {
-            failPanel.SetActive(state == GameState.Fail);
+            _failPanel.SetActive(state == GameState.Fail);
         }
     }
 
     private void PopulateBriefing()
     {
-        if (gameManager == null)
+        if (_gameManager == null)
         {
             return;
         }
 
-        LevelConfig config = gameManager.LevelConfig;
+        LevelConfig config = _gameManager.LevelConfig;
         if (config == null)
         {
             return;
         }
 
-        timeBudget = config.timeBudget;
+        _timeBudget = config.TimeBudget;
 
-        if (levelNameText != null)
+        if (_levelNameText != null)
         {
-            levelNameText.text = config.levelName;
+            _levelNameText.text = config.LevelName;
         }
 
-        if (objectiveText != null)
+        if (_objectiveText != null)
         {
-            objectiveText.text = config.objectiveText;
+            _objectiveText.text = config.ObjectiveText;
         }
 
-        if (timeBudgetText != null)
+        if (_timeBudgetText != null)
         {
-            timeBudgetText.text = "TIME LIMIT   " + Mathf.RoundToInt(timeBudget) + "s";
+            _timeBudgetText.text = "TIME LIMIT   " + Mathf.RoundToInt(_timeBudget) + "s";
         }
     }
 
     private void PopulateSuccess()
     {
-        if (scoreCalculator != null)
+        if (_gameManager != null)
         {
-            Rank rank = scoreCalculator.LastRank;
+            Rank rank = _gameManager.LastRank;
 
-            if (rankText != null)
+            if (_rankText != null)
             {
-                rankText.text = rank == Rank.None ? "-" : rank.ToString();
-                rankText.color = RankColor(rank);
+                _rankText.text = rank == Rank.None ? "-" : rank.ToString();
+                _rankText.color = RankColor(rank);
             }
 
             GameEvents.RaiseRankRevealed(rank);
 
-            if (successScoreText != null)
+            if (_successScoreText != null)
             {
-                successScoreText.text = "SCORE   " + scoreCalculator.LastScore;
+                _successScoreText.text = "SCORE   " + _gameManager.LastScore;
             }
 
-            if (successTimeText != null)
+            if (_successTimeText != null)
             {
-                successTimeText.text = "TIME   " + FormatTime(scoreCalculator.LastTime);
+                _successTimeText.text = "TIME   " + FormatTime(_gameManager.LastTime);
             }
         }
 
-        if (nextButton != null)
+        if (_nextButton != null)
         {
-            nextButton.gameObject.SetActive(SceneLoader.HasNext());
+            _nextButton.gameObject.SetActive(SceneLoader.HasNext());
         }
     }
 
     private void PopulateFail()
     {
-        if (failTimeText != null)
+        if (_failTimeText != null)
         {
-            float time = scoreCalculator != null ? scoreCalculator.LastTime : 0f;
-            failTimeText.text = "TIME   " + FormatTime(time);
+            float time = _gameManager != null ? _gameManager.LastTime : 0f;
+            _failTimeText.text = "TIME   " + FormatTime(time);
         }
     }
 
     private void HandleTimerUpdated(float elapsed)
     {
-        if (timerText == null)
+        if (_timerText == null)
         {
             return;
         }
 
-        float remaining = Mathf.Max(0f, timeBudget - elapsed);
-        timerText.text = "TIME   " + remaining.ToString("0.0") + "s";
+        float remaining = Mathf.Max(0f, _timeBudget - elapsed);
+        _timerText.text = "TIME   " + remaining.ToString("0.0") + "s";
     }
 
     private static Color RankColor(Rank rank)

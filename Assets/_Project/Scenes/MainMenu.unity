@@ -4461,40 +4461,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08c2a9da329a5420f94de0a7a623c6eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  playButton: {fileID: 863715582}
-  levels:
-  - config: {fileID: 11400000, guid: 97e8016983ff844f095e6b055f850772, type: 2}
-    sceneName: Level1_CyberSpace
-    button: {fileID: 1926024720}
-    nameText: {fileID: 1720449120}
-    rankText: {fileID: 456071280}
-    scoreText: {fileID: 1140899548}
-    lockedText: {fileID: 1168528188}
-    tapToPlayText: {fileID: 835878756}
-  - config: {fileID: 11400000, guid: 0f02baf68cdde4d10b05e4ee0cb2da16, type: 2}
-    sceneName: Level2_LaserInjection
-    button: {fileID: 954000793}
-    nameText: {fileID: 1741847117}
-    rankText: {fileID: 1495747854}
-    scoreText: {fileID: 676604537}
-    lockedText: {fileID: 1291717643}
-    tapToPlayText: {fileID: 757882043}
-  - config: {fileID: 11400000, guid: 49e4a5200df6c467992cd5f3a4e03203, type: 2}
-    sceneName: Level3_AtomicTelekinesis
-    button: {fileID: 1261917884}
-    nameText: {fileID: 1120169716}
-    rankText: {fileID: 1769649068}
-    scoreText: {fileID: 147707416}
-    lockedText: {fileID: 1063341969}
-    tapToPlayText: {fileID: 1414775304}
-  - config: {fileID: 11400000, guid: a6ae402d9dc2f41189d6731cedcd5a14, type: 2}
-    sceneName: Level4_QuantumStealth
-    button: {fileID: 2137245378}
-    nameText: {fileID: 854271568}
-    rankText: {fileID: 1947301628}
-    scoreText: {fileID: 1721348185}
-    lockedText: {fileID: 1980271971}
-    tapToPlayText: {fileID: 2017823845}
+  _playButton: {fileID: 863715582}
+  _levels:
+  - Config: {fileID: 11400000, guid: 97e8016983ff844f095e6b055f850772, type: 2}
+    SceneName: Level_01_CyberSpace
+    Button: {fileID: 1926024720}
+    NameText: {fileID: 1720449120}
+    RankText: {fileID: 456071280}
+    ScoreText: {fileID: 1140899548}
+    LockedText: {fileID: 1168528188}
+    TapToPlayText: {fileID: 835878756}
+  - Config: {fileID: 11400000, guid: 0f02baf68cdde4d10b05e4ee0cb2da16, type: 2}
+    SceneName: Level_02_LaserInjection
+    Button: {fileID: 954000793}
+    NameText: {fileID: 1741847117}
+    RankText: {fileID: 1495747854}
+    ScoreText: {fileID: 676604537}
+    LockedText: {fileID: 1291717643}
+    TapToPlayText: {fileID: 757882043}
+  - Config: {fileID: 11400000, guid: 49e4a5200df6c467992cd5f3a4e03203, type: 2}
+    SceneName: Level_03_AtomicTelekinesis
+    Button: {fileID: 1261917884}
+    NameText: {fileID: 1120169716}
+    RankText: {fileID: 1769649068}
+    ScoreText: {fileID: 147707416}
+    LockedText: {fileID: 1063341969}
+    TapToPlayText: {fileID: 1414775304}
+  - Config: {fileID: 11400000, guid: a6ae402d9dc2f41189d6731cedcd5a14, type: 2}
+    SceneName: Level_04_QuantumStealth
+    Button: {fileID: 2137245378}
+    NameText: {fileID: 854271568}
+    RankText: {fileID: 1947301628}
+    ScoreText: {fileID: 1721348185}
+    LockedText: {fileID: 1980271971}
+    TapToPlayText: {fileID: 2017823845}
 --- !u!114 &1529793689
 MonoBehaviour:
   m_ObjectHideFlags: 0

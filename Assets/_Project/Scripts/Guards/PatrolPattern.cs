@@ -1,34 +1,42 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "StealthParticles/Patrol Pattern")]
 public class PatrolPattern : ScriptableObject
 {
-    public Vector3[] waypoints;
-    public PatrolPatternType patternType = PatrolPatternType.Loop;
-    public float waypointReachedDistance = 0.5f;
-    public float pauseAtWaypoint = 0f;
+    [FormerlySerializedAs("waypoints")]
+    public Vector3[] Waypoints;
+
+    [FormerlySerializedAs("patternType")]
+    public PatrolPatternType PatternType = PatrolPatternType.Loop;
+
+    [FormerlySerializedAs("waypointReachedDistance")]
+    public float WaypointReachedDistance = 0.5f;
+
+    [FormerlySerializedAs("pauseAtWaypoint")]
+    public float PauseAtWaypoint = 0f;
 
     public Vector3 GetWaypoint(int index)
     {
-        if (waypoints == null || waypoints.Length == 0)
+        if (Waypoints == null || Waypoints.Length == 0)
         {
             return Vector3.zero;
         }
 
-        int clamped = Mathf.Clamp(index, 0, waypoints.Length - 1);
-        return waypoints[clamped];
+        int clamped = Mathf.Clamp(index, 0, Waypoints.Length - 1);
+        return Waypoints[clamped];
     }
 
     public int GetNextIndex(int currentIndex, ref int direction)
     {
-        if (waypoints == null || waypoints.Length <= 1)
+        if (Waypoints == null || Waypoints.Length <= 1)
         {
             return currentIndex;
         }
 
-        int last = waypoints.Length - 1;
+        int last = Waypoints.Length - 1;
 
-        switch (patternType)
+        switch (PatternType)
         {
             case PatrolPatternType.PingPong:
                 if (currentIndex >= last)

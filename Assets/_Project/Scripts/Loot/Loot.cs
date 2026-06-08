@@ -1,16 +1,18 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Collider))]
 public class Loot : MonoBehaviour
 {
-    public event Action<Loot> Collected;
+    public event Action<Loot> OnCollected;
 
     [SerializeField]
-    private ParticleSystem collectPopPrefab;
+    [FormerlySerializedAs("collectPopPrefab")]
+    private ParticleSystem _collectPopPrefab;
 
-    private bool isPlaying;
-    private bool isCollected;
+    private bool _isPlaying;
+    private bool _isCollected;
 
     private void OnEnable()
     {
@@ -24,12 +26,12 @@ public class Loot : MonoBehaviour
 
     private void HandleGameStateChanged(GameState state)
     {
-        isPlaying = state == GameState.Playing;
+        _isPlaying = state == GameState.Playing;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isCollected || !isPlaying)
+        if (_isCollected || !_isPlaying)
         {
             return;
         }
@@ -39,14 +41,14 @@ public class Loot : MonoBehaviour
             return;
         }
 
-        isCollected = true;
+        _isCollected = true;
 
-        if (collectPopPrefab != null)
+        if (_collectPopPrefab != null)
         {
-            Instantiate(collectPopPrefab, transform.position, Quaternion.identity);
+            Instantiate(_collectPopPrefab, transform.position, Quaternion.identity);
         }
 
-        Collected?.Invoke(this);
+        OnCollected?.Invoke(this);
         gameObject.SetActive(false);
     }
 }
