@@ -3,6 +3,13 @@ using UnityEngine.SceneManagement;
 
 public static class ProgressionManager
 {
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void ResetOnPlay()
+    {
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+    }
+
     public static bool IsUnlocked(int level)
     {
         return PlayerPrefs.GetInt(UnlockedKey(level), level == 1 ? 1 : 0) == 1;
