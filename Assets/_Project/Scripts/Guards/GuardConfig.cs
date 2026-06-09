@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "StealthParticles/Guard Config")]
+[CreateAssetMenu(menuName = "Stealth Particles/Guard Config")]
 public class GuardConfig : ScriptableObject
 {
     [FormerlySerializedAs("patrolSpeed")]

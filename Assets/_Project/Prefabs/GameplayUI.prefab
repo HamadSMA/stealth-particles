@@ -782,7 +782,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294957452
   m_fontColor: {r: 0.55, g: 0.85, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -795,7 +795,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1754,7 +1754,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2054,7 +2054,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -130}
+  m_AnchoredPosition: {x: 0, y: -90}
   m_SizeDelta: {x: 800, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &4941301548504791099
@@ -2094,8 +2094,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 0.35, g: 0.92, b: 1, a: 1}
+    rgba: 4278518286
+  m_fontColor: {r: 0.05660379, g: 0.008810968, b: 0.020169294, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2107,7 +2107,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2231,7 +2231,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4283226623
   m_fontColor: {r: 1, g: 0.85, b: 0.3, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2244,7 +2244,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2655,7 +2655,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -2848,7 +2848,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 10
@@ -2905,26 +2905,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ab453776c2df4aa0bd94eb2ebff304e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
-  gameManager: {fileID: 0}
-  scoreCalculator: {fileID: 0}
-  briefingPanel: {fileID: 506766553660689184}
-  hudPanel: {fileID: 2432773478032618684}
-  successPanel: {fileID: 8542305660774503863}
-  failPanel: {fileID: 6792478169569703162}
-  levelNameText: {fileID: 596639375276897642}
-  objectiveText: {fileID: 6476881988271892978}
-  timeBudgetText: {fileID: 1807548597076955823}
-  timerText: {fileID: 273057541611540689}
-  startButton: {fileID: 6477456120198612760}
-  rankText: {fileID: 4653588282312306477}
-  successScoreText: {fileID: 1855270803424752299}
-  successTimeText: {fileID: 5850336093313511322}
-  replayButton: {fileID: 628442697202956956}
-  nextButton: {fileID: 1249764005661945295}
-  menuButton: {fileID: 4328925286260116162}
-  failTimeText: {fileID: 8155915633287447106}
-  retryButton: {fileID: 1143068177761603509}
-  quitButton: {fileID: 219813485146722918}
+  _gameManager: {fileID: 0}
+  _briefingPanel: {fileID: 506766553660689184}
+  _hudPanel: {fileID: 2432773478032618684}
+  _successPanel: {fileID: 8542305660774503863}
+  _failPanel: {fileID: 6792478169569703162}
+  _levelNameText: {fileID: 596639375276897642}
+  _objectiveText: {fileID: 6476881988271892978}
+  _timeBudgetText: {fileID: 1807548597076955823}
+  _timerText: {fileID: 273057541611540689}
+  _startButton: {fileID: 6477456120198612760}
+  _rankText: {fileID: 4653588282312306477}
+  _successScoreText: {fileID: 1855270803424752299}
+  _successTimeText: {fileID: 5850336093313511322}
+  _replayButton: {fileID: 628442697202956956}
+  _nextButton: {fileID: 1249764005661945295}
+  _menuButton: {fileID: 4328925286260116162}
+  _failTimeText: {fileID: 8155915633287447106}
+  _retryButton: {fileID: 1143068177761603509}
+  _quitButton: {fileID: 219813485146722918}
 --- !u!1 &8579723630066910818
 GameObject:
   m_ObjectHideFlags: 0

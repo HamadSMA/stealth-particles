@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(menuName = "StealthParticles/Patrol Pattern")]
+[CreateAssetMenu(menuName = "Stealth Particles/Patrol Pattern")]
 public class PatrolPattern : ScriptableObject
 {
     [FormerlySerializedAs("waypoints")]
