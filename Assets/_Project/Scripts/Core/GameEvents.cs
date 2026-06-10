@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public static class GameEvents
 {
@@ -22,6 +23,24 @@ public static class GameEvents
     public static void RaisePlayerDetected()
     {
         OnPlayerDetected?.Invoke();
+        if (OnPlayerDetected == null)
+        {
+            Debug.Log("No subscribers");
+            return;
+        }
+
+        foreach (Delegate d in OnPlayerDetected.GetInvocationList())
+        {
+            // d.Target is the subscribing object (null if a static method).
+            // d.Method.Name is the handler method's name.
+            string owner = d.Target switch
+            {
+                UnityEngine.Object o => o.name, // e.g. the GameObject/component name
+                null => "static method",
+                _ => d.Target.GetType().Name
+            };
+            Debug.Log($"{owner} → {d.Method.Name}");
+        }
     }
 
     public static void RaiseGoalReached()
