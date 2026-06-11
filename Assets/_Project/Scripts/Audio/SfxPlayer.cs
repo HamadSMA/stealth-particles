@@ -35,31 +35,18 @@ public class SfxPlayer : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnTapMove += HandleTapMove;
         GameEvents.OnGuardNeutralized += HandleGuardNeutralized;
         GameEvents.OnPowerupCollected += HandlePowerupCollected;
         GameEvents.OnPanelDisabled += HandlePanelDisabled;
         GameEvents.OnLootCollected += HandleLootCollected;
-        GameEvents.OnPlayerDetected += HandlePlayerDetected;
-        GameEvents.OnGameStateChanged += HandleGameStateChanged;
-        GameEvents.OnRankRevealed += HandleRankRevealed;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnTapMove -= HandleTapMove;
         GameEvents.OnGuardNeutralized -= HandleGuardNeutralized;
         GameEvents.OnPowerupCollected -= HandlePowerupCollected;
         GameEvents.OnPanelDisabled -= HandlePanelDisabled;
         GameEvents.OnLootCollected -= HandleLootCollected;
-        GameEvents.OnPlayerDetected -= HandlePlayerDetected;
-        GameEvents.OnGameStateChanged -= HandleGameStateChanged;
-        GameEvents.OnRankRevealed -= HandleRankRevealed;
-    }
-
-    private void HandleTapMove()
-    {
-        Play(_bank != null ? _bank.TapMove : null);
     }
 
     private void HandleGuardNeutralized()
@@ -80,24 +67,6 @@ public class SfxPlayer : MonoBehaviour
     private void HandleLootCollected(int collected, int total)
     {
         Play(_bank != null ? _bank.LootPickup : null);
-    }
-
-    private void HandlePlayerDetected()
-    {
-        Play(_bank != null ? _bank.Detection : null);
-    }
-
-    private void HandleGameStateChanged(GameState state)
-    {
-        if (state == GameState.Success)
-        {
-            Play(_bank != null ? _bank.SuccessJingle : null);
-        }
-    }
-
-    private void HandleRankRevealed(Rank rank)
-    {
-        Play(_bank != null ? _bank.RankSlam : null);
     }
 
     private void Play(SfxBank.Sfx sfx)

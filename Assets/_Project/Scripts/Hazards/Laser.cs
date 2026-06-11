@@ -90,7 +90,7 @@ public class Laser : MonoBehaviour
 
         int count = Physics.OverlapBoxNonAlloc(
             transform.position,
-            _detectionHalfExtents,
+            Vector3.Scale(_detectionHalfExtents, transform.lossyScale),
             _overlapResults,
             transform.rotation
         );
@@ -108,7 +108,9 @@ public class Laser : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = _isActive ? new Color(1f, 0.1f, 0.6f, 0.35f) : new Color(0.4f, 0.4f, 0.4f, 0.25f);
+        Gizmos.color = _isActive
+            ? new Color(1f, 0.1f, 0.6f, 0.35f)
+            : new Color(0.4f, 0.4f, 0.4f, 0.25f);
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
         Gizmos.DrawCube(Vector3.zero, _detectionHalfExtents * 2f);
     }

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c6864637e4ea488d9ae4b870ea33727, type: 3}
+  m_Name: SO_Sfx_Bank
+  m_EditorClassIdentifier: Assembly-CSharp::SfxBank
+  GuardHoldup:
+    Clip: {fileID: 8300000, guid: ee7a43a8b19d74fed8cb8f8420507580, type: 3}
+    Volume: 1
+  PowerupPickup:
+    Clip: {fileID: 8300000, guid: 2951549351dc446afac1c1edb04dfeff, type: 3}
+    Volume: 1
+  PanelDisable:
+    Clip: {fileID: 8300000, guid: 6f94d9993fda64dbdbc3a0fecd9e33ce, type: 3}
+    Volume: 1
+  LootPickup:
+    Clip: {fileID: 8300000, guid: 741ae4be5538341cfb94ec9e32fe6f27, type: 3}
+    Volume: 1
