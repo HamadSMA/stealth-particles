@@ -62,7 +62,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.61
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2216876160978215649
 MeshRenderer:
@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0a5c7b9bfaef497bbdbceec577126af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Loot
-  collectPopPrefab: {fileID: 3082339843173659843, guid: 02a6ad70250be4eb98c89a63047aec3d, type: 3}
+  _collectPopPrefab: {fileID: 3082339843173659843, guid: 02a6ad70250be4eb98c89a63047aec3d, type: 3}

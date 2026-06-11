@@ -130,7 +130,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 5
-  m_Acceleration: 50
+  m_Acceleration: 999
   avoidancePriority: 50
   m_AngularSpeed: 999
   m_StoppingDistance: 0.1
@@ -153,13 +153,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d67e6196b92e3451b81a925b7c83e83d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  walkableMask:
+  _walkableMask:
     serializedVersion: 2
     m_Bits: 256
-  guardMask:
+  _guardMask:
     serializedVersion: 2
     m_Bits: 1024
-  panelMask:
+  _panelMask:
     serializedVersion: 2
     m_Bits: 4096
 --- !u!54 &3157856499637188076
@@ -201,10 +201,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6cf6e44773eb4bfa8f7dee24d6cd202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerContactDetector
-  guardMask:
+  _guardMask:
     serializedVersion: 2
     m_Bits: 1024
-  contactRadius: 0.6
+  _contactRadius: 0.6
 --- !u!1 &8246861677937351694
 GameObject:
   m_ObjectHideFlags: 0
