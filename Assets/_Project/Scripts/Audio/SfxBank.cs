@@ -15,9 +15,6 @@ public class SfxBank : ScriptableObject
         public float Volume = 1f;
     }
 
-    [FormerlySerializedAs("tapMove")]
-    public Sfx TapMove;
-
     [FormerlySerializedAs("guardHoldup")]
     public Sfx GuardHoldup;
 
@@ -29,13 +26,4 @@ public class SfxBank : ScriptableObject
 
     [FormerlySerializedAs("lootPickup")]
     public Sfx LootPickup;
-
-    [FormerlySerializedAs("detection")]
-    public Sfx Detection;
-
-    [FormerlySerializedAs("successJingle")]
-    public Sfx SuccessJingle;
-
-    [FormerlySerializedAs("rankSlam")]
-    public Sfx RankSlam;
 }
