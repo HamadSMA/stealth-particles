@@ -62,8 +62,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.4005555, y: 1.536554, z: 1.0804582}
+  m_Center: {x: -0.0127830105, y: 0.10708843, z: -0.040228963}
 --- !u!23 &8720046787108347104
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -125,9 +125,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 285ecb8cfad8f4cf785ddb926bd12c07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Panel
-  linkedLaser: {fileID: 0}
-  panelRenderer: {fileID: 8720046787108347104}
-  armedMaterial: {fileID: 2100000, guid: 9f295be6c90c5485fa99d3fb9dc6f94f, type: 2}
-  usedMaterial: {fileID: 2100000, guid: 4dae88b729da84b82a0b6acefb29d160, type: 2}
-  activationRange: 3.5
-  disablePuffPrefab: {fileID: 3082339843173659843, guid: bd202ec1cdbec4e42a104294612b1db4, type: 3}
+  _linkedLaser: {fileID: 0}
+  _panelRenderer: {fileID: 8720046787108347104}
+  _armedMaterial: {fileID: 2100000, guid: 9f295be6c90c5485fa99d3fb9dc6f94f, type: 2}
+  _usedMaterial: {fileID: 2100000, guid: 4dae88b729da84b82a0b6acefb29d160, type: 2}
+  _activationRange: 3.5
+  _disablePuffPrefab: {fileID: 3082339843173659843, guid: bd202ec1cdbec4e42a104294612b1db4, type: 3}

@@ -458,8 +458,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.6230226
+  m_Center: {x: 0, y: 0.12302324, z: 0}
 --- !u!23 &2963373133863370341
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -521,5 +521,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51967b073f9d74870bea359021e15485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Goal
-  requiresAllLoot: 1
-  goalBurstPrefab: {fileID: 3082339843173659843, guid: 5fcfd0fb685ba48009b3ae19bc99a73d, type: 3}
+  RequiresAllLoot: 1
+  _goalBurstPrefab: {fileID: 3082339843173659843, guid: 5fcfd0fb685ba48009b3ae19bc99a73d, type: 3}
