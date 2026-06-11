@@ -19,7 +19,7 @@ MonoBehaviour:
     Clip: {fileID: 8300000, guid: 2951549351dc446afac1c1edb04dfeff, type: 3}
     Volume: 1
   PanelDisable:
-    Clip: {fileID: 8300000, guid: 6f94d9993fda64dbdbc3a0fecd9e33ce, type: 3}
+    Clip: {fileID: 8300000, guid: 3281fd0aab8e643f2ba77d2bb14042eb, type: 3}
     Volume: 1
   LootPickup:
     Clip: {fileID: 8300000, guid: 741ae4be5538341cfb94ec9e32fe6f27, type: 3}
