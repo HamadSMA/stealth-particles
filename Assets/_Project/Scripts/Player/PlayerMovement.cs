@@ -18,9 +18,16 @@ public class PlayerMovement : MonoBehaviour
     [FormerlySerializedAs("panelMask")]
     private LayerMask _panelMask;
 
+    [SerializeField]
+    private float _repathThreshold = 0.3f;
+
     private NavMeshAgent _agent;
     private Camera _camera;
     private PowerupSystem _powerups;
+
+    private bool _actionConsumedThisPress;
+    private bool _hasMoveTarget;
+    private Vector3 _lastDestination;
 
     private static bool _isPlaying;
 
@@ -63,19 +70,30 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (TryGetPointerPress(out Vector2 pressPosition))
+        bool isHeld = TryGetPointerHold(out Vector2 pointerPosition);
+
+        if (isHeld && WasPointerPressedThisFrame())
         {
-            if (TryHoldupAt(pressPosition))
+            _actionConsumedThisPress = false;
+
+            if (TryHoldupAt(pointerPosition) || TryDisablePanelAt(pointerPosition))
             {
+                _actionConsumedThisPress = true;
                 return;
             }
+        }
 
-            if (TryDisablePanelAt(pressPosition))
-            {
-                return;
-            }
+        if (isHeld && !_actionConsumedThisPress)
+        {
+            SteerToward(pointerPosition);
+            return;
+        }
 
-            SteerToward(pressPosition);
+        if (WasPointerReleasedThisFrame())
+        {
+            _actionConsumedThisPress = false;
+            _hasMoveTarget = false;
+            _agent.ResetPath();
         }
     }
 
@@ -129,25 +147,40 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, 1f, NavMesh.AllAreas))
+        if (!NavMesh.SamplePosition(hit.point, out NavMeshHit navHit, 1f, NavMesh.AllAreas))
         {
-            _agent.SetDestination(navHit.position);
+            return;
+        }
+
+        if (
+            _hasMoveTarget
+            && (navHit.position - _lastDestination).sqrMagnitude
+                < _repathThreshold * _repathThreshold
+        )
+        {
+            return;
+        }
+
+        _agent.SetDestination(navHit.position);
+        _lastDestination = navHit.position;
+
+        if (!_hasMoveTarget)
+        {
             GameEvents.RaiseTapMove();
         }
+
+        _hasMoveTarget = true;
     }
 
-    private static bool TryGetPointerPress(out Vector2 position)
+    private static bool TryGetPointerHold(out Vector2 position)
     {
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null && Mouse.current.leftButton.isPressed)
         {
             position = Mouse.current.position.ReadValue();
             return true;
         }
 
-        if (
-            Touchscreen.current != null
-            && Touchscreen.current.primaryTouch.press.wasPressedThisFrame
-        )
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
         {
             position = Touchscreen.current.primaryTouch.position.ReadValue();
             return true;
@@ -155,6 +188,28 @@ public class PlayerMovement : MonoBehaviour
 
         position = default;
         return false;
+    }
+
+    private static bool WasPointerPressedThisFrame()
+    {
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            return true;
+        }
+
+        return Touchscreen.current != null
+            && Touchscreen.current.primaryTouch.press.wasPressedThisFrame;
+    }
+
+    private static bool WasPointerReleasedThisFrame()
+    {
+        if (Mouse.current != null && Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            return true;
+        }
+
+        return Touchscreen.current != null
+            && Touchscreen.current.primaryTouch.press.wasReleasedThisFrame;
     }
 
     private void HandleGameStateChanged(GameState state)

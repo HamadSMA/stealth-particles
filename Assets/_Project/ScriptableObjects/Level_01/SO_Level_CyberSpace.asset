@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
   m_Name: SO_Level_CyberSpace
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelNumber: 1
-  levelName: Cyber Space
-  objectiveText: Collect all shining spheres and then for the goal.
-  timeBudget: 120
-  lootRequired: 3
-  cameraHeight: 0
-  cameraOffset: {x: 0, y: 0, z: 0}
-  musicTrack: {fileID: 0}
-  maxScore: 2000
-  sRankThreshold: 0.2
-  aRankThreshold: 0.35
-  bRankThreshold: 0.65
-  cRankThreshold: 1
+  LevelNumber: 1
+  LevelName: Cyber Space
+  ObjectiveText: Collect all spheres then head for the goal.
+  TimeBudget: 120
+  LootRequired: 3
+  CameraHeight: 0
+  CameraOffset: {x: 0, y: 0, z: 0}
+  MusicTrack: {fileID: 8300000, guid: 9749a2ca83ee44cde8cc9a815242f26a, type: 3}
+  MaxScore: 2000
+  SRankThreshold: 0.2
+  ARankThreshold: 0.35
+  BRankThreshold: 0.65
+  CRankThreshold: 1

@@ -130,7 +130,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 5
-  m_Acceleration: 999
+  m_Acceleration: 50
   avoidancePriority: 50
   m_AngularSpeed: 999
   m_StoppingDistance: 0.1
@@ -162,6 +162,7 @@ MonoBehaviour:
   _panelMask:
     serializedVersion: 2
     m_Bits: 4096
+  _repathThreshold: 0.3
 --- !u!54 &3157856499637188076
 Rigidbody:
   m_ObjectHideFlags: 0

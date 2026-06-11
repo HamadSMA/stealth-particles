@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d4d9cd1bd12c47b1bd1c72bf0cb7634, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventLogger
-  verbose: 0
+  _verbose: 0
 --- !u!114 &1606002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3c15b33196849a1ba1e6d1b5134a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _levelConfig: {fileID: 11400000, guid: 97e8016983ff844f095e6b055f850772, type: 2}
+  _levelConfig: {fileID: 11400000, guid: 49e4a5200df6c467992cd5f3a4e03203, type: 2}
 --- !u!4 &1606003
 Transform:
   m_ObjectHideFlags: 0
@@ -2384,10 +2384,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7425596e8a2f94dbdb228fdcbc4d8968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DetectionVignetteFlash
-  volume: {fileID: 0}
-  flashColor: {r: 1, g: 0.1, b: 0.35, a: 1}
-  flashIntensity: 0.55
-  duration: 0.4
+  _volume: {fileID: 0}
+  _flashColor: {r: 1, g: 0.1, b: 0.35, a: 1}
+  _flashIntensity: 0.55
+  _duration: 0.4
 --- !u!1001 &1426665149
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2796,8 +2796,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14e021325da2d42dab3efb0f7a9213ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerupSystem
-  cloakRenderer: {fileID: 0}
-  cloakDimFactor: 0.35
+  _cloakRenderer: {fileID: 0}
+  _cloakDimFactor: 0.35
 --- !u!1 &1648805102
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,7 +3408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6b7ca9eb900403589dd265eaa43043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreCalculator
-  levelTimer: {fileID: 859499111}
+  _levelTimer: {fileID: 859499111}
 --- !u!4 &1953072854
 Transform:
   m_ObjectHideFlags: 0

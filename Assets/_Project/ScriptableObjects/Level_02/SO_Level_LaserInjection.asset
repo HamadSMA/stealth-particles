@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a73afec0ba40432299dbfc31a27e3a7, type: 3}
   m_Name: SO_Level_LaserInjection
   m_EditorClassIdentifier: Assembly-CSharp::LevelConfig
-  levelNumber: 2
-  levelName: Laser Injection
-  objectiveText: 'Tap on the pink panel to disable the laser.
+  LevelNumber: 2
+  LevelName: Laser Injection
+  ObjectiveText: 'Tap on the panel to disable the laser.
 
-    Collect all shinig
-    spheres then head for the goal.'
-  timeBudget: 120
-  lootRequired: 3
-  cameraHeight: 0
-  cameraOffset: {x: 0, y: 0, z: 0}
-  musicTrack: {fileID: 0}
-  scoringOverride: {fileID: 0}
+    Collect all spheres
+    then head for the goal.'
+  TimeBudget: 120
+  LootRequired: 3
+  CameraHeight: 0
+  CameraOffset: {x: 0, y: 0, z: 0}
+  MusicTrack: {fileID: 8300000, guid: fa6127cd64ec34d8f97b5f84fb855f58, type: 3}
+  MaxScore: 2000
+  SRankThreshold: 0.2
+  ARankThreshold: 0.35
+  BRankThreshold: 0.65
+  CRankThreshold: 1
