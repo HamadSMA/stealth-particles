@@ -163,12 +163,13 @@ StealthParticles/
 6. Confirm the Bundle Identifier matches the one set in Unity.
 
 ### Step 5: Deploy to your device
-1. Connect and unlock your iPhone/iPad; tap **Trust** if prompted.
-2. Select your device in the run-destination dropdown in the Xcode toolbar.
-3. Press **Run** (▶) or **Product → Run**. Xcode builds, installs, and launches the app.
+1. Connect and unlock your iPhone and tap **Trust** if prompted.
+On the the iPhone: **Settings → Privacy & Security → Developer Mode: On**.
+2. Back to Xcode, select your device in the run-destination dropdown in the Xcode toolbar.
+3. Press **Run** (▶) or **Product → Run**. Xcode builds and installs the app.
 
 ### Step 6: Trust the developer certificate (first install only)
-1. On the device: **Settings → General → VPN & Device Management**.
+1. On the iPhone: **Settings → General → VPN & Device Management**.
 2. Under **Developer App**, tap your certificate and choose **Trust**.
 3. Relaunch the app from the home screen.
 
