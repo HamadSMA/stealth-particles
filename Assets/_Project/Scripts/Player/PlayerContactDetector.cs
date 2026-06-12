@@ -31,7 +31,13 @@ public class PlayerContactDetector : MonoBehaviour
             return;
         }
 
-        int count = Physics.OverlapSphereNonAlloc(transform.position, _contactRadius, _hits, _guardMask, QueryTriggerInteraction.Collide);
+        int count = Physics.OverlapSphereNonAlloc(
+            transform.position,
+            _contactRadius,
+            _hits,
+            _guardMask,
+            QueryTriggerInteraction.Collide
+        );
         for (int i = 0; i < count; i++)
         {
             if (_hits[i].GetComponentInParent<GuardController>() != null)
