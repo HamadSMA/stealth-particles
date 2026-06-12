@@ -12,7 +12,6 @@ public static class GameEvents
     public static event Action OnGuardNeutralized;
     public static event Action OnPanelDisabled;
     public static event Action OnPowerupCollected;
-    public static event Action<Rank> OnRankRevealed;
 
     public static void RaiseGameStateChanged(GameState state)
     {
@@ -57,10 +56,5 @@ public static class GameEvents
     public static void RaisePowerupCollected()
     {
         OnPowerupCollected?.Invoke();
-    }
-
-    public static void RaiseRankRevealed(Rank rank)
-    {
-        OnRankRevealed?.Invoke(rank);
     }
 }
