@@ -164,11 +164,6 @@ public class PlayerMovement : MonoBehaviour
         _agent.SetDestination(navHit.position);
         _lastDestination = navHit.position;
 
-        if (!_hasMoveTarget)
-        {
-            GameEvents.RaiseTapMove();
-        }
-
         _hasMoveTarget = true;
     }
 
