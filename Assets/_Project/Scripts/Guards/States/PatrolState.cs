@@ -21,7 +21,9 @@ public class PatrolState : IGuardState
 
         if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
-            Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; cannot patrol.");
+            Debug.LogWarning(
+                "PatrolState: guard has no patrol pattern or waypoints; cannot patrol."
+            );
             return;
         }
 
@@ -43,7 +45,9 @@ public class PatrolState : IGuardState
 
         if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
-            Debug.LogWarning("PatrolState: guard has no patrol pattern or waypoints; skipping patrol.");
+            Debug.LogWarning(
+                "PatrolState: guard has no patrol pattern or waypoints; skipping patrol."
+            );
             return;
         }
 
@@ -54,7 +58,8 @@ public class PatrolState : IGuardState
 
         Vector3 target = _guard.SpawnPosition + pattern.GetWaypoint(_currentIndex);
         float distance = Vector3.Distance(agent.transform.position, target);
-        bool hasRemainingPath = agent.hasPath && agent.remainingDistance > pattern.WaypointReachedDistance;
+        bool hasRemainingPath =
+            agent.hasPath && agent.remainingDistance > pattern.WaypointReachedDistance;
 
         if (distance >= pattern.WaypointReachedDistance || hasRemainingPath)
         {
