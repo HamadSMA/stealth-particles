@@ -68,7 +68,12 @@ public class VisionCone : MonoBehaviour
 
         if (_config == null || _eyeOrigin == null || _coneMeshFilter == null)
         {
-            Debug.LogWarning("VisionCone on '" + name + "' is missing config, eye origin, or cone mesh filter; disabling.", this);
+            Debug.LogWarning(
+                "VisionCone on '"
+                    + name
+                    + "' is missing config, eye origin, or cone mesh filter; disabling.",
+                this
+            );
             enabled = false;
             return;
         }
@@ -90,7 +95,15 @@ public class VisionCone : MonoBehaviour
             return;
         }
 
-        if (Physics.Raycast(_eyeOrigin.position + Vector3.up * 5f, Vector3.down, out RaycastHit hit, 50f, mask))
+        if (
+            Physics.Raycast(
+                _eyeOrigin.position + Vector3.up * 5f,
+                Vector3.down,
+                out RaycastHit hit,
+                50f,
+                mask
+            )
+        )
         {
             Bounds bounds = hit.collider.bounds;
             _minX = bounds.min.x;
@@ -197,7 +210,15 @@ public class VisionCone : MonoBehaviour
         return result;
     }
 
-    private void ResolveEdge(Vector3 origin, Vector3 forward, float range, ViewCast reference, ViewCast other, out Vector3 referencePoint, out Vector3 otherPoint)
+    private void ResolveEdge(
+        Vector3 origin,
+        Vector3 forward,
+        float range,
+        ViewCast reference,
+        ViewCast other,
+        out Vector3 referencePoint,
+        out Vector3 otherPoint
+    )
     {
         float referenceAngle = reference.Angle;
         float otherAngle = other.Angle;
@@ -208,7 +229,8 @@ public class VisionCone : MonoBehaviour
         {
             float midAngle = (referenceAngle + otherAngle) * 0.5f;
             ViewCast mid = Cast(origin, forward, midAngle, range);
-            bool distanceJump = Mathf.Abs(reference.Distance - mid.Distance) > _edgeDistanceThreshold;
+            bool distanceJump =
+                Mathf.Abs(reference.Distance - mid.Distance) > _edgeDistanceThreshold;
 
             if (mid.Hit == reference.Hit && !distanceJump)
             {
@@ -244,10 +266,19 @@ public class VisionCone : MonoBehaviour
 
             if (hasPrevious)
             {
-                bool distanceJump = Mathf.Abs(previous.Distance - current.Distance) > _edgeDistanceThreshold;
+                bool distanceJump =
+                    Mathf.Abs(previous.Distance - current.Distance) > _edgeDistanceThreshold;
                 if (previous.Hit != current.Hit || (previous.Hit && current.Hit && distanceJump))
                 {
-                    ResolveEdge(origin, forward, range, previous, current, out Vector3 previousSide, out Vector3 currentSide);
+                    ResolveEdge(
+                        origin,
+                        forward,
+                        range,
+                        previous,
+                        current,
+                        out Vector3 previousSide,
+                        out Vector3 currentSide
+                    );
                     _viewPoints.Add(previousSide);
                     _viewPoints.Add(currentSide);
                 }

@@ -26,11 +26,7 @@ public class DeadState : IGuardState
         Object.Destroy(_guard.gameObject, _guard.Config.FadeDuration);
     }
 
-    public void Tick()
-    {
-    }
+    public void Tick() { }
 
-    public void Exit()
-    {
-    }
+    public void Exit() { }
 }
