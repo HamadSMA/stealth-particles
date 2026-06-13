@@ -58,7 +58,12 @@ public class MainMenuController : MonoBehaviour
             }
 
             string scene = entry.SceneName;
-            entry.Button.onClick.AddListener(delegate { LoadLevel(scene); });
+            entry.Button.onClick.AddListener(
+                delegate
+                {
+                    LoadLevel(scene);
+                }
+            );
         }
 
         Refresh();
