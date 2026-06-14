@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(VisionCone))]
 public class GuardController : MonoBehaviour
 {
     [SerializeField]
@@ -13,12 +14,8 @@ public class GuardController : MonoBehaviour
     [FormerlySerializedAs("patrolPattern")]
     private PatrolPattern _patrolPattern;
 
-    [SerializeField]
-    [FormerlySerializedAs("visionCone")]
     private VisionCone _visionCone;
 
-    [SerializeField]
-    [FormerlySerializedAs("playerTransform")]
     private Transform _playerTransform;
 
     [SerializeField]
@@ -43,19 +40,12 @@ public class GuardController : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _spawnPosition = transform.position;
+        _visionCone = GetComponent<VisionCone>();
 
-        if (_visionCone == null)
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
         {
-            _visionCone = GetComponent<VisionCone>();
-        }
-
-        if (_playerTransform == null)
-        {
-            GameObject player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                _playerTransform = player.transform;
-            }
+            _playerTransform = player.transform;
         }
 
         if (_playerTransform == null)

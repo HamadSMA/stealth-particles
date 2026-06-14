@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(GuardController))]
 public class VisionCone : MonoBehaviour
 {
-    [SerializeField]
-    [FormerlySerializedAs("config")]
     private GuardConfig _config;
 
     [SerializeField]
@@ -52,14 +51,9 @@ public class VisionCone : MonoBehaviour
 
     private void Awake()
     {
-        if (_config == null)
-        {
-            GuardController controller = GetComponent<GuardController>();
-            if (controller != null)
-            {
-                _config = controller.Config;
-            }
-        }
+        GuardController controller = GetComponent<GuardController>();
+
+        _config = controller.Config;
 
         if (_eyeOrigin == null)
         {

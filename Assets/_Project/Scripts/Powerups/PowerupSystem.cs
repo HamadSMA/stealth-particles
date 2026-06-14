@@ -4,8 +4,6 @@ using UnityEngine.Serialization;
 
 public class PowerupSystem : MonoBehaviour
 {
-    [SerializeField]
-    [FormerlySerializedAs("cloakRenderer")]
     private Renderer _cloakRenderer;
 
     [SerializeField]
@@ -24,10 +22,7 @@ public class PowerupSystem : MonoBehaviour
 
     private void Awake()
     {
-        if (_cloakRenderer == null)
-        {
-            _cloakRenderer = GetComponentInChildren<Renderer>();
-        }
+        _cloakRenderer = GetComponentInChildren<Renderer>();
     }
 
     private void OnEnable()
