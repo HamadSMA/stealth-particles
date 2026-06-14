@@ -60,16 +60,9 @@ public class ScoreCalculator : MonoBehaviour
     {
         LastTime = _levelTimer != null ? _levelTimer.Elapsed : 0f;
 
-        if (_levelConfig != null)
-        {
-            LastScore = _levelConfig.CalculateScore(LastTime);
-            LastRank = _levelConfig.GetRank(LastTime);
-        }
-        else
-        {
-            LastScore = 0;
-            LastRank = Rank.None;
-        }
+        ScoreRules.Result result = ScoreRules.Evaluate(_levelConfig, LastTime);
+        LastScore = result.Score;
+        LastRank = result.Rank;
 
         int level = _levelConfig != null ? _levelConfig.LevelNumber : 0;
         ProgressionManager.RecordSuccess(level, LastScore, LastRank);

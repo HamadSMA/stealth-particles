@@ -44,45 +44,4 @@ public class LevelConfig : ScriptableObject
 
     [FormerlySerializedAs("cRankThreshold")]
     public float CRankThreshold = 1.0f;
-
-    public int CalculateScore(float elapsed)
-    {
-        if (TimeBudget <= 0f)
-        {
-            return 0;
-        }
-
-        float remaining = Mathf.Max(0f, 1f - (elapsed / TimeBudget));
-        int score = Mathf.FloorToInt(MaxScore * (remaining * remaining));
-        return Mathf.Max(0, score);
-    }
-
-    public Rank GetRank(float elapsed)
-    {
-        if (TimeBudget <= 0f)
-        {
-            return Rank.None;
-        }
-
-        float fraction = elapsed / TimeBudget;
-
-        if (fraction <= SRankThreshold)
-        {
-            return Rank.S;
-        }
-        if (fraction <= ARankThreshold)
-        {
-            return Rank.A;
-        }
-        if (fraction <= BRankThreshold)
-        {
-            return Rank.B;
-        }
-        if (fraction <= CRankThreshold)
-        {
-            return Rank.C;
-        }
-
-        return Rank.None;
-    }
 }
