@@ -29,13 +29,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _hasMoveTarget;
     private Vector3 _lastDestination;
 
-    private static bool _isPlaying;
-
-    public float Speed
-    {
-        get => _agent.speed;
-        set => _agent.speed = value;
-    }
+    private bool _isPlaying;
 
     private void Awake()
     {
