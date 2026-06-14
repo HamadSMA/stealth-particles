@@ -24,8 +24,6 @@ public class Laser : MonoBehaviour
 
     private readonly Collider[] _overlapResults = new Collider[8];
 
-    public bool IsActive => _isActive;
-
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;

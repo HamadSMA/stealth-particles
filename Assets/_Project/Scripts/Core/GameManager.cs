@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 
     private ScoreCalculator _scoreCalculator;
 
-    public GameState CurrentState { get; private set; } = GameState.Briefing;
+    private GameState CurrentState { get; set; } = GameState.Briefing;
 
     public LevelConfig LevelConfig => _levelConfig;
 

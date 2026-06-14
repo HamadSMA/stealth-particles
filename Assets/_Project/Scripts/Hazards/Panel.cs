@@ -30,8 +30,6 @@ public class Panel : MonoBehaviour
     private bool _isPlaying;
     private bool _isUsed;
 
-    public bool IsUsed => _isUsed;
-
     private void OnEnable()
     {
         GameEvents.OnGameStateChanged += HandleGameStateChanged;

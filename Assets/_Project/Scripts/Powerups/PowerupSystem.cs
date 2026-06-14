@@ -47,7 +47,7 @@ public class PowerupSystem : MonoBehaviour
         _charges[type] = current + amount;
     }
 
-    public int GetCharges(PowerupType type)
+    private int GetCharges(PowerupType type)
     {
         _charges.TryGetValue(type, out int current);
         return current;
