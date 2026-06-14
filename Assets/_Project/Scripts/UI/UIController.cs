@@ -224,8 +224,8 @@ public class UIController : MonoBehaviour
 
             if (_rankText != null)
             {
-                _rankText.text = rank == Rank.None ? "-" : rank.ToString();
-                _rankText.color = RankColor(rank);
+                _rankText.text = RankVisuals.LabelFor(rank);
+                _rankText.color = RankVisuals.ColorFor(rank);
             }
 
             if (_successScoreText != null)
@@ -263,23 +263,6 @@ public class UIController : MonoBehaviour
 
         float remaining = Mathf.Max(0f, _timeBudget - elapsed);
         _timerText.text = "TIME   " + remaining.ToString("0.0") + "s";
-    }
-
-    private static Color RankColor(Rank rank)
-    {
-        switch (rank)
-        {
-            case Rank.S:
-                return new Color(1f, 0.2f, 0.6f);
-            case Rank.A:
-                return new Color(1f, 0.84f, 0.2f);
-            case Rank.B:
-                return new Color(0.3f, 0.9f, 1f);
-            case Rank.C:
-                return Color.white;
-            default:
-                return new Color(0.6f, 0.6f, 0.7f);
-        }
     }
 
     private static string FormatTime(float seconds)

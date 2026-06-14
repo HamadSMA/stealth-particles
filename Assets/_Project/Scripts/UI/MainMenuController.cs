@@ -145,8 +145,8 @@ public class MainMenuController : MonoBehaviour
                 entry.RankText.gameObject.SetActive(unlocked);
                 if (unlocked)
                 {
-                    entry.RankText.text = rank == Rank.None ? "-" : rank.ToString();
-                    entry.RankText.color = RankColor(rank);
+                    entry.RankText.text = RankVisuals.LabelFor(rank);
+                    entry.RankText.color = RankVisuals.ColorFor(rank);
                 }
             }
 
@@ -189,23 +189,6 @@ public class MainMenuController : MonoBehaviour
         if (!string.IsNullOrEmpty(sceneName))
         {
             SceneLoader.LoadByName(sceneName);
-        }
-    }
-
-    private static Color RankColor(Rank rank)
-    {
-        switch (rank)
-        {
-            case Rank.S:
-                return new Color(1f, 0.2f, 0.6f);
-            case Rank.A:
-                return new Color(1f, 0.84f, 0.2f);
-            case Rank.B:
-                return new Color(0.3f, 0.9f, 1f);
-            case Rank.C:
-                return Color.white;
-            default:
-                return new Color(0.6f, 0.6f, 0.7f);
         }
     }
 }
