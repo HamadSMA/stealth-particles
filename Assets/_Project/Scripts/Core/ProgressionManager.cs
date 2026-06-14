@@ -3,12 +3,14 @@ using UnityEngine.SceneManagement;
 
 public static class ProgressionManager
 {
+#if UNITY_EDITOR
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void ResetOnPlay()
     {
         PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
     }
+#endif
 
     public static bool IsUnlocked(int level)
     {
