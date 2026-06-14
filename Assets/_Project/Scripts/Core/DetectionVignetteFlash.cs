@@ -4,10 +4,9 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
 
+[RequireComponent(typeof(Volume))]
 public class DetectionVignetteFlash : MonoBehaviour
 {
-    [SerializeField]
-    [FormerlySerializedAs("volume")]
     private Volume _volume;
 
     [SerializeField]
@@ -30,17 +29,9 @@ public class DetectionVignetteFlash : MonoBehaviour
 
     private void Awake()
     {
-        if (_volume == null)
-        {
-            _volume = GetComponent<Volume>();
-        }
+        _volume = GetComponent<Volume>();
 
-        if (_volume == null)
-        {
-            _volume = FindFirstObjectByType<Volume>();
-        }
-
-        if (_volume != null && _volume.profile != null && _volume.profile.TryGet(out _vignette))
+        if (_volume.profile != null && _volume.profile.TryGet(out _vignette))
         {
             _hasVignette = true;
             _originalColor = _vignette.color.value;
