@@ -36,7 +36,7 @@ public class Goal : MonoBehaviour
 
     private void Start()
     {
-        _allLootCollected = !LootSystemPresent();
+        _allLootCollected = !AnyLootPresent();
         UpdateVisibility();
     }
 
@@ -86,22 +86,8 @@ public class Goal : MonoBehaviour
         GameEvents.RaiseGoalReached();
     }
 
-    private bool LootSystemPresent()
+    private static bool AnyLootPresent()
     {
-        MonoBehaviour[] behaviours = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
-        foreach (MonoBehaviour behaviour in behaviours)
-        {
-            if (behaviour == null)
-            {
-                continue;
-            }
-
-            if (behaviour.GetType().Name.Contains("Loot"))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return FindObjectsByType<Loot>(FindObjectsSortMode.None).Length > 0;
     }
 }
