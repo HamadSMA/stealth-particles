@@ -1,184 +1,100 @@
-## Summary
-**Inspired by Metal Gear Solid VR Missions**
+# Stealth Particles
 
-Stealth Particles is essentially a mission based stealth game streamlined for mobile devices. The core loop is simple:
+*A mission-based stealth game built for mobile, where you can't just sneak to the exit.*
 
-- Avoid the guards
-- Collect the loot
-- Head for the goal
+**Hamad Alaslani** · Unity · C# · Mobile + WebGL 
 
-There are 4 levels in this game, the idea is building interconnected systems in a modular and scalable way, and showcase how they build on top one another. In addition, the game has a templated powerup system and hazards. More details on how the game is structured → Technical Document
+>gif placeholder
 
 
-Halfway through development I even came up with some lore to make it interesting. If you have played Streets of Rage before on SEGA Genesis, this will sound familiar:
+**[▶ Play the WebGL build](https://hamadalaslani.dev/game)** · or run it in the editor (below).
 
->The galaxy was once a peaceful and stable place… until the Day of Collapse. A powerful black hole, fueled by unparalleled dominance, emerged at the galactic core. This vicious anomaly quickly began destabilizing its neighboring systems. With its absolute gravitational pull, no cosmic entity is safe.
+---
+
+Inspired by the **Metal Gear Solid** VR Missions. The loop is simple: avoid the guards, collect the loot, reach the goal. The focus is the systems underneath, so everything renders as primitives and the architecture stays modular and scalable across four levels.
+
+The twist: you can't beeline the exit. Every level gates the goal behind mandatory loot, and you have two single-use powerups to give you an edge.
+
+Halfway through development I came up with some lore. If you've played Streets of Rage before (rhymes!), this will sound familiar:
+
+> The galaxy was once a peaceful and stable place… until the Day of Collapse. A powerful black hole, fueled by unparalleled dominance, emerged at the galactic core. This vicious anomaly quickly began destabilizing its neighboring systems. With its absolute gravitational pull, no cosmic entity is safe.
 >
->Amid this turmoil, a group of determined young neutrons have sworn to stabilize their home atoms. To do so, they must put their lives at risk by becoming positively charged—instantly placing themselves on the radar of the delinquent electrons hunting them.
+> Amid this turmoil, a group of determined young neutrons have sworn to stabilize their home atoms. To do so, they must put their lives at risk by becoming positively charged, instantly placing themselves on the radar of the delinquent electrons hunting them.
 >
->Will they be able to save Rigel Kentaurus?
+> Will they be able to save Rigel Kentaurus?
 
+[Original Streets of Rage intro - YouTube](https://www.youtube.com/watch?v=d5EU7EE8Hc4)
 
-In this section I will go into details on what the game is, how it plays, and the systems and mechanics underneath. 
+## How to Play
 
-For a quick demo →  Play through WebGL <br>
-For setup → Build with Unity and Xcode.
+One tap does everything. It's read in priority order by what it hits:
 
-
-## Gameplay
-
-Each level loads into a briefing screen with the objective and a time limit. Tap **Start** to begin. From there:
-
-1. Tap the floor to path-find your capsule around walls toward that point.
-2. Collect all the glowing loot spheres by walking into them and then the goal will appear.
-3. Slip past or neutralize guards, and disable any lasers blocking your route.
-4. Touch the goal to win. Your time decides your score and rank (S/A/B/C).
-
-## Controls
-
-All input is a single tap (mouse in the editor and WebGL, touch on device). One tap is interpreted in priority order by what it hits:
-
-| Tap target | Action |
+| Tap | Action |
 |---|---|
-| A **guard** | Hold it up, but only if you're within holdup range and tapping from roughly behind it.  |
-| A **panel** | Disable its linked laser, only if you're within the panel's activation range. |
-| **Walkable floor** | Move: the tapped point is snapped to the navmesh and your capsule paths there. |
+| **Guard** | Hold up, if you're in range and roughly behind it. |
+| **Panel** | Disables its linked laser, if you're in range. |
+| **Floor** | Move. The point snaps to the NavMesh and your capsule paths there. |
 
+Walk into a powerup to pick it up:
 
-## Powerups
+| Powerup | Effect |
+|---|---|
+| **Eliminate** | One stored charge. Tap any guard to destroy it instantly, no range or angle. |
+| **Cloak** | Slip through vision cones. Drops the moment you leave a cone you entered. |
 
-Powerups are picked up by walking into them. There are two, introduced in the later levels:
+Cloak only fools vision. Touching a guard or crossing a live laser still fails the run.
 
-| Powerup | Effect | Duration | 
+**You fail** if a cone catches you with line of sight, you touch a guard, you enter an active laser, or the timer hits 0. Finish fast: your time sets your score and your S/A/B/C rank.
+
+> gif placeholder
+
+## Architecture
+
+Everything communicates through a static **GameEvents** pub/sub hub, so systems never reference each other directly. Adding a subscriber touches no existing code; the cost is discipline (every `+=` in `OnEnable` has a matching `-=` in `OnDisable`).
+
+| System | Pattern | What it does |
 |---|---|---|
-| **Eliminate** | Stores one charge. Tap any guard to destroy it instantly, no range or angle needed. | Held until used. |
-| **Cloak**  | Lets you pass through a guard's vision cone without being caught (your capsule dims as a tell). | Drops the moment you leave a cone after entering one.| 
-
-Cloak only fools vision cones. Physically touching a guard, or crossing an active laser, still fails the run even while cloaked.
-
-## Timer & Scoring
-
-
-**Score** (max 2000): `floor(2000 × remaining²)` where `remaining = 1 − elapsed / budget`. Finishing instantly approaches 2000; finishing at the buzzer scores 0.
-
-**Rank**, by fraction of the budget used:
-
-| Rank | Finish within | (at 120 s) |
-|---|---|---|
-| S | 20% of budget | ≤ 24 s |
-| A | 35% | ≤ 42 s |
-| B | 65% | ≤ 78 s |
-| C | 100% | ≤ 120 s |
+| **Game flow** | Enum FSM (`GameManager`) | Explicit transition table. Success/Fail are terminal, so a win can't overwrite a loss on the same frame. |
+| **Guard AI** | GoF State (`IGuardState`) | `Enter / Tick / Exit`, with `PatrolState` + `DeadState`. New behavior = new class. |
+| **Detection** | `VisionCone` | Range + view angle + wall line-of-sight, with a cone mesh generated at runtime. |
+| **Input** | Pointer + NavMesh | One abstraction over mouse and touch; a tap raycasts and resolves guard > panel > floor. |
+| **Powerups** | Template Method (`Powerup`) | Base runs the shared steps (pick up, announce, disappear); each subclass adds only its effect. |
+| **Hazards** | Lasers + panels | A panel toggles its linked laser. |
 
 
-## Fail Conditions
+> events diagram plceholder
 
-The run fails when:
+## Run in the Editor
 
-- A guard's **vision cone** sees the uncloaked player with line of sight.
-- The player **physically touches** a guard.
-- The player enters an **active laser's** detection zone.
-- The **timer reaches 0**
+Clone → open in **Unity 6000.3.16f1 (6.3)** via Unity Hub → open `Assets/_Project/Scenes/MainMenu` → press **Play**.
 
-## Levels
+ Required: URP 17.3.0, Input System 1.19.0, AI Navigation 2.0.12, TextMeshPro.
 
-| # | Name | Introduces | Contents |
-|---|---|---|---|
-| 1 | **Cyber Space** | Tap-to-move, vision cones, holdups, loot, goal | 2 guards, 3 loot |
-| 2 | **Laser Injection** | Lasers and panels | 3 guards, 2 lasers + 2 panels, 3 loot |
-| 3 | **Atomic Telekinesis** | Eliminate powerup | 4 guards, 1 laser + 1 panel, Eliminate powerup, 3 loot |
-| 4 | **Quantum Stealth** | Cloak powerup | 4 guards, 2 lasers + 2 panels, Cloak + Eliminate powerups, 3 loot |
+## Build for iOS
 
+**Need:** a Mac with the latest Xcode, Unity 6.3 with the **iOS Build Support** module, an Apple ID, and a cable (or both on the same network).
 
+1. **File → Build Profiles → iOS → Switch Platform.** Add scenes in play order (MainMenu first).
+2. **Player Settings:** set Company / Product name, a unique Bundle ID (`com.yourname.stealthparticles`), min iOS version, Target Device iPhone + iPad, and **Default Orientation → Portrait** (19.5:9).
+3. **Build →** pick an empty folder (`Builds/iOS`). Unity generates the Xcode project.
+4. Open **Unity-iPhone.xcodeproj → Unity-iPhone target → Signing & Capabilities.** Tick **Automatically manage signing**, choose your **Team** (add your Apple ID under Xcode → Settings → Accounts), confirm the Bundle ID.
+5. Connect and unlock the iPhone, tap **Trust**, then **Settings → Privacy & Security → Developer Mode → On.** Select the device in Xcode and press **Run**.
+6. First install only: on the iPhone, **Settings → General → VPN & Device Management → [your cert] → Trust**, then relaunch.
 
-## Project Structure
-
-All first-party content lives under `Assets/_Project/`, with code grouped by domain and content split by type. Unity-generated folders (`Library/`, `Temp/`, `obj/`, `Builds/`) are not tracked.
+## Project Layout
 
 ```
-StealthParticles/
-├── Assets/
-│   ├── _Project/                  All first-party game content
-│   │   ├── Scenes/                MainMenu + the four level scenes
-│   │   ├── Scripts/               Gameplay and systems code, grouped by domain
-│   │   │   ├── Core/              Game flow (GameManager/GameState), GameEvents hub,
-│   │   │   │                      SceneLoader, scoring, timer, progression
-│   │   │   ├── Guards/            Guard AI (State pattern) + States/, vision, patrols
-│   │   │   ├── Player/            Movement and contact detection
-│   │   │   ├── Powerups/          Template-method Powerup base + Cloak/Eliminate
-│   │   │   ├── Hazards/           Lasers and panels
-│   │   │   ├── Loot/              Loot pickups and tracking
-│   │   │   ├── Audio/             Audio manager, SFX player and bank
-│   │   │   ├── Config/            ScriptableObject definitions (LevelConfig, etc.)
-│   │   │   └── UI/                Main menu and in-game HUD controllers
-│   │   ├── ScriptableObjects/     Config assets, one folder per level (Level_01–04)
-│   │   ├── Prefabs/               Player, Guard, hazards, loot, powerups, GameplayUI
-│   │   ├── VFX/                   Particle prefabs (HoldupBurstFX, GoalBurstFX)
-│   │   ├── Resources/             Runtime-loaded assets (SFX bank)
-│   │   ├── Art/ · Textures/ · Materials/ · Meshes/ · Shaders/   Visual assets
-│   │   ├── Audio/                 Music and SFX clips
-│   │   └── Settings/              URP and post-processing settings
-│   ├── Settings/                  Project-wide render pipeline assets
-│   └── TextMesh Pro/              TMP package resources
-├── docs/                          GDD, study notes, design-pattern docs, research
-├── Notes/                         Personal topic notes (+ NOTES.md index)
-├── Packages/                      UPM manifest and lockfile
-└── ProjectSettings/               Unity project settings
+Assets/_Project/
+├── Scripts/             Core · Guards (+States) · Player · Powerups · Hazards · Loot · Audio · UI
+├── Scenes/              MainMenu + Level_01–04
+├── ScriptableObjects/   Per-level configs (Level_01–04)
+└── Prefabs/ · VFX/ · Art/ · Audio/ · Settings/
 ```
 
-## Getting Started
+## Credits
 
-1. Install **Unity 6000.3.16f1 (Unity 6.3)** via Unity Hub.
-2. Clone the repo and open the project folder in Unity. Required packages (URP 17.3.0, Input System 1.19.0, AI Navigation 2.0.12, uGUI/TextMeshPro).
-3. Open `Assets/_Project/Scenes/MainMenu` (or any level scene) and press **Play**.
-
-### Build with Unity and Xcode
-- A Mac with the latest Xcode installed.
-- Unity 6.3 LTS with the **iOS Build Support** module (add via Unity Hub → Installs → your editor → Add Modules if missing).
-- An Apple ID. 
-- A connector cable (USB-C or Thunderbolt depending on the phone), or both Mac and device on the same network for wireless deployment.
-
-### Step 1: Switch the build target to iOS
-1. Open the project in Unity 6.3 LTS.
-2. Go to **File → Build Profiles**.
-3. Select **iOS** and click **Switch Platform**. Wait for the reimport to finish.
-4. Add the scenes to the build list in play order (main menu first, then levels) under the scene list.
-
-### Step 2: Configure Player Settings
-1. In Build Profiles, open **Player Settings** (or **Edit → Project Settings → Player**).
-2. Under the iOS tab, set Company Name and Product Name, a unique **Bundle Identifier** (e.g. com.yourname.stealthparticles), the minimum iOS version, and Target Device to iPhone + iPad.
-3. Set **Default Orientation** to **Portrait** (the game is designed for 19.5:9 portrait).
-
-### Step 3: Build the Xcode project
-1. In Build Profiles, click **Build**.
-2. Choose an empty output folder (e.g. Builds/iOS).
-3. Unity generates a native Xcode project in that folder.
-
-### Step 4: Open and sign in Xcode
-1. Open the output folder and double-click **Unity-iPhone.xcodeproj**.
-2. Select the **Unity-iPhone** project, then the **Unity-iPhone** target.
-3. Open the **Signing & Capabilities** tab.
-4. Tick **Automatically manage signing**.
-5. Choose your **Team** (add your Apple ID under Xcode → Settings → Accounts if it is not listed).
-6. Confirm the Bundle Identifier matches the one set in Unity.
-
-### Step 5: Deploy to your device
-1. Connect and unlock your iPhone and tap **Trust** if prompted.
-On the the iPhone: **Settings → Privacy & Security → Developer Mode: On**.
-2. Back to Xcode, select your device in the run-destination dropdown in the Xcode toolbar.
-3. Press **Run** (▶) or **Product → Run**. Xcode builds and installs the app.
-
-### Step 6: Trust the developer certificate (first install only)
-1. On the iPhone: **Settings → General → VPN & Device Management**.
-2. Under **Developer App**, tap your certificate and choose **Trust**.
-3. Relaunch the app from the home screen.
-
-
-
-
-## Credits / Acknowledgements
-
-- Design, code, and assembly: project author (Hamad Alaslani).
+- Developed by: Hamad Alaslani.
 - Inspired by the VR Missions of **Metal Gear Solid**.
-- Built with Unity, the Universal Render Pipeline, Input System, AI Navigation, and TextMeshPro.
-- Music tracks will be credited here once implemented.
+- Built with Unity, URP, New Input System, AI Navigation, and TextMeshPro.
+- Sound effects: PixaBay.
+- Music: Stage 1 (Five Hours by Doerro) - Stage 2 (Hearts in Standby by Moebius FM) - Stage 3 (Blue Fear by Lowland) - Stage 4 (Sunset by Adept)
