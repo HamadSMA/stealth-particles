@@ -2,12 +2,17 @@
 
 *A mission-based stealth game built for mobile, where you can't just sneak to the exit.*
 
-**Hamad Alaslani** · Unity · C# · Mobile + WebGL 
+**[▶ Play the WebGL build](https://hamadalaslani.dev/game)** · or [run in the editor](#run-in-the-editor)
 
->gif placeholder
+<div align="center">
+ <img width="300" alt="level-3" src="https://github.com/user-attachments/assets/2deb0977-4435-4cdc-8c02-37808fa6cc6a" /> <img width="300"  alt="level-4" src="https://github.com/user-attachments/assets/32405433-221d-4020-97a9-442ad61ad948" />
+</div>
 
+<div align="center"> 
+   <video src="[https://github.com](https://github.com/user-attachments/assets/c19311a8-9fb0-4836-aabe-ca5be570158a)" width="600px" controls></video>
 
-**[▶ Play the WebGL build](https://hamadalaslani.dev/game)** · or run it in the editor (below).
+https://github.com/user-attachments/assets/c19311a8-9fb0-4836-aabe-ca5be570158a
+</div>
 
 ---
 
@@ -46,11 +51,17 @@ Cloak only fools vision. Touching a guard or crossing a live laser still fails t
 
 **You fail** if a cone catches you with line of sight, you touch a guard, you enter an active laser, or the timer hits 0. Finish fast: your time sets your score and your S/A/B/C rank.
 
-> gif placeholder
-
 ## Architecture
 
 Everything communicates through a static **GameEvents** pub/sub hub, so systems never reference each other directly. Adding a subscriber touches no existing code; the cost is discipline (every `+=` in `OnEnable` has a matching `-=` in `OnDisable`).
+
+```
+                      ┌──────────────────┐
+       GameManager ───┤                  ├─── GuardController
+   ScoreCalculator ───┤    GameEvents    ├─── Laser / Panel
+      UIController ───┤                  ├─── SfxPlayer
+                      └──────────────────┘
+```
 
 | System | Pattern | What it does |
 |---|---|---|
@@ -60,9 +71,6 @@ Everything communicates through a static **GameEvents** pub/sub hub, so systems 
 | **Input** | Pointer + NavMesh | One abstraction over mouse and touch; a tap raycasts and resolves guard > panel > floor. |
 | **Powerups** | Template Method (`Powerup`) | Base runs the shared steps (pick up, announce, disappear); each subclass adds only its effect. |
 | **Hazards** | Lasers + panels | A panel toggles its linked laser. |
-
-
-> events diagram plceholder
 
 ## Run in the Editor
 
@@ -93,7 +101,7 @@ Assets/_Project/
 
 ## Credits
 
-- Developed by: Hamad Alaslani.
+- Author: Hamad Alaslani.
 - Inspired by the VR Missions of **Metal Gear Solid**.
 - Built with Unity, URP, New Input System, AI Navigation, and TextMeshPro.
 - Sound effects: PixaBay.
