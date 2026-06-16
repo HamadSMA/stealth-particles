@@ -19,7 +19,7 @@ MonoBehaviour:
     Collect all spheres
     then head for the goal.'
   TimeBudget: 120
-  LootRequired: 3
+  LootRequired: 4
   CameraHeight: 0
   CameraOffset: {x: 0, y: 0, z: 0}
   MusicTrack: {fileID: 8300000, guid: fa6127cd64ec34d8f97b5f84fb855f58, type: 3}
