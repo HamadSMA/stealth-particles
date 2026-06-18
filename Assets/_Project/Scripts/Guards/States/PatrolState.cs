@@ -4,7 +4,6 @@ using UnityEngine.AI;
 public class PatrolState : IGuardState
 {
     private readonly GuardController _guard;
-
     private int _currentIndex;
     private int _direction = 1;
     private float _pauseTimer;
@@ -18,7 +17,6 @@ public class PatrolState : IGuardState
     {
         NavMeshAgent agent = _guard.Agent;
         PatrolPattern pattern = _guard.PatrolPattern;
-
         if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
             Debug.LogWarning(
@@ -26,15 +24,12 @@ public class PatrolState : IGuardState
             );
             return;
         }
-
         agent.isStopped = false;
         agent.speed = _guard.Config.PatrolSpeed;
         agent.angularSpeed = _guard.Config.PatrolAngularSpeed;
-
         _currentIndex = 0;
         _direction = 1;
         _pauseTimer = 0f;
-
         _guard.SetDestination(_guard.SpawnPosition + pattern.GetWaypoint(_currentIndex));
     }
 
@@ -42,7 +37,6 @@ public class PatrolState : IGuardState
     {
         NavMeshAgent agent = _guard.Agent;
         PatrolPattern pattern = _guard.PatrolPattern;
-
         if (pattern == null || pattern.Waypoints == null || pattern.Waypoints.Length == 0)
         {
             Debug.LogWarning(
@@ -50,7 +44,6 @@ public class PatrolState : IGuardState
             );
             return;
         }
-
         if (agent.pathPending)
         {
             return;
@@ -60,7 +53,6 @@ public class PatrolState : IGuardState
         float distance = Vector3.Distance(agent.transform.position, target);
         bool hasRemainingPath =
             agent.hasPath && agent.remainingDistance > pattern.WaypointReachedDistance;
-
         if (distance >= pattern.WaypointReachedDistance || hasRemainingPath)
         {
             return;
@@ -84,5 +76,39 @@ public class PatrolState : IGuardState
         NavMeshAgent agent = _guard.Agent;
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+    }
+
+    public bool TryHoldup(Vector3 fromPosition)
+    {
+        GuardConfig config = _guard.Config;
+        Transform t = _guard.transform;
+
+        Vector3 toSource = fromPosition - t.position;
+        toSource.y = 0f;
+        if (toSource.sqrMagnitude > config.HoldupRange * config.HoldupRange)
+        {
+            return false;
+        }
+
+        Vector3 forward = t.forward;
+        forward.y = 0f;
+        if (Vector3.Angle(forward, toSource) < 180f - config.HoldupAngle * 0.5f)
+        {
+            return false;
+        }
+
+        Neutralize();
+        return true;
+    }
+
+    public void Eliminate()
+    {
+        Neutralize();
+    }
+
+    private void Neutralize()
+    {
+        _guard.TransitionTo(new DeadState(_guard));
+        GameEvents.RaiseGuardNeutralized();
     }
 }

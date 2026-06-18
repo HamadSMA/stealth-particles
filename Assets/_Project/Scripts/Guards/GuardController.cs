@@ -14,21 +14,18 @@ public class GuardController : MonoBehaviour
     [FormerlySerializedAs("patrolPattern")]
     private PatrolPattern _patrolPattern;
 
-    private VisionCone _visionCone;
-
-    private Transform _playerTransform;
-
     [SerializeField]
     [FormerlySerializedAs("holdupBurstPrefab")]
     private ParticleSystem _holdupBurstPrefab;
 
+    private VisionCone _visionCone;
+    private Transform _playerTransform;
     private NavMeshAgent _agent;
     private PowerupSystem _playerPowerups;
     private Vector3 _spawnPosition;
     private IGuardState _currentState;
     private bool _isPlaying;
     private bool _alreadyDetected;
-    private bool _isHeldUp;
 
     public GuardConfig Config => _config;
     public PatrolPattern PatrolPattern => _patrolPattern;
@@ -80,7 +77,6 @@ public class GuardController : MonoBehaviour
         {
             _currentState.Tick();
         }
-
         CheckDetection();
     }
 
@@ -90,22 +86,18 @@ public class GuardController : MonoBehaviour
         {
             return;
         }
-
         if (_visionCone == null || _playerTransform == null)
         {
             return;
         }
-
         if (_playerPowerups != null && _playerPowerups.IsCloaked)
         {
             if (_visionCone.ContainsPoint(_playerTransform.position, out _))
             {
                 _playerPowerups.ReportCloakedSighting();
             }
-
             return;
         }
-
         if (_visionCone.ContainsPoint(_playerTransform.position, out _))
         {
             _alreadyDetected = true;
@@ -120,12 +112,10 @@ public class GuardController : MonoBehaviour
             Debug.LogWarning("GuardController.TransitionTo called with null state.");
             return;
         }
-
         if (_currentState != null)
         {
             _currentState.Exit();
         }
-
         _currentState = newState;
         newState.Enter();
     }
@@ -145,43 +135,12 @@ public class GuardController : MonoBehaviour
 
     public bool TryHoldup(Vector3 fromPosition)
     {
-        if (_isHeldUp)
-        {
-            return false;
-        }
-
-        Vector3 toSource = fromPosition - transform.position;
-        toSource.y = 0f;
-
-        if (toSource.sqrMagnitude > _config.HoldupRange * _config.HoldupRange)
-        {
-            return false;
-        }
-
-        Vector3 forward = transform.forward;
-        forward.y = 0f;
-
-        if (Vector3.Angle(forward, toSource) < 180f - _config.HoldupAngle * 0.5f)
-        {
-            return false;
-        }
-
-        _isHeldUp = true;
-        TransitionTo(new DeadState(this));
-        GameEvents.RaiseGuardNeutralized();
-        return true;
+        return _currentState != null && _currentState.TryHoldup(fromPosition);
     }
 
     public void Eliminate()
     {
-        if (_isHeldUp)
-        {
-            return;
-        }
-
-        _isHeldUp = true;
-        TransitionTo(new DeadState(this));
-        GameEvents.RaiseGuardNeutralized();
+        _currentState?.Eliminate();
     }
 
     public bool HasReachedDestination()
