@@ -405,9 +405,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2754133347848840562}
   - component: {fileID: 2012915545405416997}
-  - component: {fileID: 7905602303450550873}
   - component: {fileID: 2963373133863370341}
   - component: {fileID: 8867201193383450979}
+  - component: {fileID: 1284087368208925613}
   m_Layer: 11
   m_Name: Goal
   m_TagString: Untagged
@@ -439,27 +439,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8264082663242241985}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!135 &7905602303450550873
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8264082663242241985}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.6230226
-  m_Center: {x: 0, y: 0.12302324, z: 0}
 --- !u!23 &2963373133863370341
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -523,3 +502,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Goal
   RequiresAllLoot: 1
   _goalBurstPrefab: {fileID: 3082339843173659843, guid: 5fcfd0fb685ba48009b3ae19bc99a73d, type: 3}
+--- !u!65 &1284087368208925613
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8264082663242241985}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.644413, y: 1.5725125, z: 4.1868296}
+  m_Center: {x: 0.15506744, y: -0.2862552, z: 0.27764994}

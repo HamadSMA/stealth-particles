@@ -1150,6 +1150,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Guard
       objectReference: {fileID: 0}
+    - target: {fileID: 3617492454625967067, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
+      propertyPath: _patrolPattern
+      value: 
+      objectReference: {fileID: 11400000, guid: 6021800fd5b7c45ae8842f446d674c5a, type: 2}
     - target: {fileID: 8730041272714988271, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.80025
@@ -2752,7 +2756,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3223023314937865012, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: m_Name
-      value: Guard
+      value: Guard(2)
       objectReference: {fileID: 0}
     - target: {fileID: 3617492454625967067, guid: 16b2ed535b4b64991b2e1d36efb59a55, type: 3}
       propertyPath: _patrolPattern

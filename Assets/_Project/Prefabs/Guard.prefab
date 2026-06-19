@@ -154,9 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GuardController
   _config: {fileID: 11400000, guid: 8c45abe2b807a478dbb6615b448e3a60, type: 2}
-  _patrolPattern: {fileID: 11400000, guid: 6021800fd5b7c45ae8842f446d674c5a, type: 2}
-  _visionCone: {fileID: 0}
-  _playerTransform: {fileID: 0}
+  _patrolPattern: {fileID: 0}
   _holdupBurstPrefab: {fileID: 3082339843173659843, guid: f26bbd51837d948a29c553e548ea5085, type: 3}
 --- !u!114 &6409076631885901184
 MonoBehaviour:
@@ -170,7 +168,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42369076dba0f42f2b66c436d77ebe72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VisionCone
-  _config: {fileID: 11400000, guid: 8c45abe2b807a478dbb6615b448e3a60, type: 2}
   _wallMask:
     serializedVersion: 2
     m_Bits: 512
