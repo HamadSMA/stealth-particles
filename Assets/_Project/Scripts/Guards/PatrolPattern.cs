@@ -27,6 +27,7 @@ public class PatrolPattern : ScriptableObject
         return Waypoints[clamped];
     }
 
+    // Note on using ref: a method can only return one value through its return statement, so I'm using ref to flip _direction (in PatrolState.cs) between 1 and -1 while return is given to indexing.
     public int GetNextIndex(int currentIndex, ref int direction)
     {
         if (Waypoints == null || Waypoints.Length <= 1)

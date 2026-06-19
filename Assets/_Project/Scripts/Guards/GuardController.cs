@@ -57,6 +57,7 @@ public class GuardController : MonoBehaviour
 
         if (_playerTransform != null)
         {
+            // The powerup is found on the player transform itself, looking upward is just a defensive method in case a game object with tag "player" added as a child to the player game object.
             _playerPowerups = _playerTransform.GetComponentInParent<PowerupSystem>();
         }
     }
