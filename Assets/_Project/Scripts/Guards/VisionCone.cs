@@ -12,10 +12,6 @@ public class VisionCone : MonoBehaviour
     private LayerMask _wallMask;
 
     [SerializeField]
-    [FormerlySerializedAs("playerMask")]
-    private LayerMask _playerMask;
-
-    [SerializeField]
     [FormerlySerializedAs("floorMask")]
     private LayerMask _floorMask;
 
